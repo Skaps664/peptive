@@ -77,14 +77,14 @@ export default function ProductsPage() {
               {products.map((product) => (
                 <div key={product.id} className="relative bg-white rounded-3xl overflow-hidden shadow-sm hover:shadow-xl transition-shadow group">
                   {/* Badges */}
-                  {(product.on_sale || !product.in_stock) && (
+                  {(product.onSale || product.stockStatus !== 'instock') && (
                     <div className="absolute top-4 left-4 flex flex-col gap-2 z-10">
-                      {product.on_sale && product.regular_price && product.sale_price && (
+                      {product.onSale && product.regularPrice && product.salePrice && (
                         <span className="bg-red-500 text-white text-xs font-bold px-4 py-1.5 rounded-full">
-                          Save {Math.round(((parseFloat(product.regular_price) - parseFloat(product.sale_price)) / parseFloat(product.regular_price)) * 100)}%
+                          Save {Math.round(((parseFloat(product.regularPrice) - parseFloat(product.salePrice)) / parseFloat(product.regularPrice)) * 100)}%
                         </span>
                       )}
-                      {!product.in_stock && (
+                      {product.stockStatus !== 'instock' && (
                         <span className="bg-gray-400 text-white text-xs font-bold px-4 py-1.5 rounded-full">
                           Sold Out
                         </span>
@@ -121,15 +121,11 @@ export default function ProductsPage() {
                       </div>
                       <div className="text-right">
                         <p className="text-red-500 font-semibold text-base">
-                          {product.price_html ? (
-                            <span dangerouslySetInnerHTML={{ __html: product.price_html }} />
-                          ) : (
-                            `Dhs. ${product.price}`
-                          )}
+                          Dhs. {product.price}
                         </p>
-                        {product.on_sale && product.regular_price && (
+                        {product.onSale && product.regularPrice && (
                           <p className="text-gray-400 text-sm line-through">
-                            Dhs. {product.regular_price}
+                            Dhs. {product.regularPrice}
                           </p>
                         )}
                       </div>
@@ -139,12 +135,12 @@ export default function ProductsPage() {
                     <Link 
                       href={`/products/${product.slug}`}
                       className={`block w-full text-center py-3 rounded-full font-semibold transition-colors ${
-                        product.in_stock
+                        product.stockStatus === 'instock'
                           ? 'bg-gray-900 text-white hover:bg-gray-800'
                           : 'bg-gray-600 text-white cursor-not-allowed'
                       }`}
                     >
-                      {product.in_stock ? 'View Details' : 'Sold Out'}
+                      {product.stockStatus === 'instock' ? 'View Details' : 'Sold Out'}
                     </Link>
                   </div>
                 </div>
