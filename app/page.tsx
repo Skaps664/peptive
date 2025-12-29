@@ -143,196 +143,194 @@ export default function HomePage() {
     
     
       {/* Trending Research Section */}
-      <section className="py-4 bg-white">
+      <section className="py-8 bg-white">
         <div className="px-6 sm:px-8 lg:px-12">
           {/* Section Header */}
           <div className="flex items-center justify-between mb-8">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900">
+            <h2 className="text-4xl md:text-5xl font-extrabold text-gray-900">
               Trending Research
             </h2>
-            <div className="flex gap-2">
+            <div className="flex gap-3">
               <button 
-                className="w-10 h-10 rounded-full border-2 border-gray-300 flex items-center justify-center hover:border-gray-400 transition-colors"
+                onClick={() => {
+                  const container = document.querySelector('#trending-carousel');
+                  if (container) container.scrollBy({ left: -400, behavior: 'smooth' });
+                }}
+                className="w-14 h-14 rounded-full bg-white border-2 border-gray-900 flex items-center justify-center hover:border-gray-700 transition-colors"
                 aria-label="Previous"
               >
-                <svg className="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-6 h-6 text-gray-900" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
                 </svg>
               </button>
               <button 
-                className="w-10 h-10 rounded-full border-2 border-gray-300 flex items-center justify-center hover:border-gray-400 transition-colors"
+                onClick={() => {
+                  const container = document.querySelector('#trending-carousel');
+                  if (container) container.scrollBy({ left: 400, behavior: 'smooth' });
+                }}
+                className="w-14 h-14 rounded-full bg-white border-2 border-gray-900 flex items-center justify-center hover:border-gray-700 transition-colors"
                 aria-label="Next"
               >
-                <svg className="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-6 h-6 text-gray-900" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                 </svg>
               </button>
             </div>
           </div>
+        </div>
 
-          {/* Product Carousel */}
-          <div className="overflow-x-auto scrollbar-hide -mx-4 px-4">
-            <div className="flex gap-6 pb-4">
-              {/* Product Card 1 */}
-              <div className="flex-none w-72">
-                <div className="bg-gray-100 rounded-2xl p-6 relative group hover:shadow-lg transition-shadow">
-                  {/* Badges */}
-                  <div className="absolute top-4 left-4 flex flex-col gap-2">
-                    <span className="bg-red-500 text-white text-xs font-semibold px-3 py-1 rounded-full">
-                      Save 29%
-                    </span>
-                    <span className="bg-gray-400 text-white text-xs font-semibold px-3 py-1 rounded-full">
-                      Sold Out
-                    </span>
-                  </div>
+        {/* Product Carousel - Full Width */}
+        <div id="trending-carousel" className="overflow-x-auto scrollbar-hide scroll-smooth">
+          <div className="flex gap-6 px-6 sm:px-8 lg:px-12 pb-6">
+            {/* Product Card 1 */}
+            <div className="flex-none w-80">
+              <div className="relative bg-white rounded-3xl overflow-hidden shadow-sm hover:shadow-xl transition-shadow group">
+                {/* Badges */}
+                <div className="absolute top-4 left-4 flex flex-col gap-2 z-10">
+                  <span className="bg-red-500 text-white text-xs font-bold px-4 py-1.5 rounded-full">
+                    Save 29%
+                  </span>
+                  <span className="bg-gray-400 text-white text-xs font-bold px-4 py-1.5 rounded-full">
+                    Sold Out
+                  </span>
+                </div>
 
-                  {/* Product Image */}
-                  <div className="aspect-square flex items-center justify-center mb-4">
-                    <div className="w-32 h-40 bg-gradient-to-br from-gray-800 to-gray-900 rounded-lg flex items-center justify-center relative">
-                      <div className="absolute top-2 left-2 w-8 h-8 bg-yellow-500 rounded-md flex items-center justify-center">
-                        <span className="text-white font-bold text-xs">肽</span>
-                      </div>
-                      <span className="text-yellow-500 font-bold text-lg">PEPTIVE</span>
+                {/* Product Image */}
+                <div className="relative bg-gray-100 aspect-square flex items-center justify-center overflow-hidden">
+                  <img src="/product-1.jpg" alt="Product" className="w-full h-full object-cover group-hover:hidden" />
+                  <img src="/product-1-hover.jpg" alt="Product Hover" className="w-full h-full object-cover hidden group-hover:block" />
+                </div>
+
+                {/* Product Info */}
+                <div className="bg-gray-50 p-5">
+                  <div className="flex items-start justify-between mb-2">
+                    <div>
+                      <p className="text-gray-500 text-xs mb-1 uppercase tracking-wide">PEPT</p>
+                      <h3 className="text-gray-900 text-base">Ret 15mg</h3>
                     </div>
-                  </div>
-
-                  {/* Product Info */}
-                  <div>
-                    <p className="text-gray-500 text-xs font-medium mb-1">PEPT</p>
-                    <h3 className="font-semibold text-gray-900 mb-2">Ret 15mg</h3>
-                    <div className="flex items-center gap-2">
-                      <span className="text-red-500 font-bold">Dhs. 999.00</span>
-                      <span className="text-gray-400 text-sm line-through">Dhs. 1,399.00</span>
+                    <div className="text-right">
+                      <p className="text-red-500 font-semibold text-base">Dhs. 999.00</p>
+                      <p className="text-gray-400 text-sm line-through">Dhs. 1,399.00</p>
                     </div>
                   </div>
                 </div>
               </div>
+            </div>
 
-              {/* Product Card 2 */}
-              <div className="flex-none w-72">
-                <div className="bg-gray-100 rounded-2xl p-6 relative group hover:shadow-lg transition-shadow">
-                  <div className="absolute top-4 left-4 flex flex-col gap-2">
-                    <span className="bg-red-500 text-white text-xs font-semibold px-3 py-1 rounded-full">
-                      Save 26%
-                    </span>
-                    <span className="bg-gray-400 text-white text-xs font-semibold px-3 py-1 rounded-full">
-                      Sold Out
-                    </span>
-                  </div>
-                  <div className="aspect-square flex items-center justify-center mb-4">
-                    <div className="w-48 h-32 bg-purple-100 rounded-lg flex items-center justify-center">
-                      <div className="text-center">
-                        <div className="w-8 h-8 bg-yellow-500 rounded-md mx-auto mb-2 flex items-center justify-center">
-                          <span className="text-white font-bold text-xs">肽</span>
-                        </div>
-                        <span className="text-purple-900 font-bold text-sm">RETATRUTIDE</span>
-                      </div>
+            {/* Product Card 2 */}
+            <div className="flex-none w-80">
+              <div className="relative bg-white rounded-3xl overflow-hidden shadow-sm hover:shadow-xl transition-shadow group">
+                <div className="absolute top-4 left-4 flex flex-col gap-2 z-10">
+                  <span className="bg-red-500 text-white text-xs font-bold px-4 py-1.5 rounded-full">
+                    Save 26%
+                  </span>
+                  <span className="bg-gray-400 text-white text-xs font-bold px-4 py-1.5 rounded-full">
+                    Sold Out
+                  </span>
+                </div>
+                <div className="relative bg-gray-100 aspect-square flex items-center justify-center overflow-hidden">
+                  <img src="/product-2.jpg" alt="Product" className="w-full h-full object-cover group-hover:hidden" />
+                  <img src="/product-2-hover.jpg" alt="Product Hover" className="w-full h-full object-cover hidden group-hover:block" />
+                </div>
+                <div className="bg-gray-50 p-5">
+                  <div className="flex items-start justify-between mb-2">
+                    <div>
+                      <p className="text-gray-500 text-xs mb-1 uppercase tracking-wide">PEPT</p>
+                      <h3 className="text-gray-900 text-base">Ret Pen 12mg</h3>
                     </div>
-                  </div>
-                  <div>
-                    <p className="text-gray-500 text-xs font-medium mb-1">PEPT</p>
-                    <h3 className="font-semibold text-gray-900 mb-2">Ret Pen 12mg</h3>
-                    <div className="flex items-center gap-2">
-                      <span className="text-red-500 font-bold">Dhs. 1,399.00</span>
-                      <span className="text-gray-400 text-sm line-through">Dhs. 1,899.00</span>
+                    <div className="text-right">
+                      <p className="text-red-500 font-semibold text-base">Dhs. 1,399.00</p>
+                      <p className="text-gray-400 text-sm line-through">Dhs. 1,899.00</p>
                     </div>
                   </div>
                 </div>
               </div>
+            </div>
 
-              {/* Product Card 3 */}
-              <div className="flex-none w-72">
-                <div className="bg-gray-100 rounded-2xl p-6 relative group hover:shadow-lg transition-shadow">
-                  <div className="absolute top-4 left-4 flex flex-col gap-2">
-                    <span className="bg-red-500 text-white text-xs font-semibold px-3 py-1 rounded-full">
-                      Save 30%
-                    </span>
-                    <span className="bg-gray-400 text-white text-xs font-semibold px-3 py-1 rounded-full">
-                      Sold Out
-                    </span>
-                  </div>
-                  <div className="aspect-square flex items-center justify-center mb-4">
-                    <div className="w-32 h-40 bg-gradient-to-br from-gray-800 to-gray-900 rounded-lg flex items-center justify-center relative">
-                      <div className="absolute top-2 left-2 w-8 h-8 bg-yellow-500 rounded-md flex items-center justify-center">
-                        <span className="text-white font-bold text-xs">肽</span>
-                      </div>
-                      <span className="text-yellow-500 font-bold text-lg">PEPTIVE</span>
+            {/* Product Card 3 */}
+            <div className="flex-none w-80">
+              <div className="relative bg-white rounded-3xl overflow-hidden shadow-sm hover:shadow-xl transition-shadow group">
+                <div className="absolute top-4 left-4 flex flex-col gap-2 z-10">
+                  <span className="bg-red-500 text-white text-xs font-bold px-4 py-1.5 rounded-full">
+                    Save 30%
+                  </span>
+                  <span className="bg-gray-400 text-white text-xs font-bold px-4 py-1.5 rounded-full">
+                    Sold Out
+                  </span>
+                </div>
+                <div className="relative bg-gray-100 aspect-square flex items-center justify-center overflow-hidden">
+                  <img src="/product-3.jpg" alt="Product" className="w-full h-full object-cover group-hover:hidden" />
+                  <img src="/product-3-hover.jpg" alt="Product Hover" className="w-full h-full object-cover hidden group-hover:block" />
+                </div>
+                <div className="bg-gray-50 p-5">
+                  <div className="flex items-start justify-between mb-2">
+                    <div>
+                      <p className="text-gray-500 text-xs mb-1 uppercase tracking-wide">PEPT</p>
+                      <h3 className="text-gray-900 text-base">CJC/Ipamorelin 5/5mg</h3>
                     </div>
-                  </div>
-                  <div>
-                    <p className="text-gray-500 text-xs font-medium mb-1">PEPT</p>
-                    <h3 className="font-semibold text-gray-900 mb-2">CJC/Ipamorelin 5/5mg</h3>
-                    <div className="flex items-center gap-2">
-                      <span className="text-red-500 font-bold">Dhs. 699.00</span>
-                      <span className="text-gray-400 text-sm line-through">Dhs. 999.00</span>
+                    <div className="text-right">
+                      <p className="text-red-500 font-semibold text-base">Dhs. 699.00</p>
+                      <p className="text-gray-400 text-sm line-through">Dhs. 999.00</p>
                     </div>
                   </div>
                 </div>
               </div>
+            </div>
 
-              {/* Product Card 4 */}
-              <div className="flex-none w-72">
-                <div className="bg-gray-100 rounded-2xl p-6 relative group hover:shadow-lg transition-shadow">
-                  <div className="absolute top-4 left-4 flex flex-col gap-2">
-                    <span className="bg-red-500 text-white text-xs font-semibold px-3 py-1 rounded-full">
-                      Save 20%
-                    </span>
-                    <span className="bg-gray-400 text-white text-xs font-semibold px-3 py-1 rounded-full">
-                      Sold Out
-                    </span>
-                  </div>
-                  <div className="aspect-square flex items-center justify-center mb-4">
-                    <div className="w-32 h-40 bg-gradient-to-br from-gray-800 to-gray-900 rounded-lg flex items-center justify-center relative">
-                      <div className="absolute top-2 left-2 w-8 h-8 bg-yellow-500 rounded-md flex items-center justify-center">
-                        <span className="text-white font-bold text-xs">肽</span>
-                      </div>
-                      <span className="text-yellow-500 font-bold text-lg">PEPTIVE</span>
+            {/* Product Card 4 */}
+            <div className="flex-none w-80">
+              <div className="relative bg-white rounded-3xl overflow-hidden shadow-sm hover:shadow-xl transition-shadow group">
+                <div className="absolute top-4 left-4 flex flex-col gap-2 z-10">
+                  <span className="bg-red-500 text-white text-xs font-bold px-4 py-1.5 rounded-full">
+                    Save 20%
+                  </span>
+                  <span className="bg-gray-400 text-white text-xs font-bold px-4 py-1.5 rounded-full">
+                    Sold Out
+                  </span>
+                </div>
+                <div className="relative bg-gray-100 aspect-square flex items-center justify-center overflow-hidden">
+                  <img src="/product-4.jpg" alt="Product" className="w-full h-full object-cover group-hover:hidden" />
+                  <img src="/product-4-hover.jpg" alt="Product Hover" className="w-full h-full object-cover hidden group-hover:block" />
+                </div>
+                <div className="bg-gray-50 p-5">
+                  <div className="flex items-start justify-between mb-2">
+                    <div>
+                      <p className="text-gray-500 text-xs mb-1 uppercase tracking-wide">PEPT</p>
+                      <h3 className="text-gray-900 text-base">TB500 + BPC-157</h3>
                     </div>
-                  </div>
-                  <div>
-                    <p className="text-gray-500 text-xs font-medium mb-1">PEPT</p>
-                    <h3 className="font-semibold text-gray-900 mb-2">TB500 + BPC-157 (10/10mg)</h3>
-                    <div className="flex items-center gap-2">
-                      <span className="text-red-500 font-bold">Dhs. 799.00</span>
-                      <span className="text-gray-400 text-sm line-through">Dhs. 999.00</span>
+                    <div className="text-right">
+                      <p className="text-red-500 font-semibold text-base">Dhs. 799.00</p>
+                      <p className="text-gray-400 text-sm line-through">Dhs. 999.00</p>
                     </div>
                   </div>
                 </div>
               </div>
+            </div>
 
-              {/* Product Card 5 */}
-              <div className="flex-none w-72">
-                <div className="bg-gray-100 rounded-2xl p-6 relative group hover:shadow-lg transition-shadow">
-                  <div className="absolute top-4 left-4 flex flex-col gap-2">
-                    <span className="bg-red-500 text-white text-xs font-semibold px-3 py-1 rounded-full">
-                      Save 33%
-                    </span>
-                    <span className="bg-gray-400 text-white text-xs font-semibold px-3 py-1 rounded-full">
-                      Sold Out
-                    </span>
-                  </div>
-                  <div className="aspect-square flex items-center justify-center mb-4">
-                    <div className="flex gap-2">
-                      <div className="w-24 h-32 bg-gradient-to-br from-gray-800 to-gray-900 rounded-lg flex items-center justify-center relative">
-                        <div className="absolute top-2 left-2 w-6 h-6 bg-yellow-500 rounded-md flex items-center justify-center">
-                          <span className="text-white font-bold text-xs">肽</span>
-                        </div>
-                        <span className="text-yellow-500 font-bold text-xs">PEPTIVE</span>
-                      </div>
-                      <div className="w-24 h-32 bg-gradient-to-br from-gray-800 to-gray-900 rounded-lg flex items-center justify-center relative">
-                        <div className="absolute top-2 left-2 w-6 h-6 bg-yellow-500 rounded-md flex items-center justify-center">
-                          <span className="text-white font-bold text-xs">肽</span>
-                        </div>
-                        <span className="text-yellow-500 font-bold text-xs">PEPTIVE</span>
-                      </div>
+            {/* Product Card 5 - Partially visible */}
+            <div className="flex-none w-80">
+              <div className="relative bg-white rounded-3xl overflow-hidden shadow-sm hover:shadow-xl transition-shadow group">
+                <div className="absolute top-4 left-4 flex flex-col gap-2 z-10">
+                  <span className="bg-red-500 text-white text-xs font-bold px-4 py-1.5 rounded-full">
+                    Save 33%
+                  </span>
+                  <span className="bg-gray-400 text-white text-xs font-bold px-4 py-1.5 rounded-full">
+                    Sold Out
+                  </span>
+                </div>
+                <div className="relative bg-gray-100 aspect-square flex items-center justify-center overflow-hidden">
+                  <img src="/product-5.jpg" alt="Product" className="w-full h-full object-cover group-hover:hidden" />
+                  <img src="/product-5-hover.jpg" alt="Product Hover" className="w-full h-full object-cover hidden group-hover:block" />
+                </div>
+                <div className="bg-gray-50 p-5">
+                  <div className="flex items-start justify-between mb-2">
+                    <div>
+                      <p className="text-gray-500 text-xs mb-1 uppercase tracking-wide">PEPT</p>
+                      <h3 className="text-gray-900 text-base">Rapid Fat Loss Stack</h3>
                     </div>
-                  </div>
-                  <div>
-                    <p className="text-gray-500 text-xs font-medium mb-1">PEPT</p>
-                    <h3 className="font-semibold text-gray-900 mb-2">Rapid Fat Loss Stack</h3>
-                    <div className="flex items-center gap-2">
-                      <span className="text-red-500 font-bold">Dhs. 1,299.00</span>
-                      <span className="text-gray-400 text-sm line-through">Dhs. 1,899.00</span>
+                    <div className="text-right">
+                      <p className="text-red-500 font-semibold text-base">Dhs. 1,299.00</p>
+                      <p className="text-gray-400 text-sm line-through">Dhs. 1,899.00</p>
                     </div>
                   </div>
                 </div>
@@ -349,10 +347,10 @@ export default function HomePage() {
         <div className="px-6 sm:px-8 lg:px-12">
           {/* Section Header */}
           <div className="mb-8">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+            <h2 className="text-4xl md:text-5xl font-extrabold text-gray-900 mb-4">
               Build Your Stack
             </h2>
-            <p className="text-gray-600 text-lg max-w-2xl">
+            <p className="text-gray-600 text-base max-w-2xl">
               The choice is yours. With our stack builder, you can select any combination from our range of products.
             </p>
           </div>
@@ -362,155 +360,119 @@ export default function HomePage() {
             {/* Stack Cards Container */}
             <div className="lg:col-span-3 grid md:grid-cols-3 gap-6">
               {/* Recomp Stack Card */}
-              <div className="bg-gray-100 rounded-2xl p-6 relative">
+              <div className="relative bg-white rounded-3xl overflow-hidden shadow-sm hover:shadow-xl transition-shadow">
                 {/* Badges */}
                 <div className="absolute top-4 left-4 flex flex-col gap-2 z-10">
-                  <span className="bg-red-500 text-white text-xs font-semibold px-3 py-1 rounded-full">
+                  <span className="bg-red-500 text-white text-xs font-bold px-4 py-1.5 rounded-full">
                     Save 31%
                   </span>
-                  <span className="bg-gray-400 text-white text-xs font-semibold px-3 py-1 rounded-full">
+                  <span className="bg-gray-400 text-white text-xs font-bold px-4 py-1.5 rounded-full">
                     Sold Out
                   </span>
                 </div>
 
-                {/* Product Images */}
-                <div className="aspect-square flex items-center justify-center mb-4">
-                  <div className="flex gap-2 items-end">
-                    <div className="w-20 h-32 bg-gradient-to-br from-gray-800 to-gray-900 rounded-lg flex items-center justify-center relative shadow-lg">
-                      <div className="absolute top-2 left-2 w-6 h-6 bg-yellow-500 rounded-md flex items-center justify-center">
-                        <span className="text-white font-bold text-xs">肽</span>
-                      </div>
-                      <span className="text-yellow-500 font-bold text-xs transform -rotate-90">PEPTIVE</span>
-                    </div>
-                    <div className="w-20 h-32 bg-gradient-to-br from-gray-800 to-gray-900 rounded-lg flex items-center justify-center relative shadow-lg">
-                      <div className="absolute top-2 left-2 w-6 h-6 bg-yellow-500 rounded-md flex items-center justify-center">
-                        <span className="text-white font-bold text-xs">肽</span>
-                      </div>
-                      <span className="text-yellow-500 font-bold text-xs transform -rotate-90">PEPTIVE</span>
-                    </div>
-                    <div className="w-20 h-32 bg-gradient-to-br from-gray-800 to-gray-900 rounded-lg flex items-center justify-center relative shadow-lg">
-                      <div className="absolute top-2 left-2 w-6 h-6 bg-yellow-500 rounded-md flex items-center justify-center">
-                        <span className="text-white font-bold text-xs">肽</span>
-                      </div>
-                      <span className="text-yellow-500 font-bold text-xs transform -rotate-90">PEPTIVE</span>
-                    </div>
-                  </div>
+                {/* Product Image */}
+                <div className="relative bg-gray-100 aspect-square flex items-center justify-center overflow-hidden">
+                  <img src="/stack-1.jpg" alt="Recomp Stack" className="w-full h-full object-cover" />
                 </div>
 
                 {/* Product Info */}
-                <div className="mb-4">
-                  <p className="text-gray-500 text-xs font-medium mb-1">PEPT</p>
-                  <h3 className="font-semibold text-gray-900 mb-2">Recomp Stack</h3>
-                  <div className="flex items-center gap-2">
-                    <span className="text-red-500 font-bold">Dhs. 1,999.00</span>
-                    <span className="text-gray-400 text-sm line-through">Dhs. 2,999.00</span>
+                <div className="bg-gray-50 p-5">
+                  <div className="flex items-start justify-between mb-4">
+                    <div>
+                      <p className="text-gray-500 text-xs mb-1 uppercase tracking-wide">PEPT</p>
+                      <h3 className="text-gray-900 text-base">Recomp Stack</h3>
+                    </div>
+                    <div className="text-right">
+                      <p className="text-red-500 font-semibold text-base">Dhs. 1,999.00</p>
+                      <p className="text-gray-400 text-sm line-through">Dhs. 2,899.00</p>
+                    </div>
                   </div>
+                  
+                  {/* Sold Out Button */}
+                  <button className="w-full bg-gray-600 text-white font-semibold py-3 rounded-full cursor-not-allowed" disabled>
+                    Sold Out
+                  </button>
                 </div>
-
-                {/* Sold Out Button */}
-                <button className="w-full bg-gray-600 text-white font-medium py-3 rounded-full hover:bg-gray-700 transition-colors cursor-not-allowed" disabled>
-                  Sold Out
-                </button>
               </div>
 
               {/* Rapid Fat Loss Stack Card */}
-              <div className="bg-gray-100 rounded-2xl p-6 relative">
+              <div className="relative bg-white rounded-3xl overflow-hidden shadow-sm hover:shadow-xl transition-shadow">
                 <div className="absolute top-4 left-4 flex flex-col gap-2 z-10">
-                  <span className="bg-red-500 text-white text-xs font-semibold px-3 py-1 rounded-full">
+                  <span className="bg-red-500 text-white text-xs font-bold px-4 py-1.5 rounded-full">
                     Save 33%
                   </span>
-                  <span className="bg-gray-400 text-white text-xs font-semibold px-3 py-1 rounded-full">
+                  <span className="bg-gray-400 text-white text-xs font-bold px-4 py-1.5 rounded-full">
                     Sold Out
                   </span>
                 </div>
-                <div className="aspect-square flex items-center justify-center mb-4">
-                  <div className="flex gap-2 items-end">
-                    <div className="w-20 h-32 bg-gradient-to-br from-gray-800 to-gray-900 rounded-lg flex items-center justify-center relative shadow-lg">
-                      <div className="absolute top-2 left-2 w-6 h-6 bg-yellow-500 rounded-md flex items-center justify-center">
-                        <span className="text-white font-bold text-xs">肽</span>
-                      </div>
-                      <span className="text-yellow-500 font-bold text-xs transform -rotate-90">PEPTIVE</span>
+                <div className="relative bg-gray-100 aspect-square flex items-center justify-center overflow-hidden">
+                  <img src="/stack-2.jpg" alt="Rapid Fat Loss Stack" className="w-full h-full object-cover" />
+                </div>
+                <div className="bg-gray-50 p-5">
+                  <div className="flex items-start justify-between mb-4">
+                    <div>
+                      <p className="text-gray-500 text-xs mb-1 uppercase tracking-wide">PEPT</p>
+                      <h3 className="text-gray-900 text-base">Rapid Fat Loss Stack</h3>
                     </div>
-                    <div className="w-20 h-32 bg-gradient-to-br from-gray-800 to-gray-900 rounded-lg flex items-center justify-center relative shadow-lg">
-                      <div className="absolute top-2 left-2 w-6 h-6 bg-yellow-500 rounded-md flex items-center justify-center">
-                        <span className="text-white font-bold text-xs">肽</span>
-                      </div>
-                      <span className="text-yellow-500 font-bold text-xs transform -rotate-90">PEPTIVE</span>
-                    </div>
-                    <div className="w-20 h-32 bg-gradient-to-br from-gray-800 to-gray-900 rounded-lg flex items-center justify-center relative shadow-lg">
-                      <div className="absolute top-2 left-2 w-6 h-6 bg-yellow-500 rounded-md flex items-center justify-center">
-                        <span className="text-white font-bold text-xs">肽</span>
-                      </div>
-                      <span className="text-yellow-500 font-bold text-xs transform -rotate-90">PEPTIVE</span>
+                    <div className="text-right">
+                      <p className="text-red-500 font-semibold text-base">Dhs. 1,999.00</p>
+                      <p className="text-gray-400 text-sm line-through">Dhs. 2,899.00</p>
                     </div>
                   </div>
+                  <button className="w-full bg-gray-600 text-white font-semibold py-3 rounded-full cursor-not-allowed" disabled>
+                    Sold Out
+                  </button>
                 </div>
-                <div className="mb-4">
-                  <p className="text-gray-500 text-xs font-medium mb-1">PEPT</p>
-                  <h3 className="font-semibold text-gray-900 mb-2">Rapid Fat Loss Stack</h3>
-                  <div className="flex items-center gap-2">
-                    <span className="text-red-500 font-bold">Dhs. 1,999.00</span>
-                    <span className="text-gray-400 text-sm line-through">Dhs. 2,999.00</span>
-                  </div>
-                </div>
-                <button className="w-full bg-gray-600 text-white font-medium py-3 rounded-full hover:bg-gray-700 transition-colors cursor-not-allowed" disabled>
-                  Sold Out
-                </button>
               </div>
 
               {/* Performance Stack Card */}
-              <div className="bg-gray-100 rounded-2xl p-6 relative">
+              <div className="relative bg-white rounded-3xl overflow-hidden shadow-sm hover:shadow-xl transition-shadow">
                 <div className="absolute top-4 left-4 flex flex-col gap-2 z-10">
-                  <span className="bg-red-500 text-white text-xs font-semibold px-3 py-1 rounded-full">
+                  <span className="bg-red-500 text-white text-xs font-bold px-4 py-1.5 rounded-full">
                     Save 30%
                   </span>
-                  <span className="bg-gray-400 text-white text-xs font-semibold px-3 py-1 rounded-full">
+                  <span className="bg-gray-400 text-white text-xs font-bold px-4 py-1.5 rounded-full">
                     Sold Out
                   </span>
                 </div>
-                <div className="aspect-square flex items-center justify-center mb-4">
-                  <div className="flex gap-2 items-end">
-                    <div className="w-24 h-36 bg-gradient-to-br from-gray-800 to-gray-900 rounded-lg flex items-center justify-center relative shadow-lg">
-                      <div className="absolute top-2 left-2 w-6 h-6 bg-yellow-500 rounded-md flex items-center justify-center">
-                        <span className="text-white font-bold text-xs">肽</span>
-                      </div>
-                      <span className="text-yellow-500 font-bold text-xs transform -rotate-90">PEPTIVE</span>
+                <div className="relative bg-gray-100 aspect-square flex items-center justify-center overflow-hidden">
+                  <img src="/stack-3.jpg" alt="Performance Stack" className="w-full h-full object-cover" />
+                </div>
+                <div className="bg-gray-50 p-5">
+                  <div className="flex items-start justify-between mb-4">
+                    <div>
+                      <p className="text-gray-500 text-xs mb-1 uppercase tracking-wide">PEPT</p>
+                      <h3 className="text-gray-900 text-base">Performance Stack</h3>
                     </div>
-                    <div className="w-24 h-36 bg-gradient-to-br from-gray-800 to-gray-900 rounded-lg flex items-center justify-center relative shadow-lg">
-                      <div className="absolute top-2 left-2 w-6 h-6 bg-yellow-500 rounded-md flex items-center justify-center">
-                        <span className="text-white font-bold text-xs">肽</span>
-                      </div>
-                      <span className="text-yellow-500 font-bold text-xs transform -rotate-90">PEPTIVE</span>
+                    <div className="text-right">
+                      <p className="text-red-500 font-semibold text-base">Dhs. 1,399.00</p>
+                      <p className="text-gray-400 text-sm line-through">Dhs. 1,899.00</p>
                     </div>
                   </div>
+                  <button className="w-full bg-gray-600 text-white font-semibold py-3 rounded-full cursor-not-allowed" disabled>
+                    Sold Out
+                  </button>
                 </div>
-                <div className="mb-4">
-                  <p className="text-gray-500 text-xs font-medium mb-1">PEPT</p>
-                  <h3 className="font-semibold text-gray-900 mb-2">Performance Stack</h3>
-                  <div className="flex items-center gap-2">
-                    <span className="text-red-500 font-bold">Dhs. 1,399.00</span>
-                    <span className="text-gray-400 text-sm line-through">Dhs. 1,999.00</span>
-                  </div>
-                </div>
-                <button className="w-full bg-gray-600 text-white font-medium py-3 rounded-full hover:bg-gray-700 transition-colors cursor-not-allowed" disabled>
-                  Sold Out
-                </button>
               </div>
             </div>
 
             {/* Your Stack Card */}
             <div className="lg:col-span-1">
-              <div className="bg-white border-2 border-gray-900 rounded-2xl p-6 sticky top-24">
-                <h3 className="text-2xl font-bold text-gray-900 mb-8">Your Stack</h3>
+              <div className="bg-white border-4 border-gray-900 rounded-3xl p-8 sticky top-24 min-h-[400px] flex flex-col">
+                <h3 className="text-3xl font-extrabold text-gray-900 mb-auto">Your Stack</h3>
+                
+                {/* Empty space */}
+                <div className="flex-grow"></div>
                 
                 {/* Total Section */}
-                <div className="flex justify-between items-center mb-6 pb-6 border-b border-gray-200">
-                  <span className="text-gray-900 font-medium">Total</span>
-                  <span className="text-gray-900 font-semibold">Dhs. 0.00 AED</span>
+                <div className="flex justify-between items-center mb-6">
+                  <span className="text-gray-900 font-semibold text-lg">Total</span>
+                  <span className="text-gray-900 font-bold text-lg">Dhs. 0.00 AED</span>
                 </div>
 
                 {/* Add to Cart Button */}
-                <button className="w-full bg-gray-400 text-white font-medium py-4 rounded-full cursor-not-allowed" disabled>
+                <button className="w-full bg-gray-600 text-white font-semibold py-4 rounded-full cursor-not-allowed" disabled>
                   Add to cart
                 </button>
               </div>
