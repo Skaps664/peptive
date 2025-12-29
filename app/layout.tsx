@@ -1,16 +1,15 @@
 import type { Metadata } from 'next';
-import { Inter, Plus_Jakarta_Sans } from 'next/font/google';
+import { Inter } from 'next/font/google';
 import './globals.css';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import CartSidebar from '@/components/cart/CartSidebar';
 import CountrySelector from '@/components/CountrySelector';
 
-const inter = Inter({ subsets: ['latin'] });
-const jakarta = Plus_Jakarta_Sans({ 
+const inter = Inter({ 
   subsets: ['latin'],
-  weight: ['400', '500', '600', '700', '800'],
-  variable: '--font-jakarta'
+  weight: ['400', '500', '600', '700', '800', '900'],
+  variable: '--font-inter'
 });
 
 export const metadata: Metadata = {
@@ -26,7 +25,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={`${jakarta.className} ${jakarta.variable}`}>
+      <body className={`${inter.className} ${inter.variable}`}>
         <div className="flex flex-col min-h-screen">
           {/* Announcement Bar */}
           <div className="bg-black text-white py-3 px-6 sm:px-8 lg:px-12">
