@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import Link from 'next/link';
 import Image from 'next/image';
@@ -80,86 +80,71 @@ export default function HomePage() {
   return (
     <div>
       {/* Hero Section */}
-      <section className="relative bg-gradient-to-br from-gray-900 via-gray-800 to-black text-white overflow-hidden">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24">
-          <div className="grid md:grid-cols-2 gap-12 items-center">
-            {/* Left Content */}
-            <div className="max-w-xl">
-              <p className="text-yellow-500 text-sm font-medium tracking-widest mb-4 uppercase">
+      <section className="px-6 sm:px-8 lg:px-12 pb-0">
+        <div className="relative bg-gradient-to-br from-gray-900 via-gray-800 to-black text-white overflow-hidden rounded-3xl">
+          {/* Background Image with Parallax Effect */}
+          <div 
+            className="absolute inset-0 bg-cover bg-center opacity-40"
+            style={{
+              backgroundImage: "url('/hero-bg.jpg')",
+              transform: `translateX(${scrollY * 0.15}px)`,
+              transition: 'transform 0.1s ease-out'
+            }}
+          />
+          
+          {/* Overlay */}
+          <div className="absolute inset-0 bg-gradient-to-br from-gray-900/80 via-gray-800/70 to-black/80" />
+          
+          {/* Content */}
+          <div className="relative px-6 sm:px-8 lg:px-12 pb-12 md:pb-16 pt-12 md:pt-52">
+            <div className="max-w-2xl pb-4">
+              <p className="text-yellow-500 text-xs md:text-xs font-medium tracking-[0.25em] mb-2 uppercase">
                 Science They Can&apos;t Silent
               </p>
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight">
-                Precision Crafted Research Peptides
+              <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4 leading-[1.15]">
+                Precision Crafted Research<br />Peptides
               </h1>
-              <p className="text-gray-300 text-lg mb-8 leading-relaxed">
+              <p className="text-gray-200 text-sm md:text-base mb-8 leading-relaxed max-w-lg">
                 High-purity compounds. Independent lab verification. Trusted by researchers seeking uncompromised quality.
               </p>
               <Link href="/products">
-                <Button size="lg" className="bg-white text-gray-900 hover:bg-gray-100 px-8">
-                  Shop All
-                  <svg className="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <button className="relative inline-flex items-center bg-white text-gray-900 px-12 py-3.5 text-sm font-semibold rounded-full overflow-hidden group transition-colors">
+                  {/* Liquid fill animation background */}
+                  <span className="absolute inset-0 bg-black origin-bottom scale-y-0 group-hover:scale-y-100 transition-transform duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] rounded-full"></span>
+                  
+                  {/* Button content */}
+                  <span className="relative z-10 group-hover:text-white transition-colors duration-400">Shop All</span>
+                  <svg className="relative z-10 w-4 h-4 ml-2 group-hover:stroke-white transition-colors duration-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
                   </svg>
-                </Button>
+                </button>
               </Link>
-            </div>
-
-            {/* Right Content - Parallax Card */}
-            <div className="relative">
-              <div 
-                className="relative transform transition-transform duration-300"
-                style={{
-                  transform: `translateY(${scrollY * 0.1}px) rotateX(${scrollY * 0.02}deg)`
-                }}
-              >
-                {/* Card with gradient background */}
-                <div className="relative w-full aspect-[3/4] max-w-sm mx-auto">
-                  <div className="absolute inset-0 bg-gradient-to-br from-yellow-500/20 via-gray-700/50 to-gray-900 rounded-3xl shadow-2xl backdrop-blur-sm border border-gray-700/50"
-                    style={{
-                      transform: `perspective(1000px) rotateY(${scrollY * 0.02}deg)`
-                    }}
-                  >
-                    {/* Inner glow effect */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-yellow-500/10 to-transparent rounded-3xl" />
-                    
-                    {/* Placeholder for product image */}
-                    <div className="absolute inset-4 flex items-center justify-center">
-                      <div className="text-center">
-                        <div className="w-20 h-20 bg-yellow-500/20 rounded-2xl mx-auto mb-4 flex items-center justify-center">
-                          <span className="text-4xl font-bold text-yellow-500">肽</span>
-                        </div>
-                        <p className="text-gray-400 text-sm">Premium Peptides</p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
             </div>
           </div>
         </div>
       </section>
-    
 
     {/* Brand Statement Section */}
-      <section className="py-16 bg-white">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-2">
-            Research{' '}
-            <span className="inline-flex items-center justify-center w-12 h-12 bg-yellow-500 rounded-lg mx-2">
-              <span className="text-white font-bold text-xl">肽</span>
-            </span>{' '}
-            Starts with
-          </h2>
-          <h2 className="text-4xl md:text-5xl font-bold text-gray-900">
-            <span className="border-b-4 border-yellow-500 pb-1">Peptive</span>
+      <section className="py-12 bg-white">
+        <div className="px-6 sm:px-8 lg:px-12 text-center">
+          <h2 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-gray-900 inline-flex items-center justify-center flex-wrap gap-x-3">
+            <span>Research</span>
+            <span className="inline-flex items-center justify-center w-14 h-14 bg-yellow-500 rounded-lg">
+              <span className="text-white font-bold text-2xl">肽</span>
+            </span>
+            <span>Starts with</span>
+            <span className="relative inline-block">
+              Peptive
+              <span className="absolute bottom-0 left-0 h-1 bg-gradient-to-r from-yellow-500 to-transparent w-full animate-underline-slide"></span>
+            </span>
           </h2>
         </div>
       </section>
     
     
       {/* Trending Research Section */}
-      <section className="py-16 bg-white">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="py-4 bg-white">
+        <div className="px-6 sm:px-8 lg:px-12">
           {/* Section Header */}
           <div className="flex items-center justify-between mb-8">
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900">
@@ -361,7 +346,7 @@ export default function HomePage() {
 
       {/* Build Your Stack Section */}
       <section className="py-16 bg-white">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="px-6 sm:px-8 lg:px-12">
           {/* Section Header */}
           <div className="mb-8">
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
@@ -536,7 +521,7 @@ export default function HomePage() {
 
       {/* Why Peptive Peptides Section */}
       <section className="py-20 bg-white">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="px-6 sm:px-8 lg:px-12">
           {/* Section Title */}
           <h2 className="text-4xl md:text-5xl font-bold text-center text-gray-900 mb-16">
             Why Peptive Peptides?
@@ -610,7 +595,7 @@ export default function HomePage() {
 
       {/* FAQs Section */}
       <section className="py-20 bg-white">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="px-6 sm:px-8 lg:px-12">
           <h2 className="text-4xl md:text-5xl font-bold text-center text-gray-900 mb-16">
             FAQs
           </h2>
@@ -666,6 +651,7 @@ export default function HomePage() {
         </svg>
       </a>
       
-    </div>
+      </div>
+    
   );
 }

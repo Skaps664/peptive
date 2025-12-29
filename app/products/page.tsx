@@ -1,27 +1,30 @@
+'use client';
+
+import { useEffect, useState } from 'react';
 import ProductGrid from '@/components/products/ProductGrid';
-import { woocommerce } from '@/lib/woocommerce';
+import { Product } from '@/types';
 
-export const metadata = {
-  title: 'Products - PeptivePeptides',
-  description: 'Browse our complete range of premium peptides and supplements.',
-};
+export default function ProductsPage() {
+  const [products, setProducts] = useState<Product[]>([]);
+  const [loading, setLoading] = useState(true);
 
-export const revalidate = 3600; // Revalidate every hour
-
-async function getProducts() {
-  try {
-    return await woocommerce.getProducts({ perPage: 24 });
-  } catch (error) {
-    console.error('Error fetching products:', error);
-    return [];
-  }
-}
-
-export default async function ProductsPage() {
-  const products = await getProducts();
+  useEffect(() => {
+    async function loadProducts() {
+      try {
+        const { woocommerce } = await import('@/lib/woocommerce');
+        const data = await woocommerce.getProducts({ perPage: 24 });
+        setProducts(data);
+      } catch (error) {
+        console.error('Error fetching products:', error);
+      } finally {
+        setLoading(false);
+      }
+    }
+    loadProducts();
+  }, []);
 
   return (
-    <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <div className="px-6 sm:px-8 lg:px-12 py-12">
       {/* Page Header */}
       <div className="mb-12">
         <h1 className="text-4xl font-bold text-gray-900 mb-4">Our Products</h1>
@@ -49,7 +52,12 @@ export default async function ProductsPage() {
       </div>
 
       {/* Products Grid */}
-      {products.length > 0 ? (
+      {loading ? (
+        <div className="text-center py-12">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900 mx-auto"></div>
+          <p className="text-gray-500 mt-4">Loading products...</p>
+        </div>
+      ) : products.length > 0 ? (
         <>
           <ProductGrid products={products} />
           

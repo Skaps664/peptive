@@ -14,7 +14,7 @@ export default function CartPage() {
 
   if (items.length === 0) {
     return (
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <div className="px-6 sm:px-8 lg:px-12 py-12">
         <div className="max-w-2xl mx-auto text-center py-16">
           <svg
             className="w-32 h-32 text-gray-300 mx-auto mb-6"
@@ -44,7 +44,7 @@ export default function CartPage() {
   }
 
   return (
-    <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <div className="px-6 sm:px-8 lg:px-12 py-12">
       <h1 className="text-3xl font-bold text-gray-900 mb-8">Shopping Cart</h1>
 
       <div className="grid lg:grid-cols-3 gap-8">

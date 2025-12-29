@@ -53,7 +53,7 @@ export default function ProductDetailPage() {
 
   if (loading) {
     return (
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <div className="px-6 sm:px-8 lg:px-12 py-12">
         <div className="animate-pulse">
           <div className="grid md:grid-cols-2 gap-8">
             <div className="bg-gray-200 h-96 rounded-lg" />
@@ -71,7 +71,7 @@ export default function ProductDetailPage() {
 
   if (!product) {
     return (
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <div className="px-6 sm:px-8 lg:px-12 py-12">
         <div className="text-center py-16">
           <h1 className="text-2xl font-semibold text-gray-700 mb-4">Product Not Found</h1>
           <p className="text-gray-500 mb-6">The product you&apos;re looking for doesn&apos;t exist.</p>
@@ -82,7 +82,7 @@ export default function ProductDetailPage() {
   }
 
   return (
-    <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <div className="px-6 sm:px-8 lg:px-12 py-12">
       <div className="grid md:grid-cols-2 gap-12">
         {/* Product Images */}
         <div>

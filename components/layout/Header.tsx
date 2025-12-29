@@ -17,25 +17,26 @@ export default function Header() {
   ];
 
   return (
-    <header className="bg-white border-b border-gray-100 sticky top-0 z-50">
-      <nav className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-16">
+    <header className="bg-white sticky top-2 z-50 rounded-t-3xl mx-2">
+      <nav className="px-6 sm:px-8 lg:px-12 ">
+        <div className="flex justify-between items-center h-32">
           {/* Logo */}
           <Link href="/" className="flex items-center">
-            <div className="w-10 h-10 bg-yellow-500 rounded-lg flex items-center justify-center">
-              <span className="text-white font-bold text-sm">肽</span>
+            <div className="w-16 h-16 bg-yellow-500 rounded-xl flex items-center justify-center">
+              <span className="text-white font-bold text-2xl">肽</span>
             </div>
           </Link>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-8">
+          <div className="hidden md:flex items-center space-x-2">
             {navigation.map((item) => (
               <Link
                 key={item.name}
                 href={item.href}
-                className="text-gray-900 hover:text-gray-600 transition-colors text-sm font-medium"
+                className="relative px-4 py-3 text-gray-900 text-sm font-medium rounded-full overflow-hidden group transition-colors"
               >
-                {item.name}
+                <span className="absolute inset-0 bg-black origin-bottom scale-y-0 group-hover:scale-y-100 transition-transform duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] rounded-full"></span>
+                <span className="relative z-10 group-hover:text-white transition-colors duration-400">{item.name}</span>
               </Link>
             ))}
           </div>
@@ -43,8 +44,8 @@ export default function Header() {
           {/* Cart & Mobile Menu Button */}
           <div className="flex items-center space-x-4">
             {/* User Icon */}
-            <button className="p-2 text-gray-700 hover:text-gray-900 transition-colors" aria-label="User account">
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <button className="p-2 text-gray-700 hover:text-gray-900 transition-all duration-300 hover:animate-wiggle" aria-label="User account">
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
               </svg>
             </button>
@@ -52,7 +53,7 @@ export default function Header() {
             {/* Cart Button */}
             <button
               onClick={toggleCart}
-              className="relative p-2 text-gray-700 hover:text-gray-900 transition-colors"
+              className="relative p-2 text-gray-700 hover:text-gray-900 transition-all duration-300 hover:animate-wiggle"
               aria-label="Shopping cart"
             >
               <svg

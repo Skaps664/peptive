@@ -15,8 +15,8 @@ export default function Footer() {
   };
 
   return (
-    <footer className="bg-gray-900 text-white">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-16">
+    <footer className="bg-gradient-to-b from-gray-800 to-gray-900 text-white rounded-b-3xl">
+      <div className="px-6 sm:px-8 lg:px-12 py-12">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-24">
           {/* Left Column - Quick Links & Contact */}
           <div className="space-y-12">
@@ -73,7 +73,7 @@ export default function Footer() {
         </div>
 
         {/* Bottom Bar */}
-        <div className="mt-16 pt-8 border-t border-gray-800 flex flex-col md:flex-row justify-between items-center gap-6">
+        <div className="mt-12 pt-6 border-t border-gray-700 flex flex-col md:flex-row justify-between items-center gap-6">
           <div className="flex items-center gap-2 text-gray-400 text-sm">
             <span>©{currentYear} Peptive Pept.</span>
             <a href="https://www.shopify.com" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">
