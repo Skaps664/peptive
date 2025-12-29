@@ -12,8 +12,8 @@ export default function Header() {
   const navigation = [
     { name: 'Home', href: '/' },
     { name: 'All Peptides', href: '/products' },
-    { name: 'Dosage Calculator', href: '#calculator' },
-    { name: 'Peptive Ai', href: '#ai' },
+    { name: 'Dosage Calculator', href: '/calculator' },
+    { name: 'Peptive Ai', href: 'https://ai.peptivepeptides.com/' },
   ];
 
   return (

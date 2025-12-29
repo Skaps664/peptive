@@ -4,6 +4,7 @@ import './globals.css';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import CartSidebar from '@/components/cart/CartSidebar';
+import CountrySelector from '@/components/CountrySelector';
 
 const inter = Inter({ subsets: ['latin'] });
 const jakarta = Plus_Jakarta_Sans({ 
@@ -28,19 +29,28 @@ export default function RootLayout({
       <body className={`${jakarta.className} ${jakarta.variable}`}>
         <div className="flex flex-col min-h-screen">
           {/* Announcement Bar */}
-          <div className="bg-black text-white text-center py-3 px-4 ">
-            <div className="flex items-center justify-center gap-4">
-              <button className="text-white hover:text-gray-300">
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-                </svg>
-              </button>
-              <p className="text-xs font-medium tracking-wider uppercase px-12">WELCOME TO THE FUTURE OF BIOLOGY</p>
-              <button className="text-white hover:text-gray-300">
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                </svg>
-              </button>
+          <div className="bg-black text-white py-3 px-6 sm:px-8 lg:px-12">
+            <div className="flex items-center justify-between">
+              {/* Country Selector - Left */}
+              <CountrySelector />
+              
+              {/* Announcement Message - Center */}
+              <div className="flex items-center gap-4 flex-1 justify-center">
+                <button className="text-white hover:text-gray-300">
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                  </svg>
+                </button>
+                <p className="text-xs font-medium tracking-wider uppercase px-4">WELCOME TO THE FUTURE OF BIOLOGY</p>
+                <button className="text-white hover:text-gray-300">
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                  </svg>
+                </button>
+              </div>
+              
+              {/* Empty space for balance - Right */}
+              <div className="w-[200px]"></div>
             </div>
           </div>
           <Header />
