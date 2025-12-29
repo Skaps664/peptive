@@ -97,12 +97,12 @@ export default function ProductsPage() {
                     {product.images && product.images.length > 0 ? (
                       <>
                         <img 
-                          src={product.images[0]?.src || '/placeholder.jpg'} 
+                          src={product.images[0] || '/placeholder.jpg'} 
                           alt={product.name} 
                           className="w-full h-full object-cover group-hover:hidden" 
                         />
                         <img 
-                          src={product.images[1]?.src || product.images[0]?.src || '/placeholder.jpg'} 
+                          src={product.images[1] || product.images[0] || '/placeholder.jpg'} 
                           alt={product.name} 
                           className="w-full h-full object-cover hidden group-hover:block" 
                         />
