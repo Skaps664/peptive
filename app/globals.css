@@ -53,6 +53,30 @@
     animation: marquee 30s linear infinite;
   }
 
+  .animate-marquee-base {
+    animation: marquee 30s linear infinite;
+  }
+
+  .animate-marquee-fast {
+    animation: marquee 15s linear infinite;
+  }
+
+  @keyframes wave {
+    0% {
+      d: path("M0,5 Q25,0 50,5 T100,5 T150,5 T200,5");
+    }
+    50% {
+      d: path("M0,5 Q25,10 50,5 T100,5 T150,5 T200,5");
+    }
+    100% {
+      d: path("M0,5 Q25,0 50,5 T100,5 T150,5 T200,5");
+    }
+  }
+  
+  .animate-wave {
+    animation: wave 2s ease-in-out infinite;
+  }
+
   @keyframes wiggle {
     0%, 100% {
       transform: rotate(0deg);

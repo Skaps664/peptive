@@ -482,73 +482,115 @@ export default function HomePage() {
       </section>
 
       {/* Why Peptive Peptides Section */}
-      <section className="py-20 bg-white">
+      <section className="py-16 bg-white">
         <div className="px-6 sm:px-8 lg:px-12">
           {/* Section Title */}
-          <h2 className="text-4xl md:text-5xl font-bold text-center text-gray-900 mb-16">
+          <h2 className="text-4xl md:text-5xl font-bold text-center text-gray-900 mb-12">
             Why Peptive Peptides?
           </h2>
 
           {/* Feature Cards */}
-          <div className="grid md:grid-cols-3 gap-8 mb-20">
+          <div className="grid md:grid-cols-3 gap-6 mb-16">
             {/* Precision-Focused Card */}
-            <div className="bg-gray-50 rounded-2xl p-8 hover:shadow-lg transition-shadow">
-              <div className="w-12 h-12 bg-white rounded-lg flex items-center justify-center mb-6 shadow-sm">
-                <svg className="w-6 h-6 text-gray-900" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-                </svg>
+            <div className="bg-[#f6f6f6] rounded-xl p-6 hover:shadow-md transition-shadow">
+              <div className="flex items-start gap-4">
+                <div className="w-8 h-8 bg-white rounded-md flex items-center justify-center flex-shrink-0 shadow-sm">
+                  <svg className="w-4 h-4 text-gray-900" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                  </svg>
+                </div>
+                <div>
+                  <h3 className="text-sm font-bold text-gray-900 mb-1">Precision-Focused</h3>
+                  <p className="text-xs text-gray-600 leading-relaxed">
+                    Small-batch synthesis with exact amino-acid sequencing.
+                  </p>
+                </div>
               </div>
-              <h3 className="text-xl font-bold text-gray-900 mb-3">Precision-Focused</h3>
-              <p className="text-gray-600 leading-relaxed">
-                Small-batch synthesis with exact amino-acid sequencing.
-              </p>
             </div>
 
             {/* No Middlemen Card */}
-            <div className="bg-gray-50 rounded-2xl p-8 hover:shadow-lg transition-shadow">
-              <div className="w-12 h-12 bg-white rounded-lg flex items-center justify-center mb-6 shadow-sm">
-                <svg className="w-6 h-6 text-gray-900" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
-                </svg>
+            <div className="bg-[#f6f6f6] rounded-xl p-6 hover:shadow-md transition-shadow">
+              <div className="flex items-start gap-4">
+                <div className="w-8 h-8 bg-white rounded-md flex items-center justify-center flex-shrink-0 shadow-sm">
+                  <svg className="w-4 h-4 text-gray-900" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+                  </svg>
+                </div>
+                <div>
+                  <h3 className="text-sm font-bold text-gray-900 mb-1">No Middlemen</h3>
+                  <p className="text-xs text-gray-600 leading-relaxed">
+                    Direct from Swiss facility to your fridge.
+                  </p>
+                </div>
               </div>
-              <h3 className="text-xl font-bold text-gray-900 mb-3">No Middlemen</h3>
-              <p className="text-gray-600 leading-relaxed">
-                Direct from Swiss facility to your fridge.
-              </p>
             </div>
 
             {/* Boldly Disruptive Card */}
-            <div className="bg-gray-50 rounded-2xl p-8 hover:shadow-lg transition-shadow">
-              <div className="w-12 h-12 bg-white rounded-lg flex items-center justify-center mb-6 shadow-sm">
-                <svg className="w-6 h-6 text-gray-900" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
-                </svg>
+            <div className="bg-[#f6f6f6] rounded-xl p-6 hover:shadow-md transition-shadow">
+              <div className="flex items-start gap-4">
+                <div className="w-8 h-8 bg-white rounded-md flex items-center justify-center flex-shrink-0 shadow-sm">
+                  <svg className="w-4 h-4 text-gray-900" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+                  </svg>
+                </div>
+                <div>
+                  <h3 className="text-sm font-bold text-gray-900 mb-1">Boldly Disruptive</h3>
+                  <p className="text-xs text-gray-600 leading-relaxed">
+                    We say what legacy pharma won&apos;t: better biology is DIY.
+                  </p>
+                </div>
               </div>
-              <h3 className="text-xl font-bold text-gray-900 mb-3">Boldly Disruptive</h3>
-              <p className="text-gray-600 leading-relaxed">
-                We say what legacy pharma won&apos;t: better biology is DIY.
-              </p>
             </div>
           </div>
 
           {/* Marquee Section */}
-          <div className="relative overflow-hidden bg-white py-6 border-t border-b border-gray-200">
-            <div className="flex animate-marquee whitespace-nowrap">
-              <div className="flex items-center gap-16 px-8">
-                <span className="text-4xl md:text-5xl font-bold text-gray-900">PEPTIVE PEPTIDES</span>
-                <span className="text-4xl md:text-5xl font-light text-gray-400">Research Grade Peptides</span>
-                <span className="text-4xl md:text-5xl font-bold text-gray-900">PEPTIVE PEPTIDES</span>
-                <span className="text-4xl md:text-5xl font-light text-gray-400">Research Grade Peptides</span>
-                <span className="text-4xl md:text-5xl font-bold text-gray-900">PEPTIVE PEPTIDES</span>
-                <span className="text-4xl md:text-5xl font-light text-gray-400">Research Grade Peptides</span>
+          <div className="relative overflow-hidden bg-white py-8 -mx-6 sm:-mx-8 lg:-mx-12">
+            <div className="flex animate-marquee-fast whitespace-nowrap">
+              <div className="flex items-center gap-12 px-6">
+                <span className="relative inline-block text-4xl md:text-5xl font-black text-gray-900 pb-3">
+                  PEPTIVE PEPTIDES
+                  <svg className="absolute -bottom-1 left-0 w-full h-2 animate-wave" viewBox="0 0 200 10" preserveAspectRatio="none">
+                    <path d="M0,5 Q25,0 50,5 T100,5 T150,5 T200,5" stroke="url(#gradient)" strokeWidth="2" fill="none" />
+                    <defs>
+                      <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                        <stop offset="0%" stopColor="#eab308" />
+                        <stop offset="100%" stopColor="#ca8a04" />
+                      </linearGradient>
+                    </defs>
+                  </svg>
+                </span>
+                <span className="w-1.5 h-1.5 rounded-full bg-gray-400"></span>
+                <span className="text-4xl md:text-5xl font-black text-gray-900">Research Grade Peptides</span>
+                <span className="w-1.5 h-1.5 rounded-full bg-gray-400"></span>
+                <span className="relative inline-block text-4xl md:text-5xl font-black text-gray-900 pb-3">
+                  PEPTIVE PEPTIDES
+                  <svg className="absolute -bottom-1 left-0 w-full h-2 animate-wave" viewBox="0 0 200 10" preserveAspectRatio="none">
+                    <path d="M0,5 Q25,0 50,5 T100,5 T150,5 T200,5" stroke="url(#gradient)" strokeWidth="2" fill="none" />
+                  </svg>
+                </span>
+                <span className="w-1.5 h-1.5 rounded-full bg-gray-400"></span>
+                <span className="text-4xl md:text-5xl font-black text-gray-900">Research Grade Peptides</span>
+                <span className="w-1.5 h-1.5 rounded-full bg-gray-400"></span>
               </div>
-              <div className="flex items-center gap-16 px-8">
-                <span className="text-4xl md:text-5xl font-bold text-gray-900">PEPTIVE PEPTIDES</span>
-                <span className="text-4xl md:text-5xl font-light text-gray-400">Research Grade Peptides</span>
-                <span className="text-4xl md:text-5xl font-bold text-gray-900">PEPTIVE PEPTIDES</span>
-                <span className="text-4xl md:text-5xl font-light text-gray-400">Research Grade Peptides</span>
-                <span className="text-4xl md:text-5xl font-bold text-gray-900">PEPTIVE PEPTIDES</span>
-                <span className="text-4xl md:text-5xl font-light text-gray-400">Research Grade Peptides</span>
+              <div className="flex items-center gap-12 px-6">
+                <span className="relative inline-block text-4xl md:text-5xl font-black text-gray-900 pb-3">
+                  PEPTIVE PEPTIDES
+                  <svg className="absolute -bottom-1 left-0 w-full h-2 animate-wave" viewBox="0 0 200 10" preserveAspectRatio="none">
+                    <path d="M0,5 Q25,0 50,5 T100,5 T150,5 T200,5" stroke="url(#gradient)" strokeWidth="2" fill="none" />
+                  </svg>
+                </span>
+                <span className="w-1.5 h-1.5 rounded-full bg-gray-400"></span>
+                <span className="text-4xl md:text-5xl font-black text-gray-900">Research Grade Peptides</span>
+                <span className="w-1.5 h-1.5 rounded-full bg-gray-400"></span>
+                <span className="relative inline-block text-4xl md:text-5xl font-black text-gray-900 pb-3">
+                  PEPTIVE PEPTIDES
+                  <svg className="absolute -bottom-1 left-0 w-full h-2 animate-wave" viewBox="0 0 200 10" preserveAspectRatio="none">
+                    <path d="M0,5 Q25,0 50,5 T100,5 T150,5 T200,5" stroke="url(#gradient)" strokeWidth="2" fill="none" />
+                  </svg>
+                </span>
+                <span className="w-1.5 h-1.5 rounded-full bg-gray-400"></span>
+                <span className="text-4xl md:text-5xl font-black text-gray-900">Research Grade Peptides</span>
+                <span className="w-1.5 h-1.5 rounded-full bg-gray-400"></span>
               </div>
             </div>
           </div>
@@ -556,41 +598,33 @@ export default function HomePage() {
       </section>
 
       {/* FAQs Section */}
-      <section className="py-20 bg-white">
+      <section className="pt-6 pb-8 bg-white">
         <div className="px-6 sm:px-8 lg:px-12">
-          <h2 className="text-4xl md:text-5xl font-bold text-center text-gray-900 mb-16">
-            FAQs
-          </h2>
-
-          <div className="max-w-4xl mx-auto space-y-4">
+          <div className="max-w-4xl mx-auto space-y-3">
+            <h2 className="text-5xl font-extrabold text-gray-900 mb-8">
+              FAQs
+            </h2>
+            
             {faqs.map((faq, index) => (
               <div 
                 key={index}
-                className="bg-gray-50 rounded-2xl overflow-hidden transition-all duration-300"
+                className="bg-[#f6f6f6] rounded-xl overflow-hidden transition-all duration-300"
               >
                 <button
                   onClick={() => toggleFaq(index)}
-                  className="w-full flex items-center justify-between p-6 text-left hover:bg-gray-100 transition-colors"
+                  className="w-full flex items-center justify-between px-5 py-4 text-left"
                 >
-                  <span className="font-semibold text-gray-900 pr-8">
+                  <span className="font-medium text-gray-900 text-base pr-6">
                     {faq.question}
                   </span>
-                  <span className="flex-shrink-0 w-6 h-6 flex items-center justify-center">
-                    {openFaqIndex === index ? (
-                      <svg className="w-6 h-6 text-gray-900" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 12H4" />
-                      </svg>
-                    ) : (
-                      <svg className="w-6 h-6 text-gray-900" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
-                      </svg>
-                    )}
+                  <span className="flex-shrink-0 text-gray-900 text-2xl font-light">
+                    {openFaqIndex === index ? '−' : '+'}
                   </span>
                 </button>
                 
                 {openFaqIndex === index && (
-                  <div className="px-6 pb-6">
-                    <p className="text-gray-600 leading-relaxed">
+                  <div className="px-5 pb-4">
+                    <p className="text-gray-600 text-sm leading-relaxed">
                       {faq.answer}
                     </p>
                   </div>
