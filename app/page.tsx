@@ -8,8 +8,10 @@ import ProductGrid from '@/components/products/ProductGrid';
 import WelcomePopup from '@/components/WelcomePopup';
 import { Product } from '@/types';
 import { wordpress } from '@/lib/wordpress';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 export default function HomePage() {
+  const { t } = useLanguage();
   const [scrollY, setScrollY] = useState(0);
   const [featuredProducts, setFeaturedProducts] = useState<Product[]>([]);
   const [trendingProducts, setTrendingProducts] = useState<Product[]>([]);
@@ -79,40 +81,40 @@ export default function HomePage() {
 
   const faqs = [
     {
-      question: "Where can I buy research peptides online?",
-      answer: "You can purchase research peptides directly from Peptive Peptides. We offer high-quality, lab-verified peptides shipped directly from our Swiss facility to your location."
+      question: t('faqs.questions.0.question'),
+      answer: t('faqs.questions.0.answer')
     },
     {
-      question: "What are research peptides?",
-      answer: "Research peptides are short chains of amino acids used in scientific research and studies. They are designed for laboratory and research purposes only."
+      question: t('faqs.questions.1.question'),
+      answer: t('faqs.questions.1.answer')
     },
     {
-      question: "How do I know if a peptide supplier is trustworthy?",
-      answer: "Look for suppliers who provide third-party lab testing, transparent sourcing, and detailed product information. At Peptive Peptides, we provide independent lab verification for all our products."
+      question: t('faqs.questions.2.question'),
+      answer: t('faqs.questions.2.answer')
     },
     {
-      question: "What should I look for when buying peptides online?",
-      answer: "Key factors include purity levels, third-party testing certificates, proper storage and handling, transparent pricing, and direct communication with the supplier."
+      question: t('faqs.questions.3.question'),
+      answer: t('faqs.questions.3.answer')
     },
     {
-      question: "Can I buy peptides without a prescription?",
-      answer: "Research peptides are sold for research purposes only. Please check your local regulations regarding peptide purchases and usage."
+      question: t('faqs.questions.4.question'),
+      answer: t('faqs.questions.4.answer')
     },
     {
-      question: "How are research peptides stored and handled?",
-      answer: "Our peptides are stored in temperature-controlled facilities and shipped with appropriate cooling to maintain stability. Upon receipt, they should be refrigerated immediately."
+      question: t('faqs.questions.5.question'),
+      answer: t('faqs.questions.5.answer')
     },
     {
-      question: "What are the most popular research peptides?",
-      answer: "Popular research peptides include various sequences used in longevity, performance, and recovery research. Browse our catalog to see our full range of available peptides."
+      question: t('faqs.questions.6.question'),
+      answer: t('faqs.questions.6.answer')
     },
     {
-      question: "Are research peptides shipped internationally?",
-      answer: "Yes, we ship internationally from our Swiss facility. Shipping times and regulations vary by country. Contact us for specific information about your location."
+      question: t('faqs.questions.7.question'),
+      answer: t('faqs.questions.7.answer')
     },
     {
-      question: "How quickly will I receive my peptide order?",
-      answer: "Delivery times vary based on your location. Domestic orders typically arrive within 3-5 business days, while international orders may take 7-14 business days."
+      question: t('faqs.questions.8.question'),
+      answer: t('faqs.questions.8.answer')
     }
   ];
 
@@ -194,13 +196,13 @@ export default function HomePage() {
           <div className="relative px-6 sm:px-8 md:px-12 lg:px-12 xl:px-12 2xl:px-32 pb-12 md:pb-16 pt-12 md:pt-52">
             <div className="max-w-2xl pb-4">
               <p className="text-yellow-500 text-xs md:text-xs lg:text-xs xl:text-sm 2xl:text-sm font-medium tracking-[0.25em] mb-2 uppercase">
-                Science They Can&apos;t Silent
+                {t('hero.tagline')}
               </p>
               <h1 className="text-3xl md:text-4xl lg:text-4xl xl:text-5xl 2xl:text-6xl font-bold mb-4 leading-[1.15]">
-                Precision Crafted Research<br />Peptides
+                {t('hero.title')}
               </h1>
               <p className="text-gray-200 text-sm md:text-base lg:text-base xl:text-lg 2xl:text-xl mb-8 leading-relaxed max-w-lg">
-                High-purity compounds. Independent lab verification. Trusted by researchers seeking uncompromised quality.
+                {t('hero.description')}
               </p>
               <Link href="/products">
                 <button className="relative inline-flex items-center bg-white text-gray-900 px-12 py-3.5 text-sm lg:text-sm xl:text-base 2xl:text-lg font-semibold rounded-full overflow-hidden group transition-colors">
@@ -208,7 +210,7 @@ export default function HomePage() {
                   <span className="absolute inset-0 bg-black origin-bottom scale-y-0 group-hover:scale-y-100 transition-transform duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] rounded-full"></span>
                   
                   {/* Button content */}
-                  <span className="relative z-10 group-hover:text-white transition-colors duration-400">Shop All</span>
+                  <span className="relative z-10 group-hover:text-white transition-colors duration-400">{t('hero.cta')}</span>
                   <svg className="relative z-10 w-4 h-4 ml-2 group-hover:stroke-white transition-colors duration-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
                   </svg>
@@ -223,7 +225,7 @@ export default function HomePage() {
       <section className="py-12 bg-white">
         <div className="px-6 sm:px-8 md:px-12 lg:px-12 xl:px-12 2xl:px-48 text-center">
           <h2 className="text-4xl md:text-5xl lg:text-5xl xl:text-6xl 2xl:text-7xl font-extrabold text-gray-900 inline-flex items-center justify-center flex-wrap gap-x-3">
-            <span>Research</span>
+            <span>{t('brand.research')}</span>
             <span className="inline-flex items-center justify-center w-14 h-14 lg:w-24 xl:w-24 2xl:w-24 lg:h-24 xl:h-24 2xl:h-24">
               {logoUrl ? (
                 <Image
@@ -247,9 +249,9 @@ export default function HomePage() {
                 />
               )}
             </span>
-            <span>Starts with</span>
+            <span>{t('brand.starts_with')}</span>
             <span className="relative inline-block">
-              Peptive
+              {t('brand.peptive')}
               <span className="absolute bottom-0 left-0 h-1 bg-gradient-to-r from-yellow-500 to-transparent w-full animate-underline-slide"></span>
             </span>
           </h2>
@@ -263,7 +265,7 @@ export default function HomePage() {
           {/* Section Header */}
           <div className="flex items-center justify-between mb-8">
             <h2 className="text-4xl md:text-5xl lg:text-5xl xl:text-5xl 2xl:text-7xl text-gray-900">
-              Trending Research
+              {t('trending.title')}
             </h2>
             <div className="flex gap-3">
               <button 
@@ -380,10 +382,10 @@ export default function HomePage() {
           {/* Section Header */}
           <div className="mb-8">
             <h2 className="text-4xl md:text-5xl lg:text-5xl xl:text-5xl 2xl:text-7xl font-bold text-gray-900 mb-4">
-              Build Your Stack
+              {t('stack.title')}
             </h2>
             <p className="text-gray-600 text-base lg:text-base xl:text-lg 2xl:text-xl max-w-2xl">
-              The choice is yours. With our stack builder, you can select any combination from our range of products.
+              {t('stack.description')}
             </p>
           </div>
 
@@ -448,14 +450,14 @@ export default function HomePage() {
                           onClick={() => addToStack(product)}
                           className="w-full bg-gray-900 text-white font-semibold py-3 text-base lg:text-base xl:text-base 2xl:text-lg rounded-full hover:bg-gray-800 transition-colors"
                         >
-                          Add to Stack
+                          {t('stack.add_button')}
                         </button>
                       ) : (
                         <button 
                           className="w-full bg-gray-600 text-white font-semibold py-3 text-base lg:text-base xl:text-base 2xl:text-lg rounded-full cursor-not-allowed" 
                           disabled
                         >
-                          Sold Out
+                          {t('stack.sold_out')}
                         </button>
                       )}
                     </div>
@@ -479,7 +481,7 @@ export default function HomePage() {
             {/* Your Stack Card */}
             <div className="lg:col-span-1">
               <div className="bg-white border-4 border-gray-900 rounded-3xl p-8 sticky top-24 min-h-[400px] flex flex-col">
-                <h3 className="text-3xl lg:text-3xl xl:text-4xl 2xl:text-5xl font-extrabold text-gray-900 mb-4">Your Stack</h3>
+                <h3 className="text-3xl lg:text-3xl xl:text-4xl 2xl:text-5xl font-extrabold text-gray-900 mb-4">{t('stack.your_stack')}</h3>
                 
                 {/* Stack Items */}
                 <div className="flex-grow overflow-y-auto max-h-[300px] mb-4">
@@ -521,14 +523,14 @@ export default function HomePage() {
                     </div>
                   ) : (
                     <div className="flex items-center justify-center h-full">
-                      <p className="text-gray-400 text-sm text-center">Your stack is empty.<br />Add products to build your stack!</p>
+                      <p className="text-gray-400 text-sm text-center">{t('stack.empty')}</p>
                     </div>
                   )}
                 </div>
                 
                 {/* Total Section */}
                 <div className="flex justify-between items-center mb-6 pt-4 border-t-2 border-gray-200">
-                  <span className="text-gray-900 font-semibold text-lg lg:text-lg xl:text-xl 2xl:text-2xl">Total</span>
+                  <span className="text-gray-900 font-semibold text-lg lg:text-lg xl:text-xl 2xl:text-2xl">{t('stack.total')}</span>
                   <span className="text-gray-900 font-bold text-lg lg:text-lg xl:text-xl 2xl:text-2xl">
                     Dhs. {getStackTotal().toFixed(2)}
                   </span>
@@ -544,7 +546,7 @@ export default function HomePage() {
                   }`}
                   disabled={stackItems.length === 0}
                 >
-                  Add to cart ({stackItems.length})
+                  {t('stack.add_to_cart')} ({stackItems.length})
                 </button>
               </div>
             </div>
@@ -557,7 +559,7 @@ export default function HomePage() {
         <div className="px-6 sm:px-8 md:px-12 lg:px-12 xl:px-12 2xl:px-48">
           {/* Section Title */}
           <h2 className="text-4xl md:text-5xl lg:text-5xl xl:text-5xl 2xl:text-7xl font-bold text-center text-gray-900 mb-12">
-            Why Peptive Peptides?
+            {t('why_peptive.title')}
           </h2>
 
           {/* Feature Cards */}
@@ -571,9 +573,9 @@ export default function HomePage() {
                   </svg>
                 </div>
                 <div>
-                  <h3 className="text-base lg:text-lg xl:text-xl font-bold text-gray-900 mb-2">Precision-Focused</h3>
+                  <h3 className="text-base lg:text-lg xl:text-xl font-bold text-gray-900 mb-2">{t('why_peptive.precision.title')}</h3>
                   <p className="text-sm lg:text-base text-gray-600 leading-relaxed font-normal">
-                    Small-batch synthesis with exact amino-acid sequencing.
+                    {t('why_peptive.precision.description')}
                   </p>
                 </div>
               </div>
@@ -588,9 +590,9 @@ export default function HomePage() {
                   </svg>
                 </div>
                 <div>
-                  <h3 className="text-base lg:text-lg xl:text-xl font-bold text-gray-900 mb-2">No Middlemen</h3>
+                  <h3 className="text-base lg:text-lg xl:text-xl font-bold text-gray-900 mb-2">{t('why_peptive.middlemen.title')}</h3>
                   <p className="text-sm lg:text-base text-gray-600 leading-relaxed font-normal">
-                    Direct from Swiss facility to your fridge.
+                    {t('why_peptive.middlemen.description')}
                   </p>
                 </div>
               </div>
@@ -605,9 +607,9 @@ export default function HomePage() {
                   </svg>
                 </div>
                 <div>
-                  <h3 className="text-base lg:text-lg xl:text-xl font-bold text-gray-900 mb-2">Boldly Disruptive</h3>
+                  <h3 className="text-base lg:text-lg xl:text-xl font-bold text-gray-900 mb-2">{t('why_peptive.disruptive.title')}</h3>
                   <p className="text-sm lg:text-base text-gray-600 leading-relaxed font-normal">
-                    We say what legacy pharma won&apos;t: better biology is DIY.
+                    {t('why_peptive.disruptive.description')}
                   </p>
                 </div>
               </div>
@@ -673,7 +675,7 @@ export default function HomePage() {
         <div className="px-6 sm:px-8 md:px-12 lg:px-12 xl:px-12 2xl:px-48">
           <div className="max-w-4xl mx-auto space-y-3">
             <h2 className="text-5xl lg:text-5xl xl:text-5xl 2xl:text-7xl font-bold text-gray-900 mb-8">
-              FAQs
+              {t('faqs.title')}
             </h2>
             
             {faqs.map((faq, index) => (

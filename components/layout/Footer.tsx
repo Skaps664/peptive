@@ -2,10 +2,12 @@
 
 import Link from 'next/link';
 import { useState } from 'react';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
   const [email, setEmail] = useState('');
+  const { t } = useLanguage();
 
   const handleNewsletterSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -23,11 +25,11 @@ export default function Footer() {
             <div className="space-y-12">
               {/* Quick Links */}
               <div>
-                <h3 className="text-white font-bold text-lg lg:text-lg xl:text-xl 2xl:text-2xl mb-4 tracking-wide">QUICK LINKS</h3>
+                <h3 className="text-white font-bold text-lg lg:text-lg xl:text-xl 2xl:text-2xl mb-4 tracking-wide">{t('footer.quick_links').toUpperCase()}</h3>
                 <ul className="space-y-2">
                   <li>
                     <Link href="/search" className="text-gray-300 hover:text-white text-base lg:text-base xl:text-lg 2xl:text-xl transition-colors">
-                      Search
+                      {t('footer.search')}
                     </Link>
                   </li>
                 </ul>
@@ -35,7 +37,7 @@ export default function Footer() {
 
               {/* Contact Info */}
               <div>
-                <h3 className="text-white font-bold text-lg lg:text-lg xl:text-xl 2xl:text-2xl mb-4 tracking-wide">CONTACT US AT</h3>
+                <h3 className="text-white font-bold text-lg lg:text-lg xl:text-xl 2xl:text-2xl mb-4 tracking-wide">{t('footer.contact').toUpperCase()}</h3>
                 <div className="space-y-2">
                   <a href="tel:+971558225919" className="block underline text-white hover:text-gray-300 transition-colors text-xl lg:text-xl xl:text-2xl 2xl:text-3xl">
                     +971 55 822 5919
@@ -50,14 +52,14 @@ export default function Footer() {
             {/* Right Column - Newsletter */}
             <div>
               <h3 className="text-white font-bold text-2xl md:text-3xl lg:text-3xl xl:text-4xl 2xl:text-5xl mb-6 leading-tight">
-                Join the future of biology and get 15% OFF + a FREE copy of our &quot;Peptive Peptide Guide&quot;
+                {t('footer.join')}
               </h3>
               <form onSubmit={handleNewsletterSubmit} className="flex items-center gap-2">
                 <input
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  placeholder="Enter your email"
+                  placeholder={t('footer.email_placeholder')}
                   className="flex-1 bg-transparent border-b-2 border-gray-600 focus:border-white py-3 px-2 text-white placeholder-gray-500 outline-none transition-colors"
                   required
                 />
@@ -81,7 +83,7 @@ export default function Footer() {
           <div className="flex items-center gap-4 text-gray-600 text-sm">
             <span>©{currentYear} Peptive Pept.</span>
             <Link href="/privacy" className="hover:text-gray-900 transition-colors">
-              Privacy policy
+              {t('footer.privacy_policy')}
             </Link>
           </div>
 

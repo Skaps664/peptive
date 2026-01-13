@@ -1,16 +1,17 @@
 'use client';
 
 import { useState } from 'react';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 const languages = [
-  'English',
-  ' العربية',
+  { code: 'en' as const, label: 'English' },
+  { code: 'ar' as const, label: 'العربية' },
 ];
 
 
 
 export default function LanguageSelector() {
-  const [selectedLanguage, setSelectedLanguage] = useState('English');
+  const { language, setLanguage } = useLanguage();
   const [isOpen, setIsOpen] = useState(false);
   let closeTimeout: NodeJS.Timeout | null = null;
 
@@ -27,6 +28,13 @@ export default function LanguageSelector() {
     }, 1000); // 1 second delay
   };
 
+  const handleLanguageChange = (langCode: 'en' | 'ar') => {
+    setLanguage(langCode);
+    setIsOpen(false);
+  };
+
+  const currentLangLabel = languages.find(l => l.code === language)?.label || 'English';
+
   return (
     <div className="relative" style={{ display: 'inline-block' }}>
       <div
@@ -39,7 +47,7 @@ export default function LanguageSelector() {
           tabIndex={0}
         >
           
-          <span className="text-xs flex-1 text-left">{selectedLanguage}</span>
+          <span className="text-xs flex-1 text-left">{currentLangLabel}</span>
           <svg className={`w-4 h-4 transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
           </svg>
@@ -51,16 +59,13 @@ export default function LanguageSelector() {
         >
           {languages.map((lang) => (
             <button
-              key={lang}
-              onClick={() => {
-                setSelectedLanguage(lang);
-                setIsOpen(false);
-              }}
-              className={`w-full text-left px-5 py-3 text-sm font-normal focus:outline-none transition-all duration-300 relative ${selectedLanguage === lang ? 'font-semibold' : ''}`}
+              key={lang.code}
+              onClick={() => handleLanguageChange(lang.code)}
+              className={`w-full text-left px-5 py-3 text-sm font-normal focus:outline-none transition-all duration-300 relative ${language === lang.code ? 'font-semibold' : ''}`}
               style={{ background: 'none' }}
             >
               <span className="relative group inline-block w-full">
-                <span className="transition-colors duration-300">{lang}</span>
+                <span className="transition-colors duration-300">{lang.label}</span>
                 <span className="absolute left-0 bottom-0 w-0 h-[2px] bg-white transition-all duration-300 group-hover:w-full"></span>
               </span>
             </button>

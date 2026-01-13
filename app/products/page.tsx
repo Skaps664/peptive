@@ -5,8 +5,10 @@ import { useEffect, useState } from 'react';
 import { Product } from '@/types';
 import ProductGrid from '@/components/products/ProductGrid';
 import { wordpress } from '@/lib/wordpress';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 export default function ProductsPage() {
+  const { t } = useLanguage();
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const [bannerImage, setBannerImage] = useState<string | null>(null);
@@ -71,17 +73,17 @@ export default function ProductsPage() {
               <ol className="flex items-center gap-2 text-sm">
                 <li>
                   <Link href="/" className="text-gray-300 hover:text-white transition-colors">
-                    Home
+                    {t('products.breadcrumb_home')}
                   </Link>
                 </li>
                 <li className="text-gray-500">/</li>
-                <li className="text-white font-medium">All Peptides</li>
+                <li className="text-white font-medium">{t('products.title')}</li>
               </ol>
             </nav>
             
             {/* Heading */}
             <h1 className="text-4xl md:text-6xl lg:text-8xl font-extrabold text-white">
-              All Peptides
+              {t('products.title')}
             </h1>
             
           </div>
@@ -93,7 +95,7 @@ export default function ProductsPage() {
         {loading ? (
           <div className="text-center py-12">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900 mx-auto"></div>
-            <p className="text-gray-500 mt-4">Loading products...</p>
+            <p className="text-gray-500 mt-4">{t('products.loading')}</p>
           </div>
         ) : products.length > 0 ? (
           <>
@@ -102,7 +104,7 @@ export default function ProductsPage() {
             
             {/* Results Count */}
             <div className="mt-12 text-center text-gray-600">
-              Showing {products.length} {products.length === 1 ? 'product' : 'products'}
+              {t('products.showing')} {products.length} {products.length === 1 ? t('products.product') : t('products.products')}
             </div>
           </>
         ) : (
@@ -120,9 +122,9 @@ export default function ProductsPage() {
                 d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"
               />
             </svg>
-            <h2 className="text-2xl font-semibold text-gray-700 mb-2">No Products Found</h2>
+            <h2 className="text-2xl font-semibold text-gray-700 mb-2">{t('products.no_products_title')}</h2>
             <p className="text-gray-500">
-              Check back soon for new products.
+              {t('products.no_products_message')}
             </p>
           </div>
         )}

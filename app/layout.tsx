@@ -4,8 +4,8 @@ import './globals.css';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import CartSidebar from '@/components/cart/CartSidebar';
-import CountrySelector from '@/components/CountrySelector';
-import LanguageSelector from '@/components/LanguageSelector';
+import AnnouncementBar from '@/components/layout/AnnouncementBar';
+import { LanguageProvider } from '@/contexts/LanguageContext';
 
 const inter = Inter({ 
   subsets: ['latin'],
@@ -32,24 +32,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${inter.className} ${inter.variable}`}>
+        <LanguageProvider>
         <div className="flex flex-col min-h-screen">
-          {/* Announcement Bar */}
-          <div className="bg-[#1f1f1f] text-white py-2 px-6 sm:px-8 lg:px-12 relative z-50">
-            <div className="flex items-center justify-between">
-              {/* Country Selector - Left */}
-              <div className="flex-shrink-0 flex items-center gap-2">
-                <CountrySelector />
-                <LanguageSelector />
-              </div>
-              
-              {/* Announcement Message - Center */}
-              <div className="flex items-center gap-4 absolute left-1/2 transform -translate-x-1/2">
-                
-                <p className="text-xs font-medium tracking-wider uppercase px-4">GET 10% OFF Code: "PEP10"</p>
-                
-              </div>
-            </div>
-          </div>
+          <AnnouncementBar />
           <Header />
           <main className="flex-1">
             {children}
@@ -69,6 +54,7 @@ export default function RootLayout({
             </svg>
           </a>
         </div>
+        </LanguageProvider>
       </body>
     </html>
   );

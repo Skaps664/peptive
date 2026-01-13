@@ -8,6 +8,7 @@ import { woocommerce } from '@/lib/woocommerce';
 import { useCartStore } from '@/store/cartStore';
 import { formatPrice } from '@/lib/utils';
 import RelatedProducts from '@/components/products/RelatedProducts';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 type BundleOption = {
   id: string;
@@ -20,6 +21,7 @@ type BundleOption = {
 };
 
 export default function ProductDetailPage() {
+  const { t } = useLanguage();
   const params = useParams();
   const slug = params?.slug as string;
   const [product, setProduct] = useState<Product | null>(null);
@@ -216,7 +218,7 @@ export default function ProductDetailPage() {
           <div className="flex items-center gap-2">
             <span className="text-yellow-400 text-lg">⭐</span>
             <span className="text-sm md:text-base lg:text-base xl:text-base font-semibold text-gray-900">
-              4.9/5 (2869 reviews)
+              4.9/5 (2869 {t('product_detail.reviews')})
             </span>
           </div>
 
@@ -266,15 +268,15 @@ export default function ProductDetailPage() {
                 <div className="mt-4 space-y-4">
                   {contains && (
                     <div>
-                      <div className="font-bold text-sm md:text-sm text-gray-900 mb-1">Contains:</div>
+                      <div className="font-bold text-sm md:text-sm text-gray-900 mb-1">{t('product_detail.contains')}</div>
                       <div className="text-sm md:text-sm text-gray-800 whitespace-pre-line">{contains}</div>
                     </div>
                   )}
                   {instructions && (
                     <div>
-                      <div className="font-bold text-sm md:text-sm text-gray-900 mb-1">Instructions:</div>
+                      <div className="font-bold text-sm md:text-sm text-gray-900 mb-1">{t('product_detail.instructions')}</div>
                       <div className="text-sm md:text-sm text-gray-800 whitespace-pre-line mb-6">{instructions}</div>
-                      <div className="text-sm md:text-sm italic text-gray-800 whitespace-pre-line">For research use only. Not a drug. Not for diagnostic or therapeutic purposes.</div>
+                      <div className="text-sm md:text-sm italic text-gray-800 whitespace-pre-line">{t('product_detail.research_use')}</div>
                     </div>
                   )}
                 </div>
@@ -287,13 +289,13 @@ export default function ProductDetailPage() {
             <div className="flex items-center gap-2">
               <span className="w-2 h-2 bg-red-500 rounded-full"></span>
               <span className="text-xs md:text-sm lg:text-sm xl:text-sm font-semibold text-red-600">
-                Out of stock
+                {t('product_detail.out_of_stock')}
               </span>
             </div>
           ) : (
             <div className="inline-flex items-center px-4 py-2 rounded-full bg-[#f7fee7]">
               <span className="w-3 h-3 mr-2 rounded-full bg-[#4d7c0f] border-2 border-[#487012] shadow-inner"></span>
-              <span className="text-[#4d7c0f] font-medium text-sm md:text-base">In stock, ready to ship</span>
+              <span className="text-[#4d7c0f] font-medium text-sm md:text-base">{t('product_detail.in_stock')}</span>
             </div>
           )}
 
@@ -305,7 +307,7 @@ export default function ProductDetailPage() {
               </div>
               <div className="relative inline-block bg-gray-50 px-4">
                 <h3 className="text-sm md:text-base lg:text-base xl:text-base font-bold text-gray-900 tracking-wider">
-                  BUNDLE & SAVE
+                  {t('product_detail.bundle_save')}
                 </h3>
               </div>
             </div>
@@ -335,11 +337,11 @@ export default function ProductDetailPage() {
                         </div>
                         {bundle.savings ? (
                           <div className="text-xs md:text-xs lg:text-xs xl:text-xs text-[#4d7c0f] font-medium">
-                            SAVE {formatPrice(bundle.savings)} • You save {bundle.savingsPercent}%
+                            {t('product_detail.save').toUpperCase()} {formatPrice(bundle.savings)} • {t('product_detail.you_save')} {bundle.savingsPercent}%
                           </div>
                         ) : (
                           <div className="text-xs md:text-xs lg:text-xs xl:text-xs text-gray-500">
-                            Standard price
+                            {t('product_detail.standard_price')}
                           </div>
                         )}
                       </div>
@@ -357,7 +359,7 @@ export default function ProductDetailPage() {
                   </div>
                   {bundle.isPopular && (
                     <div className="absolute -top-2 -right-2 bg-black text-white px-2 py-1 rounded-full text-[10px] md:text-xs font-bold">
-                      Most Popular
+                      {t('product_detail.most_popular')}
                     </div>
                   )}
                 </label>
@@ -372,7 +374,7 @@ export default function ProductDetailPage() {
                 onClick={handleNotifyMe}
                 className="w-full bg-black text-white text-sm md:text-base lg:text-base xl:text-base py-4 lg:py-4 xl:py-4 2xl:py-5 px-6 rounded-full hover:bg-gray-800 transition-all duration-200"
               >
-                Sold Out - Notify me when it&apos;s available
+                {t('product_detail.sold_out_notify')}
               </button>
             ) : (
               <button
@@ -380,7 +382,7 @@ export default function ProductDetailPage() {
                 className="w-full relative overflow-hidden bg-black text-white text-sm md:text-base lg:text-base xl:text-base py-4 lg:py-4 xl:py-4 2xl:py-5 px-6 rounded-full group border-2 border-black"
               >
                 <span className="absolute inset-0 bg-white origin-bottom scale-y-0 group-hover:scale-y-100 transition-transform duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] rounded-full z-0"></span>
-                <span className="relative z-10 group-hover:text-black transition-colors duration-400">Add to Cart</span>
+                <span className="relative z-10 group-hover:text-black transition-colors duration-400">{t('product_detail.add_to_cart')}</span>
               </button>
             )}
             

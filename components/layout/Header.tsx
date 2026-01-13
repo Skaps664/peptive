@@ -6,6 +6,9 @@ import { useState, useEffect } from 'react';
 import { useCartStore } from '@/store/cartStore';
 import { authAPI } from '@/lib/auth';
 import { wordpress } from '@/lib/wordpress';
+import { useLanguage } from '@/contexts/LanguageContext';
+import LanguageSelector from '@/components/LanguageSelector';
+import CountrySelector from '@/components/CountrySelector';
 
 export default function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -13,6 +16,7 @@ export default function Header() {
   const [logoUrl, setLogoUrl] = useState<string | null>(null);
   const itemCount = useCartStore((state) => state.getItemCount());
   const toggleCart = useCartStore((state) => state.toggleCart);
+  const { t } = useLanguage();
 
   useEffect(() => {
     // Check if user is logged in
@@ -28,15 +32,27 @@ export default function Header() {
     }).catch(console.error);
   }, []);
 
+  // Prevent body scroll when mobile menu is open
+  useEffect(() => {
+    if (isMobileMenuOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, [isMobileMenuOpen]);
+
   const navigation = [
-    { name: 'Home', href: '/' },
-    { name: 'All Peptides', href: '/products' },
-    { name: 'Dosage Calculator', href: '/pages/dosage-calculator' },
-    { name: 'Peptive Ai', href: 'https://ai.peptivepeptides.com/' },
+    { name: t('header.home'), href: '/' },
+    { name: t('header.all_peptides'), href: '/products' },
+    { name: t('header.dosage_calculator'), href: '/pages/dosage-calculator' },
+    { name: t('header.peptive_ai'), href: 'https://ai.peptivepeptides.com/' },
   ];
 
   return (
-    <header className="bg-white sticky top-0 z-40 ">
+    <header className="bg-white sticky top-0 z-[100] ">
       <nav className="px-6 sm:px-8 md:px-12 lg:px-12 xl:px-12 2xl:px-48">
         <div className="flex justify-between items-center h-32">
           {/* Logo */}
@@ -78,11 +94,11 @@ export default function Header() {
           </div>
 
           {/* Cart & Mobile Menu Button */}
-          <div className="flex items-center space-x-4">
-            {/* User Icon */}
+          <div className="flex items-center space-x-1">
+            {/* User Icon - Desktop Only */}
             <Link 
               href={isLoggedIn ? '/account' : '/login'}
-              className="p-2 text-gray-700 hover:text-gray-900 transition-all duration-300 hover:animate-wiggle" 
+              className="hidden md:block p-1 text-gray-700 hover:text-gray-900 transition-all duration-300 hover:animate-wiggle" 
               aria-label="User account"
             >
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -93,7 +109,7 @@ export default function Header() {
             {/* Cart Button */}
             <button
               onClick={toggleCart}
-              className="relative p-2 text-gray-700 hover:text-gray-900 transition-all duration-300 hover:animate-wiggle"
+              className="relative p-1 text-gray-700 hover:text-gray-900 transition-all duration-300 hover:animate-wiggle"
               aria-label="Shopping cart"
             >
               <svg
@@ -119,7 +135,7 @@ export default function Header() {
             {/* Mobile Menu Button */}
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="md:hidden p-2 text-gray-700 hover:text-primary-600 transition-colors"
+              className="md:hidden p-1 text-gray-700 hover:text-primary-600 transition-colors"
               aria-label="Toggle menu"
             >
               <svg
@@ -148,23 +164,78 @@ export default function Header() {
           </div>
         </div>
 
-        {/* Mobile Navigation */}
-        {isMobileMenuOpen && (
-          <div className="md:hidden py-4 border-t border-gray-200">
-            <div className="flex flex-col space-y-3">
-              {navigation.map((item) => (
+        {/* Mobile Navigation Drawer */}
+        <>
+          {/* Overlay */}
+          <div
+            className={`fixed inset-0 bg-black transition-all duration-500 ease-in-out z-[90] md:hidden ${
+              isMobileMenuOpen ? 'bg-opacity-50 visible' : 'bg-opacity-0 invisible'
+            }`}
+            onClick={() => setIsMobileMenuOpen(false)}
+            aria-hidden="true"
+          />
+
+          {/* Drawer */}
+          <div 
+            className={`fixed right-0 top-0 h-full w-full sm:w-[90%] bg-white shadow-2xl z-[100] flex flex-col transition-all duration-500 ease-in-out rounded-l-[2rem] md:hidden ${
+              isMobileMenuOpen ? 'translate-x-0' : 'translate-x-full'
+            }`}
+          >
+            {/* Header */}
+            <div className="flex items-center justify-between p-8 border-b border-gray-100">
+              <h2 className="text-3xl font-bold text-gray-900">{t('header.menu') || 'Menu'}</h2>
+              <button
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="text-gray-900 hover:text-gray-600 transition-colors p-1"
+                aria-label="Close menu"
+              >
+                <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+
+            {/* Menu Items */}
+            <div className="flex-1 overflow-y-auto p-8">
+              <div className="flex flex-col space-y-4">
+                {navigation.map((item) => (
+                  <Link
+                    key={item.name}
+                    href={item.href}
+                    className="text-gray-900 hover:text-gray-600 transition-colors font-medium text-lg py-3 border-b border-gray-100"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                  >
+                    {item.name}
+                  </Link>
+                ))}
+                
+                {/* User Account Link */}
                 <Link
-                  key={item.name}
-                  href={item.href}
-                  className="text-gray-700 hover:text-primary-600 transition-colors font-medium px-2 py-1"
+                  href={isLoggedIn ? '/account' : '/login'}
+                  className="text-gray-900 hover:text-gray-600 transition-colors font-medium text-lg py-3 border-b border-gray-100 flex items-center gap-3"
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
-                  {item.name}
+                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                  </svg>
+                  {isLoggedIn ? (t('header.account') || 'Account') : t('header.login')}
                 </Link>
-              ))}
+              </div>
+
+              {/* Language & Country Selector in Mobile Menu */}
+              <div className="mt-8 pt-8 border-t border-gray-200 space-y-6">
+                <div>
+                  <h3 className="text-sm font-semibold text-gray-700 mb-4 uppercase tracking-wide">{t('header.country') || 'Country'}</h3>
+                  <CountrySelector />
+                </div>
+                <div>
+                  <h3 className="text-sm font-semibold text-gray-700 mb-4 uppercase tracking-wide">{t('header.language') || 'Language'}</h3>
+                  <LanguageSelector />
+                </div>
+              </div>
             </div>
           </div>
-        )}
+        </>
       </nav>
     </header>
   );
