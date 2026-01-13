@@ -6,6 +6,14 @@ const nextConfig = {
         protocol: 'https',
         hostname: '**',
       },
+      {
+        protocol: 'http',
+        hostname: 'peptivepeptides.local',
+      },
+      {
+        protocol: 'https',
+        hostname: 'peptivepeptides.local',
+      },
     ],
   },
 };

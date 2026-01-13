@@ -1,30 +1,67 @@
 'use client';
 
 import Link from 'next/link';
-import { useState } from 'react';
+import Image from 'next/image';
+import { useState, useEffect } from 'react';
 import { useCartStore } from '@/store/cartStore';
+import { authAPI } from '@/lib/auth';
+import { wordpress } from '@/lib/wordpress';
 
 export default function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [logoUrl, setLogoUrl] = useState<string | null>(null);
   const itemCount = useCartStore((state) => state.getItemCount());
   const toggleCart = useCartStore((state) => state.toggleCart);
+
+  useEffect(() => {
+    // Check if user is logged in
+    setIsLoggedIn(authAPI.isLoggedIn());
+
+    // Fetch logo from ACF
+    wordpress.getPageBySlug('site-settings').then(page => {
+      console.log('Site settings page:', page);
+      if (page?.acf?.site_logo) {
+        const logo = typeof page.acf.site_logo === 'string' ? page.acf.site_logo : page.acf.site_logo?.url;
+        if (logo) setLogoUrl(logo);
+      }
+    }).catch(console.error);
+  }, []);
 
   const navigation = [
     { name: 'Home', href: '/' },
     { name: 'All Peptides', href: '/products' },
-    { name: 'Dosage Calculator', href: '/calculator' },
+    { name: 'Dosage Calculator', href: '/pages/dosage-calculator' },
     { name: 'Peptive Ai', href: 'https://ai.peptivepeptides.com/' },
   ];
 
   return (
-    <header className="bg-white sticky top-2 z-50 rounded-t-3xl mx-2">
-      <nav className="px-6 sm:px-8 lg:px-12 ">
+    <header className="bg-white sticky top-0 z-40 ">
+      <nav className="px-6 sm:px-8 md:px-12 lg:px-12 xl:px-12 2xl:px-48">
         <div className="flex justify-between items-center h-32">
           {/* Logo */}
           <Link href="/" className="flex items-center">
-            <div className="w-16 h-16 bg-yellow-500 rounded-xl flex items-center justify-center">
-              <span className="text-white font-bold text-2xl">肽</span>
-            </div>
+            {logoUrl ? (
+              <Image
+                src={logoUrl}
+                alt="Peptive Logo"
+                width={64}
+                height={64}
+                className="w-16 h-16 rounded-xl"
+                onError={(e) => {
+                  // @ts-ignore
+                  e.target.src = '/logo.avif';
+                }}
+              />
+            ) : (
+              <Image
+                src="/logo.avif"
+                alt="Peptive Logo"
+                width={64}
+                height={64}
+                className="w-16 h-16 rounded-xl"
+              />
+            )}
           </Link>
 
           {/* Desktop Navigation */}
@@ -33,8 +70,7 @@ export default function Header() {
               <Link
                 key={item.name}
                 href={item.href}
-                className="relative px-4 py-3 text-gray-900 text-sm font-medium rounded-full overflow-hidden group transition-colors"
-              >
+                className="relative px-4 py-3 text-gray-900 text-sm lg:text-sm xl:text-base 2xl:text-lg font-medium rounded-full overflow-hidden group transition-colors">
                 <span className="absolute inset-0 bg-black origin-bottom scale-y-0 group-hover:scale-y-100 transition-transform duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] rounded-full"></span>
                 <span className="relative z-10 group-hover:text-white transition-colors duration-400">{item.name}</span>
               </Link>
@@ -44,11 +80,15 @@ export default function Header() {
           {/* Cart & Mobile Menu Button */}
           <div className="flex items-center space-x-4">
             {/* User Icon */}
-            <button className="p-2 text-gray-700 hover:text-gray-900 transition-all duration-300 hover:animate-wiggle" aria-label="User account">
+            <Link 
+              href={isLoggedIn ? '/account' : '/login'}
+              className="p-2 text-gray-700 hover:text-gray-900 transition-all duration-300 hover:animate-wiggle" 
+              aria-label="User account"
+            >
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
               </svg>
-            </button>
+            </Link>
             
             {/* Cart Button */}
             <button
@@ -70,7 +110,7 @@ export default function Header() {
                 />
               </svg>
               {itemCount > 0 && (
-                <span className="absolute -top-1 -right-1 bg-primary-600 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">
+                <span className="absolute -top-1 -right-1 bg-gray-900 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">
                   {itemCount}
                 </span>
               )}

@@ -16,17 +16,17 @@ export default function Footer() {
 
   return (
     <>
-      <footer className="bg-[#1f1f1f] text-white rounded-b-3xl mx-2 mb-2">
-        <div className="px-6 sm:px-8 lg:px-12 pt-24 pb-12">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-24">
+      <footer className="bg-[#1f1f1f] text-white rounded-b-3xl mb-2">
+        <div className="px-6 sm:px-8 md:px-12 lg:px-12 xl:px-12 2xl:px-48 pt-24 pb-12">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-12 xl:gap-12 2xl:gap-24">
             {/* Left Column - Quick Links & Contact */}
             <div className="space-y-12">
               {/* Quick Links */}
               <div>
-                <h3 className="text-white font-bold text-lg mb-4 tracking-wide">QUICK LINKS</h3>
+                <h3 className="text-white font-bold text-lg lg:text-lg xl:text-xl 2xl:text-2xl mb-4 tracking-wide">QUICK LINKS</h3>
                 <ul className="space-y-2">
                   <li>
-                    <Link href="/search" className="text-gray-300 hover:text-white transition-colors">
+                    <Link href="/search" className="text-gray-300 hover:text-white text-base lg:text-base xl:text-lg 2xl:text-xl transition-colors">
                       Search
                     </Link>
                   </li>
@@ -35,12 +35,12 @@ export default function Footer() {
 
               {/* Contact Info */}
               <div>
-                <h3 className="text-white font-bold text-lg mb-4 tracking-wide">CONTACT US AT</h3>
+                <h3 className="text-white font-bold text-lg lg:text-lg xl:text-xl 2xl:text-2xl mb-4 tracking-wide">CONTACT US AT</h3>
                 <div className="space-y-2">
-                  <a href="tel:+971558225919" className="block underline text-white hover:text-gray-300 transition-colors text-xl">
+                  <a href="tel:+971558225919" className="block underline text-white hover:text-gray-300 transition-colors text-xl lg:text-xl xl:text-2xl 2xl:text-3xl">
                     +971 55 822 5919
                   </a>
-                  <a href="mailto:peptivepeptides@gmail.com" className="block underline text-white hover:text-gray-300 transition-colors text-xl">
+                  <a href="mailto:peptivepeptides@gmail.com" className="block underline text-white hover:text-gray-300 transition-colors text-xl lg:text-xl xl:text-2xl 2xl:text-3xl">
                     peptivepeptides@gmail.com
                   </a>
                 </div>
@@ -49,7 +49,7 @@ export default function Footer() {
 
             {/* Right Column - Newsletter */}
             <div>
-              <h3 className="text-white font-bold text-2xl md:text-3xl mb-6 leading-tight">
+              <h3 className="text-white font-bold text-2xl md:text-3xl lg:text-3xl xl:text-4xl 2xl:text-5xl mb-6 leading-tight">
                 Join the future of biology and get 15% OFF + a FREE copy of our &quot;Peptive Peptide Guide&quot;
               </h3>
               <form onSubmit={handleNewsletterSubmit} className="flex items-center gap-2">
@@ -77,7 +77,7 @@ export default function Footer() {
 
       {/* Bottom Bar Section */}
       <div className="bg-white py-4">
-        <div className="px-6 sm:px-8 lg:px-12 flex flex-col md:flex-row justify-between items-center gap-6">
+        <div className="px-6 sm:px-8 md:px-12 lg:px-12 xl:px-12 2xl:px-48 flex flex-col md:flex-row justify-between items-center gap-6">
           <div className="flex items-center gap-4 text-gray-600 text-sm">
             <span>©{currentYear} Peptive Pept.</span>
             <Link href="/privacy" className="hover:text-gray-900 transition-colors">

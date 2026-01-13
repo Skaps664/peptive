@@ -1,0 +1,491 @@
+Section Divider
+      <div className="my-16 lg:my-16 xl:my-16 2xl:my-20 border-t-2 border-dashed border-gray-200"></div>
+
+      {/* Benefits Section */}
+      {(() => {
+        if (!product.description) {
+          console.log('No product description found');
+          return null;
+        }
+
+        console.log('Product description:', product.description.substring(0, 500));
+
+        // Extract benefits content using regex (server-safe approach)
+        // Look for Benefits heading in multiple formats (h2-h4, strong, or bold)
+        let benefitsMatch = product.description.match(/<h[234][^>]*>.*?benefits.*?<\/h[234]>(.*?)(?=<h[234]|$)/is);
+        
+        // If no heading found, try looking for <strong>Benefits</strong> or <b>Benefits</b>
+        if (!benefitsMatch) {
+          benefitsMatch = product.description.match(/(<strong[^>]*>|<b[^>]*>).*?benefits.*?(<\/strong>|<\/b>)(.*?)(?=<h[234]|<strong|<b|$)/is);
+          if (benefitsMatch) {
+            benefitsMatch[1] = benefitsMatch[3]; // Use the content after the bold tag
+          }
+        }
+        
+        // If still not found, try just "Benefits:" in any tag
+        if (!benefitsMatch) {
+          benefitsMatch = product.description.match(/benefits\s*:?(.*?)(?=<h[234]|$)/is);
+        }
+        
+        console.log('Benefits match found:', !!benefitsMatch);
+        
+        if (!benefitsMatch) {
+          console.log('No benefits heading found in description');
+          console.log('Full description:', product.description);
+          return null;
+        }
+
+        const benefitsHtml = benefitsMatch[1];
+        console.log('Benefits HTML:', benefitsHtml);
+        
+        // Remove all HTML tags and split by paragraphs or line breaks
+        const cleanText = benefitsHtml.replace(/<br[^>]*>/gi, '\n').replace(/<[^>]*>/g, '\n').trim();
+        const lines = cleanText.split('\n').map(line => line.trim()).filter(line => line.length > 0 && line.includes(':'));
+        
+        console.log('Benefits content extracted:', lines);
+
+        if (lines.length === 0) {
+          console.log('No benefits content found after parsing');
+          return null;
+        }
+
+        // Parse benefits (format: "Title : Description")
+        const benefitsData = lines.map(benefit => {
+          const parts = benefit.split(':');
+          if (parts.length < 2) return null;
+          const title = parts[0].trim();
+          const description = parts.slice(1).join(':').trim();
+          return { title, description };
+        }).filter(b => b && b.title && b.description);
+
+        console.log('Final benefits data:', benefitsData);
+
+        if (benefitsData.length === 0) return null;
+
+        const benefitIcons = [
+          <svg key="lightning" className="w-8 h-8 lg:w-8 xl:w-8 2xl:w-10 2xl:h-10" fill="currentColor" viewBox="0 0 20 20">
+            <path fillRule="evenodd" d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z" clipRule="evenodd" />
+          </svg>,
+          <svg key="brain" className="w-8 h-8 lg:w-8 xl:w-8 2xl:w-10 2xl:h-10" fill="currentColor" viewBox="0 0 20 20">
+            <path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z" />
+            <path fillRule="evenodd" d="M4 5a2 2 0 012-2 3 3 0 003 3h2a3 3 0 003-3 2 2 0 012 2v11a2 2 0 01-2 2H6a2 2 0 01-2-2V5zm3 4a1 1 0 000 2h.01a1 1 0 100-2H7zm3 0a1 1 0 000 2h3a1 1 0 100-2h-3zm-3 4a1 1 0 100 2h.01a1 1 0 100-2H7zm3 0a1 1 0 100 2h3a1 1 0 100-2h-3z" clipRule="evenodd" />
+          </svg>,
+          <svg key="fire" className="w-8 h-8 lg:w-8 xl:w-8 2xl:w-10 2xl:h-10" fill="currentColor" viewBox="0 0 20 20">
+            <path fillRule="evenodd" d="M12.395 2.553a1 1 0 00-1.45-.385c-.345.23-.614.558-.822.88-.214.33-.403.713-.57 1.116-.334.804-.614 1.768-.84 2.734a31.365 31.365 0 00-.613 3.58 2.64 2.64 0 01-.945-1.067c-.328-.68-.398-1.534-.398-2.654A1 1 0 005.05 6.05 6.981 6.981 0 003 11a7 7 0 1011.95-4.95c-.592-.591-.98-.985-1.348-1.467-.363-.476-.724-1.063-1.207-2.03zM12.12 15.12A3 3 0 017 13s.879.5 2.5.5c0-1 .5-4 1.25-4.5.5 1 .786 1.293 1.371 1.879A2.99 2.99 0 0113 13a2.99 2.99 0 01-.879 2.121z" clipRule="evenodd" />
+          </svg>,
+          <svg key="heart" className="w-8 h-8 lg:w-8 xl:w-8 2xl:w-10 2xl:h-10" fill="currentColor" viewBox="0 0 20 20">
+            <path fillRule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clipRule="evenodd" />
+          </svg>,
+          <svg key="star" className="w-8 h-8 lg:w-8 xl:w-8 2xl:w-10 2xl:h-10" fill="currentColor" viewBox="0 0 20 20">
+            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+          </svg>,
+          <svg key="shield" className="w-8 h-8 lg:w-8 xl:w-8 2xl:w-10 2xl:h-10" fill="currentColor" viewBox="0 0 20 20">
+            <path fillRule="evenodd" d="M2.166 4.999A11.954 11.954 0 0010 1.944 11.954 11.954 0 0017.834 5c.11.65.166 1.32.166 2.001 0 5.225-3.34 9.67-8 11.317C5.34 16.67 2 12.225 2 7c0-.682.057-1.35.166-2.001zm11.541 3.708a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+          </svg>,
+          <svg key="sparkles" className="w-8 h-8 lg:w-8 xl:w-8 2xl:w-10 2xl:h-10" fill="currentColor" viewBox="0 0 20 20">
+            <path fillRule="evenodd" d="M5 2a1 1 0 011 1v1h1a1 1 0 010 2H6v1a1 1 0 01-2 0V6H3a1 1 0 010-2h1V3a1 1 0 011-1zm0 10a1 1 0 011 1v1h1a1 1 0 110 2H6v1a1 1 0 11-2 0v-1H3a1 1 0 110-2h1v-1a1 1 0 011-1zM12 2a1 1 0 01.967.744L14.146 7.2 17.5 9.134a1 1 0 010 1.732l-3.354 1.935-1.18 4.455a1 1 0 01-1.933 0L9.854 12.8 6.5 10.866a1 1 0 010-1.732l3.354-1.935 1.18-4.455A1 1 0 0112 2z" clipRule="evenodd" />
+          </svg>,
+          <svg key="trophy" className="w-8 h-8 lg:w-8 xl:w-8 2xl:w-10 2xl:h-10" fill="currentColor" viewBox="0 0 20 20">
+            <path d="M2 6a2 2 0 012-2h6a2 2 0 012 2v8a2 2 0 01-2 2H4a2 2 0 01-2-2V6zM14.553 7.106A1 1 0 0014 8v4a1 1 0 00.553.894l2 1A1 1 0 0018 13V7a1 1 0 00-1.447-.894l-2 1z" />
+          </svg>,
+        ];
+
+        return (
+          <div className="mt-16 lg:mt-16 xl:mt-16 2xl:mt-20">
+            <div className="grid lg:grid-cols-2 gap-4 lg:gap-12 xl:gap-12 2xl:gap-16 items-center">
+              {/* Left - Product Image */}
+              <div className="relative aspect-[4/3] rounded-3xl overflow-hidden">
+                <Image
+                  src={product.images[0] || product.image}
+                  alt={product.name}
+                  fill
+                  className="object-contain"
+                  sizes="(max-width: 1024px) 100vw, 50vw"
+                />
+              </div>
+
+              {/* Right - Benefits */}
+              <div>
+                <h2 className="text-4xl md:text-5xl lg:text-5xl xl:text-5xl 2xl:text-6xl  text-gray-900 mb-8 lg:mb-8 xl:mb-8 2xl:mb-10 leading-tight">
+                  Benefits of<br />
+                  <span className="uppercase">{product.name.replace(/\d+mg/i, '').trim()}</span>
+                </h2>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 lg:gap-4 xl:gap-4 2xl:gap-5">
+                  {benefitsData.map((benefit, index) => {
+                    const isGold = index % 2 === 0;
+                    return (
+                      <div
+                        key={index}
+                        className={`p-6 lg:p-6 xl:p-6 2xl:p-8 rounded-2xl lg:rounded-2xl xl:rounded-2xl 2xl:rounded-3xl ${
+                          isGold
+                            ? 'bg-gradient-to-br from-yellow-400 via-yellow-500 to-yellow-600 shadow-lg'
+                            : 'bg-white border-2 border-gray-200 shadow-sm'
+                        }`}
+                      >
+                        {/* Icon and Title Row */}
+                        <div className="flex items-center gap-3 mb-3 lg:mb-3 xl:mb-3 2xl:mb-4">
+                          <div className={`w-12 h-12 lg:w-12 xl:w-12 2xl:w-14 2xl:h-14 rounded-full ${
+                            isGold ? 'bg-white text-yellow-600' : 'bg-gray-100 text-gray-600'
+                          } flex items-center justify-center flex-shrink-0`}>
+                            {benefitIcons[index % benefitIcons.length]}
+                          </div>
+                          <h3 className={`text-lg md:text-xl lg:text-xl xl:text-xl 2xl:text-2xl font-bold ${
+                            isGold ? 'text-gray-900' : 'text-gray-900'
+                          }`}>
+                            {benefit.title}
+                          </h3>
+                        </div>
+                        
+                        {/* Description */}
+                        <p className={`text-sm md:text-base lg:text-base xl:text-base 2xl:text-base leading-relaxed ${
+                          isGold ? 'text-gray-700' : 'text-gray-500'
+                        }`}>
+                          {benefit.description}
+                        </p>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            </div>
+          </div>
+        );
+      })()}
+
+      {/* Section Divider */}
+      <div className="my-16 lg:my-16 xl:my-16 2xl:my-20 border-t-2 border-dashed border-gray-200"></div>
+
+      {/* Stats Section */}
+      {(() => {
+        if (!product.description) {
+          console.log('No description for stats');
+          return null;
+        }
+
+        console.log('Full description for stats:', product.description);
+
+        // Extract stats content - try multiple patterns
+        let statsMatch = product.description.match(/STATS:\s*(.*?)(?=<h[234]|$)/is);
+        
+        // If not found, try with HTML tags
+        if (!statsMatch) {
+          statsMatch = product.description.match(/<h[234][^>]*>.*?stats.*?<\/h[234]>(.*?)(?=<h[234]|$)/is);
+        }
+        
+        // Try looking for <strong>Stats</strong> or <b>Stats</b>
+        if (!statsMatch) {
+          statsMatch = product.description.match(/(<strong[^>]*>|<b[^>]*>).*?stats.*?(<\/strong>|<\/b>)(.*?)(?=<h[234]|<strong|<b|$)/is);
+          if (statsMatch) {
+            statsMatch[1] = statsMatch[3];
+          }
+        }
+        
+        console.log('Stats match found:', !!statsMatch);
+        
+        if (!statsMatch) {
+          console.log('No stats section found');
+          return null;
+        }
+
+        const statsHtml = statsMatch[1];
+        console.log('Stats HTML:', statsHtml);
+        
+        // Remove all HTML tags and split by lines
+        const cleanText = statsHtml.replace(/<[^>]*>/g, '').trim();
+        const lines = cleanText.split('\n').map(line => line.trim()).filter(line => line.length > 0);
+        
+        console.log('Stats lines:', lines);
+
+        // Parse stats - format is alternating: Number, Label, Number, Label...
+        const statsData = [];
+        for (let i = 0; i < lines.length; i += 2) {
+          if (i + 1 < lines.length) {
+            const value = lines[i].trim();
+            const label = lines[i + 1].trim();
+            if (value && label) {
+              statsData.push({ value, label });
+            }
+          }
+        }
+
+        console.log('Parsed stats data:', statsData);
+
+        if (statsData.length === 0) {
+          console.log('No stats data after parsing');
+          return null;
+        }
+
+        return (
+          <div className="mt-16 lg:mt-16 xl:mt-16 2xl:mt-20">
+            <div className="grid lg:grid-cols-2 gap-12 lg:gap-12 xl:gap-12 2xl:gap-16 items-center">
+              {/* Left - Stats */}
+              <div>
+                <h2 className="text-4xl md:text-5xl lg:text-5xl xl:text-5xl 2xl:text-6xl font-extrabold text-gray-900 mb-8 lg:mb-8 xl:mb-8 2xl:mb-10 leading-tight uppercase">
+                  {product.name.replace(/\d+mg/i, '').trim()} STATS
+                </h2>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-6 xl:gap-6 2xl:gap-8">
+                  {statsData.map((stat, index) => (
+                    <div key={index} className="border-l-4 border-yellow-500 pl-4 lg:pl-4 xl:pl-4 2xl:pl-6">
+                      <div className="text-4xl md:text-5xl lg:text-5xl xl:text-5xl 2xl:text-6xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-yellow-500 to-yellow-600 mb-2">
+                        {stat.value}
+                      </div>
+                      <div className="text-sm md:text-base lg:text-base xl:text-base 2xl:text-lg font-semibold text-gray-600 uppercase tracking-wide">
+                        {stat.label}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                <button
+                  onClick={handleAddToCart}
+                  disabled={isOutOfStock}
+                  className="mt-8 lg:mt-8 xl:mt-8 2xl:mt-10 px-8 lg:px-8 xl:px-8 2xl:px-10 py-3 lg:py-3 xl:py-3 2xl:py-4 bg-white text-gray-900 text-sm md:text-base lg:text-base xl:text-base font-bold rounded-full border-2 border-gray-900 hover:bg-gray-900 hover:text-white transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  ORDER IT NOW →
+                </button>
+
+                <p className="mt-4 text-xs md:text-sm text-gray-400 italic">
+                  For research purposes only. Individual results may vary.
+                </p>
+              </div>
+
+              {/* Right - Product Image */}
+              <div className="relative aspect-[4/3] bg-gray-100 rounded-3xl overflow-hidden flex items-center justify-center p-8 lg:p-8 xl:p-8 2xl:p-12">
+                <Image
+                  src={product.images[0] || product.image}
+                  alt={product.name}
+                  fill
+                  className="object-contain"
+                  sizes="(max-width: 1024px) 100vw, 50vw"
+                />
+              </div>
+            </div>
+          </div>
+        );
+      })()}
+
+      {/* Section Divider */}
+      <div className="my-16 lg:my-16 xl:my-16 2xl:my-20 border-t-2 border-dashed border-gray-200"></div>
+
+      {/* Reviews Section */}
+      {reviews.length > 0 && (
+        <div className="mt-16 lg:mt-16 xl:mt-16 2xl:mt-20">
+          <div className="text-center mb-12 lg:mb-12 xl:mb-12 2xl:mb-16">
+            <h2 className="text-4xl md:text-5xl lg:text-5xl xl:text-5xl 2xl:text-6xl font-extrabold text-gray-900 mb-6 lg:mb-6 xl:mb-6 2xl:mb-8 uppercase">
+              Real Research, Real Results
+            </h2>
+            <div className="inline-block px-6 py-2 bg-black text-white text-sm md:text-base font-bold rounded-full border-2 border-black">
+              {reviews.length}K+ VERIFIED REVIEWS
+            </div>
+          </div>
+
+          <div className="relative">
+            {/* Reviews Carousel */}
+            <div className="grid md:grid-cols-2 gap-6 lg:gap-6 xl:gap-6 2xl:gap-8">
+              {/* Show 2 reviews at a time */}
+              {[0, 1].map((offset) => {
+                const reviewIndex = (currentReviewIndex + offset) % reviews.length;
+                const review = reviews[reviewIndex];
+                
+                return (
+                  <div
+                    key={review.id}
+                    className="bg-white border-2 border-gray-900 rounded-3xl p-8 lg:p-8 xl:p-8 2xl:p-10 relative"
+                  >
+                    {/* Quote Icon */}
+                    <div className="text-6xl text-gray-300 font-serif mb-4">"</div>
+                    
+                    {/* Review Title - extract from first line or use "Amazing Results" */}
+                    <h3 className="text-xl md:text-2xl lg:text-2xl xl:text-2xl 2xl:text-3xl font-bold text-gray-900 mb-4 uppercase">
+                      {review.review.split('\n')[0].substring(0, 30) || 'Amazing Results'}
+                    </h3>
+                    
+                    {/* Review Text */}
+                    <p className="text-base md:text-lg text-gray-600 mb-6 leading-relaxed">
+                      {review.review.length > 150 ? review.review.substring(0, 150) + '...' : review.review}
+                    </p>
+                    
+                    {/* Reviewer Name */}
+                    <p className="text-sm md:text-base font-bold text-gray-900 mb-2 uppercase">
+                      {review.reviewer}
+                    </p>
+                    
+                    {/* Star Rating */}
+                    <div className="flex gap-1">
+                      {[...Array(5)].map((_, i) => (
+                        <svg
+                          key={i}
+                          className={`w-5 h-5 ${
+                            i < review.rating ? 'text-gray-900' : 'text-gray-300'
+                          }`}
+                          fill="currentColor"
+                          viewBox="0 0 20 20"
+                        >
+                          <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                        </svg>
+                      ))}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+
+            {/* Navigation Buttons */}
+            <button
+              onClick={() => setCurrentReviewIndex((prev) => (prev - 1 + reviews.length) % reviews.length)}
+              className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 md:-translate-x-12 lg:-translate-x-16 w-12 h-12 lg:w-14 lg:h-14 bg-white border-2 border-gray-900 rounded-full flex items-center justify-center hover:bg-gray-900 hover:text-white transition-all duration-200 shadow-lg"
+              aria-label="Previous reviews"
+            >
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+              </svg>
+            </button>
+            
+            <button
+              onClick={() => setCurrentReviewIndex((prev) => (prev + 1) % reviews.length)}
+              className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 md:translate-x-12 lg:translate-x-16 w-12 h-12 lg:w-14 lg:h-14 bg-white border-2 border-gray-900 rounded-full flex items-center justify-center hover:bg-gray-900 hover:text-white transition-all duration-200 shadow-lg"
+              aria-label="Next reviews"
+            >
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+              </svg>
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* Section Divider */}
+      <div className="my-16 lg:my-16 xl:my-16 2xl:my-20 border-t-2 border-dashed border-gray-200"></div>
+
+      {/* FAQs Section */}
+      {(() => {
+        if (!product.description) return null;
+
+        // Extract FAQs content
+        let faqMatch = product.description.match(/FAQs?\s*:?\s*(.*?)(?=<h[234]|$)/is);
+        
+        // If not found, try with HTML tags
+        if (!faqMatch) {
+          faqMatch = product.description.match(/<h[234][^>]*>.*?FAQs?.*?<\/h[234]>(.*?)(?=<h[234]|$)/is);
+        }
+        
+        // Try looking for <strong>FAQs</strong> or <b>FAQs</b>
+        if (!faqMatch) {
+          faqMatch = product.description.match(/(<strong[^>]*>|<b[^>]*>).*?FAQs?.*?(<\/strong>|<\/b>)(.*?)(?=<h[234]|<strong|<b|$)/is);
+          if (faqMatch) {
+            faqMatch[1] = faqMatch[3];
+          }
+        }
+        
+        if (!faqMatch) return null;
+
+        const faqHtml = faqMatch[1];
+        
+        // Remove all HTML tags and split by lines
+        const cleanText = faqHtml.replace(/<[^>]*>/g, '').trim();
+        const lines = cleanText.split('\n').map(line => line.trim()).filter(line => line.length > 0);
+        
+        // Parse FAQs - format is "Question|Answer" or alternating lines
+        const faqData = [];
+        
+        // Try pipe-separated format first
+        if (lines.some(line => line.includes('|'))) {
+          for (const line of lines) {
+            const parts = line.split('|');
+            if (parts.length >= 2) {
+              const question = parts[0].trim();
+              const answer = parts.slice(1).join('|').trim();
+              if (question && answer) {
+                faqData.push({ question, answer });
+              }
+            }
+          }
+        } else {
+          // Alternating format: Question, Answer, Question, Answer...
+          for (let i = 0; i < lines.length; i += 2) {
+            if (i + 1 < lines.length) {
+              const question = lines[i].trim();
+              const answer = lines[i + 1].trim();
+              if (question && answer) {
+                faqData.push({ question, answer });
+              }
+            }
+          }
+        }
+
+        if (faqData.length === 0) return null;
+
+        return (
+          <div className="mt-16 lg:mt-16 xl:mt-16 2xl:mt-20">
+            <div className="text-center mb-12 lg:mb-12 xl:mb-12 2xl:mb-16">
+              <div className="text-base md:text-lg font-bold text-yellow-600 mb-2 uppercase tracking-wide">
+                Frequently Asked
+              </div>
+              <h2 className="text-4xl md:text-5xl lg:text-5xl xl:text-5xl 2xl:text-6xl font-extrabold text-gray-900 uppercase">
+                Questions
+              </h2>
+            </div>
+
+            <div className="max-w-5xl mx-auto">
+              <div className="grid md:grid-cols-2 gap-4 lg:gap-4 xl:gap-4 2xl:gap-5">
+                {faqData.map((faq, index) => (
+                  <div
+                    key={index}
+                    className="bg-white border border-gray-200 rounded-2xl lg:rounded-2xl xl:rounded-2xl 2xl:rounded-3xl overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-200"
+                  >
+                    <button
+                      onClick={() => setExpandedFaq(expandedFaq === index ? null : index)}
+                      className="w-full p-6 lg:p-6 xl:p-6 2xl:p-8 text-left flex items-start justify-between gap-4 hover:bg-gray-50 transition-colors duration-200"
+                    >
+                      <span className="text-base md:text-lg lg:text-lg xl:text-lg 2xl:text-xl font-bold text-gray-900 pr-4">
+                        {faq.question}
+                      </span>
+                      <svg
+                        className={`w-5 h-5 lg:w-6 lg:h-6 text-gray-400 flex-shrink-0 transition-transform duration-200 ${
+                          expandedFaq === index ? 'rotate-180' : ''
+                        }`}
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                      </svg>
+                    </button>
+                    
+                    {expandedFaq === index && (
+                      <div className="px-6 pb-6 lg:px-6 lg:pb-6 xl:px-6 xl:pb-6 2xl:px-8 2xl:pb-8">
+                        <p className="text-sm md:text-base lg:text-base xl:text-base 2xl:text-lg text-gray-600 leading-relaxed">
+                          {faq.answer}
+                        </p>
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
+
+              {/* Add to Cart Button */}
+              <div className="text-center mt-12 lg:mt-12 xl:mt-12 2xl:mt-16">
+                <button
+                  onClick={handleAddToCart}
+                  disabled={isOutOfStock}
+                  className="px-12 lg:px-12 xl:px-12 2xl:px-16 py-4 lg:py-4 xl:py-4 2xl:py-5 bg-gray-900 text-white text-sm md:text-base lg:text-base xl:text-base 2xl:text-lg font-bold rounded-full hover:bg-gray-800 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  ADD TO CART
+                </button>
+              </div>
+            </div>
+          </div>
+        );
+      })()}
+
+      {/* Section Divider */}
+      <div className="my-16 lg:my-16 xl:my-16 2xl:my-20 border-t-2 border-dashed border-gray-200"></div>
+
+      {/* Related Products */}
+      {product.relatedIds.length > 0 && (
+        <div className="mt-16 lg:mt-16 xl:mt-16 2xl:mt-20">
+          <RelatedProducts productIds={product.relatedIds} currentProductId={product.id} />
+        </div>
+      )}

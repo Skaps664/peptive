@@ -5,6 +5,7 @@ import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import CartSidebar from '@/components/cart/CartSidebar';
 import CountrySelector from '@/components/CountrySelector';
+import LanguageSelector from '@/components/LanguageSelector';
 
 const inter = Inter({ 
   subsets: ['latin'],
@@ -16,6 +17,11 @@ export const metadata: Metadata = {
   title: 'Peptive - Precision Crafted Research Peptides',
   description: 'High-purity compounds. Independent lab verification. Trusted by researchers seeking uncompromised quality.',
   keywords: 'research peptides, high purity peptides, lab verified compounds, scientific research',
+  icons: {
+    icon: '/logo.avif',
+    shortcut: '/logo.avif',
+    apple: '/logo.avif',
+  },
 };
 
 export default function RootLayout({
@@ -28,28 +34,20 @@ export default function RootLayout({
       <body className={`${inter.className} ${inter.variable}`}>
         <div className="flex flex-col min-h-screen">
           {/* Announcement Bar */}
-          <div className="bg-black text-white py-3 px-6 sm:px-8 lg:px-12">
+          <div className="bg-[#1f1f1f] text-white py-2 px-6 sm:px-8 lg:px-12 relative z-50">
             <div className="flex items-center justify-between">
               {/* Country Selector - Left */}
-              <CountrySelector />
-              
-              {/* Announcement Message - Center */}
-              <div className="flex items-center gap-4 flex-1 justify-center">
-                <button className="text-white hover:text-gray-300">
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-                  </svg>
-                </button>
-                <p className="text-xs font-medium tracking-wider uppercase px-4">WELCOME TO THE FUTURE OF BIOLOGY</p>
-                <button className="text-white hover:text-gray-300">
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                  </svg>
-                </button>
+              <div className="flex-shrink-0 flex items-center gap-2">
+                <CountrySelector />
+                <LanguageSelector />
               </div>
               
-              {/* Empty space for balance - Right */}
-              <div className="w-[200px]"></div>
+              {/* Announcement Message - Center */}
+              <div className="flex items-center gap-4 absolute left-1/2 transform -translate-x-1/2">
+                
+                <p className="text-xs font-medium tracking-wider uppercase px-4">GET 10% OFF Code: "PEP10"</p>
+                
+              </div>
             </div>
           </div>
           <Header />

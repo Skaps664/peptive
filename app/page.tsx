@@ -5,18 +5,53 @@ import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import Button from '@/components/ui/Button';
 import ProductGrid from '@/components/products/ProductGrid';
+import WelcomePopup from '@/components/WelcomePopup';
 import { Product } from '@/types';
+import { wordpress } from '@/lib/wordpress';
 
 export default function HomePage() {
   const [scrollY, setScrollY] = useState(0);
   const [featuredProducts, setFeaturedProducts] = useState<Product[]>([]);
+  const [trendingProducts, setTrendingProducts] = useState<Product[]>([]);
+  const [stackProducts, setStackProducts] = useState<Product[]>([]);
+  const [stackItems, setStackItems] = useState<Product[]>([]);
   const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(null);
+  const [heroImage, setHeroImage] = useState<string | null>(null);
+  const [logoUrl, setLogoUrl] = useState<string | null>(null);
 
   useEffect(() => {
     const handleScroll = () => {
       setScrollY(window.scrollY);
     };
     window.addEventListener('scroll', handleScroll);
+    
+    // Load stack from localStorage
+    const savedStack = localStorage.getItem('peptive-stack');
+    if (savedStack) {
+      try {
+        setStackItems(JSON.parse(savedStack));
+      } catch (error) {
+        console.error('Error loading stack:', error);
+      }
+    }
+
+    // Fetch ACF images
+    wordpress.getPageBySlug('site-settings').then(page => {
+      console.log('Site settings page:', page);
+      if (page?.acf?.site_logo) {
+        const logo = typeof page.acf.site_logo === 'string' ? page.acf.site_logo : page.acf.site_logo?.url;
+        if (logo) setLogoUrl(logo);
+      }
+    }).catch(console.error);
+
+    wordpress.getPageBySlug('site-page').then(page => {
+      console.log('Site page:', page);
+      if (page?.acf?.hero_image) {
+        const hero = typeof page.acf.hero_image === 'string' ? page.acf.hero_image : page.acf.hero_image?.url;
+        if (hero) setHeroImage(hero);
+      }
+    }).catch(console.error);
+    
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
@@ -27,6 +62,14 @@ export default function HomePage() {
         const { woocommerce } = await import('@/lib/woocommerce');
         const products = await woocommerce.getFeaturedProducts(4);
         setFeaturedProducts(products);
+        
+        // Fetch trending products from "trending" category
+        const trending = await woocommerce.getProducts({ category: 'trending', perPage: 10 });
+        setTrendingProducts(trending);
+        
+        // Fetch stack products from "stack" category - only first 3
+        const stack = await woocommerce.getProducts({ category: 'stack', perPage: 3 });
+        setStackProducts(stack);
       } catch (error) {
         console.error('Error fetching products:', error);
       }
@@ -77,16 +120,68 @@ export default function HomePage() {
     setOpenFaqIndex(openFaqIndex === index ? null : index);
   };
 
+  // Add product to stack
+  const addToStack = (product: Product) => {
+    const updatedStack = [...stackItems, product];
+    setStackItems(updatedStack);
+    localStorage.setItem('peptive-stack', JSON.stringify(updatedStack));
+  };
+
+  // Remove product from stack
+  const removeFromStack = (productId: number) => {
+    const updatedStack = stackItems.filter(item => item.id !== productId);
+    setStackItems(updatedStack);
+    localStorage.setItem('peptive-stack', JSON.stringify(updatedStack));
+  };
+
+  // Calculate stack total
+  const getStackTotal = () => {
+    return stackItems.reduce((total, item) => total + parseFloat(item.price), 0);
+  };
+
+  // Add all stack items to cart
+  const addStackToCart = async () => {
+    if (stackItems.length === 0) return;
+    
+    try {
+      const { useCartStore } = await import('@/store/cartStore');
+      const addItem = useCartStore.getState().addItem;
+      
+      stackItems.forEach(product => {
+        addItem({
+          id: product.id,
+          name: product.name,
+          slug: product.slug,
+          price: product.price,
+          image: product.image,
+        });
+      });
+      
+      // Clear stack after adding to cart
+      setStackItems([]);
+      localStorage.removeItem('peptive-stack');
+      
+      // Show success message or toggle cart
+      const toggleCart = useCartStore.getState().toggleCart;
+      toggleCart();
+    } catch (error) {
+      console.error('Error adding stack to cart:', error);
+    }
+  };
+
   return (
     <div>
+      {/* Welcome Popup */}
+      <WelcomePopup />
+      
       {/* Hero Section */}
-      <section className="px-6 sm:px-8 lg:px-12 pb-0">
+      <section className="px-6 sm:px-8 md:px-12 lg:px-12 xl:px-12 2xl:px-48 pb-0">
         <div className="relative bg-gradient-to-br from-gray-900 via-gray-800 to-black text-white overflow-hidden rounded-3xl">
           {/* Background Image with Parallax Effect */}
           <div 
             className="absolute inset-0 bg-cover bg-center opacity-40"
             style={{
-              backgroundImage: "url('/hero-bg.jpg')",
+              backgroundImage: heroImage ? `url(${heroImage})` : "url('/hero-bg.jpg')",
               transform: `translateX(${scrollY * 0.15}px)`,
               transition: 'transform 0.1s ease-out'
             }}
@@ -96,19 +191,19 @@ export default function HomePage() {
           <div className="absolute inset-0 bg-gradient-to-br from-gray-900/80 via-gray-800/70 to-black/80" />
           
           {/* Content */}
-          <div className="relative px-6 sm:px-8 lg:px-12 pb-12 md:pb-16 pt-12 md:pt-52">
+          <div className="relative px-6 sm:px-8 md:px-12 lg:px-12 xl:px-12 2xl:px-32 pb-12 md:pb-16 pt-12 md:pt-52">
             <div className="max-w-2xl pb-4">
-              <p className="text-yellow-500 text-xs md:text-xs font-medium tracking-[0.25em] mb-2 uppercase">
+              <p className="text-yellow-500 text-xs md:text-xs lg:text-xs xl:text-sm 2xl:text-sm font-medium tracking-[0.25em] mb-2 uppercase">
                 Science They Can&apos;t Silent
               </p>
-              <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4 leading-[1.15]">
+              <h1 className="text-3xl md:text-4xl lg:text-4xl xl:text-5xl 2xl:text-6xl font-bold mb-4 leading-[1.15]">
                 Precision Crafted Research<br />Peptides
               </h1>
-              <p className="text-gray-200 text-sm md:text-base mb-8 leading-relaxed max-w-lg">
+              <p className="text-gray-200 text-sm md:text-base lg:text-base xl:text-lg 2xl:text-xl mb-8 leading-relaxed max-w-lg">
                 High-purity compounds. Independent lab verification. Trusted by researchers seeking uncompromised quality.
               </p>
               <Link href="/products">
-                <button className="relative inline-flex items-center bg-white text-gray-900 px-12 py-3.5 text-sm font-semibold rounded-full overflow-hidden group transition-colors">
+                <button className="relative inline-flex items-center bg-white text-gray-900 px-12 py-3.5 text-sm lg:text-sm xl:text-base 2xl:text-lg font-semibold rounded-full overflow-hidden group transition-colors">
                   {/* Liquid fill animation background */}
                   <span className="absolute inset-0 bg-black origin-bottom scale-y-0 group-hover:scale-y-100 transition-transform duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] rounded-full"></span>
                   
@@ -126,11 +221,31 @@ export default function HomePage() {
 
     {/* Brand Statement Section */}
       <section className="py-12 bg-white">
-        <div className="px-6 sm:px-8 lg:px-12 text-center">
-          <h2 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-gray-900 inline-flex items-center justify-center flex-wrap gap-x-3">
+        <div className="px-6 sm:px-8 md:px-12 lg:px-12 xl:px-12 2xl:px-48 text-center">
+          <h2 className="text-4xl md:text-5xl lg:text-5xl xl:text-6xl 2xl:text-7xl font-extrabold text-gray-900 inline-flex items-center justify-center flex-wrap gap-x-3">
             <span>Research</span>
-            <span className="inline-flex items-center justify-center w-14 h-14 bg-yellow-500 rounded-lg">
-              <span className="text-white font-bold text-2xl">肽</span>
+            <span className="inline-flex items-center justify-center w-14 h-14 lg:w-24 xl:w-24 2xl:w-24 lg:h-24 xl:h-24 2xl:h-24">
+              {logoUrl ? (
+                <Image
+                  src={logoUrl}
+                  alt="Peptive Logo"
+                  width={80}
+                  height={80}
+                  className="w-full h-full rounded-lg object-cover"
+                  onError={(e) => {
+                    // @ts-ignore
+                    e.target.src = '/logo.avif';
+                  }}
+                />
+              ) : (
+                <Image
+                  src="/logo.avif"
+                  alt="Peptive Logo"
+                  width={80}
+                  height={80}
+                  className="w-full h-full rounded-lg object-cover"
+                />
+              )}
             </span>
             <span>Starts with</span>
             <span className="relative inline-block">
@@ -144,10 +259,10 @@ export default function HomePage() {
     
       {/* Trending Research Section */}
       <section className="py-8 bg-white">
-        <div className="px-6 sm:px-8 lg:px-12">
+        <div className="px-6 sm:px-8 md:px-12 lg:px-12 xl:px-12 2xl:px-48">
           {/* Section Header */}
           <div className="flex items-center justify-between mb-8">
-            <h2 className="text-4xl md:text-5xl font-extrabold text-gray-900">
+            <h2 className="text-4xl md:text-5xl lg:text-5xl xl:text-5xl 2xl:text-7xl text-gray-900">
               Trending Research
             </h2>
             <div className="flex gap-3">
@@ -181,161 +296,78 @@ export default function HomePage() {
 
         {/* Product Carousel - Full Width */}
         <div id="trending-carousel" className="overflow-x-auto scrollbar-hide scroll-smooth">
-          <div className="flex gap-6 px-6 sm:px-8 lg:px-12 pb-6">
-            {/* Product Card 1 */}
-            <div className="flex-none w-80">
-              <div className="relative bg-white rounded-3xl overflow-hidden shadow-sm hover:shadow-xl transition-shadow group">
-                {/* Badges */}
-                <div className="absolute top-4 left-4 flex flex-col gap-2 z-10">
-                  <span className="bg-red-500 text-white text-xs font-bold px-4 py-1.5 rounded-full">
-                    Save 29%
-                  </span>
-                  <span className="bg-gray-400 text-white text-xs font-bold px-4 py-1.5 rounded-full">
-                    Sold Out
-                  </span>
-                </div>
-
-                {/* Product Image */}
-                <div className="relative bg-gray-100 aspect-square flex items-center justify-center overflow-hidden">
-                  <img src="/product-1.jpg" alt="Product" className="w-full h-full object-cover group-hover:hidden" />
-                  <img src="/product-1-hover.jpg" alt="Product Hover" className="w-full h-full object-cover hidden group-hover:block" />
-                </div>
-
-                {/* Product Info */}
-                <div className="bg-gray-50 p-5">
-                  <div className="flex items-start justify-between mb-2">
-                    <div>
-                      <p className="text-gray-500 text-xs mb-1 uppercase tracking-wide">PEPT</p>
-                      <h3 className="text-gray-900 text-base">Ret 15mg</h3>
+          <div className="flex gap-6 px-6 sm:px-8 md:px-12 lg:px-12 xl:px-12 2xl:px-48 pb-6">
+            {trendingProducts.length > 0 ? (
+              trendingProducts.map((product) => (
+                <Link key={product.id} href={`/products/${product.slug}`} className="flex-none w-80 md:w-96 lg:w-96 xl:w-[440px] 2xl:w-[480px]">
+                  <div className="relative bg-white rounded-3xl overflow-hidden shadow-sm hover:shadow-xl transition-shadow group h-full">
+                    {/* Badges */}
+                    <div className="absolute top-4 left-4 flex flex-col gap-2 z-10">
+                      {product.onSale && product.regularPrice && product.salePrice && (
+                        <span className="bg-red-500 text-white text-xs lg:text-xs xl:text-sm 2xl:text-sm font-bold px-4 py-1.5 rounded-full">
+                          Save {Math.round(((parseFloat(product.regularPrice) - parseFloat(product.salePrice)) / parseFloat(product.regularPrice)) * 100)}%
+                        </span>
+                      )}
+                      {product.stockStatus !== 'instock' && (
+                        <span className="bg-gray-300 text-gray-700 text-xs lg:text-xs xl:text-sm 2xl:text-sm font-bold px-4 py-1.5 rounded-full">
+                          Sold Out
+                        </span>
+                      )}
                     </div>
-                    <div className="text-right">
-                      <p className="text-red-500 font-semibold text-base">Dhs. 999.00</p>
-                      <p className="text-gray-400 text-sm line-through">Dhs. 1,399.00</p>
+
+                    {/* Product Image with slide transition */}
+                    <div className="relative bg-gray-100 aspect-square flex items-center justify-center overflow-hidden">
+                      {product.images && product.images.length > 0 ? (
+                        <>
+                          {/* First Image */}
+                          <img 
+                            src={product.images[0] || '/placeholder.jpg'} 
+                            alt={product.name} 
+                            className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 ease-in-out group-hover:translate-x-full" 
+                          />
+                          {/* Second Image - slides in from left */}
+                          <img 
+                            src={product.images[1] || product.images[0] || '/placeholder.jpg'} 
+                            alt={product.name} 
+                            className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 ease-in-out -translate-x-full group-hover:translate-x-0" 
+                          />
+                        </>
+                      ) : (
+                        <div className="w-full h-full bg-gradient-to-br from-gray-200 to-gray-300" />
+                      )}
+                    </div>
+
+                    {/* Product Info */}
+                    <div className="bg-gray-50 p-5">
+                      <div className="flex items-start justify-between">
+                        <div className="flex-1">
+                          <p className="text-gray-500 text-xs lg:text-xs xl:text-sm 2xl:text-sm mb-1 uppercase tracking-wide">
+                            {product.categories && product.categories.length > 0 ? product.categories[0] : 'PEPT'}
+                          </p>
+                          <h3 className="text-gray-900 text-base lg:text-base xl:text-lg 2xl:text-xl font-medium">{product.name}</h3>
+                        </div>
+                        <div className="text-right ml-3">
+                          <p className="text-red-500 font-semibold text-base lg:text-base xl:text-lg 2xl:text-xl whitespace-nowrap">
+                            Dhs. {parseFloat(product.price).toFixed(2)}
+                          </p>
+                          {product.onSale && product.regularPrice && parseFloat(product.regularPrice) > parseFloat(product.price) && (
+                            <p className="text-gray-400 text-sm lg:text-sm xl:text-base 2xl:text-lg line-through whitespace-nowrap">
+                              Dhs. {parseFloat(product.regularPrice).toFixed(2)}
+                            </p>
+                          )}
+                        </div>
+                      </div>
                     </div>
                   </div>
+                </Link>
+              ))
+            ) : (
+              <div className="flex-none w-80">
+                <div className="bg-gray-100 rounded-3xl p-8 text-center">
+                  <p className="text-gray-500 lg:text-sm xl:text-base 2xl:text-lg">No trending products available</p>
                 </div>
               </div>
-            </div>
-
-            {/* Product Card 2 */}
-            <div className="flex-none w-80">
-              <div className="relative bg-white rounded-3xl overflow-hidden shadow-sm hover:shadow-xl transition-shadow group">
-                <div className="absolute top-4 left-4 flex flex-col gap-2 z-10">
-                  <span className="bg-red-500 text-white text-xs font-bold px-4 py-1.5 rounded-full">
-                    Save 26%
-                  </span>
-                  <span className="bg-gray-400 text-white text-xs font-bold px-4 py-1.5 rounded-full">
-                    Sold Out
-                  </span>
-                </div>
-                <div className="relative bg-gray-100 aspect-square flex items-center justify-center overflow-hidden">
-                  <img src="/product-2.jpg" alt="Product" className="w-full h-full object-cover group-hover:hidden" />
-                  <img src="/product-2-hover.jpg" alt="Product Hover" className="w-full h-full object-cover hidden group-hover:block" />
-                </div>
-                <div className="bg-gray-50 p-5">
-                  <div className="flex items-start justify-between mb-2">
-                    <div>
-                      <p className="text-gray-500 text-xs mb-1 uppercase tracking-wide">PEPT</p>
-                      <h3 className="text-gray-900 text-base">Ret Pen 12mg</h3>
-                    </div>
-                    <div className="text-right">
-                      <p className="text-red-500 font-semibold text-base">Dhs. 1,399.00</p>
-                      <p className="text-gray-400 text-sm line-through">Dhs. 1,899.00</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Product Card 3 */}
-            <div className="flex-none w-80">
-              <div className="relative bg-white rounded-3xl overflow-hidden shadow-sm hover:shadow-xl transition-shadow group">
-                <div className="absolute top-4 left-4 flex flex-col gap-2 z-10">
-                  <span className="bg-red-500 text-white text-xs font-bold px-4 py-1.5 rounded-full">
-                    Save 30%
-                  </span>
-                  <span className="bg-gray-400 text-white text-xs font-bold px-4 py-1.5 rounded-full">
-                    Sold Out
-                  </span>
-                </div>
-                <div className="relative bg-gray-100 aspect-square flex items-center justify-center overflow-hidden">
-                  <img src="/product-3.jpg" alt="Product" className="w-full h-full object-cover group-hover:hidden" />
-                  <img src="/product-3-hover.jpg" alt="Product Hover" className="w-full h-full object-cover hidden group-hover:block" />
-                </div>
-                <div className="bg-gray-50 p-5">
-                  <div className="flex items-start justify-between mb-2">
-                    <div>
-                      <p className="text-gray-500 text-xs mb-1 uppercase tracking-wide">PEPT</p>
-                      <h3 className="text-gray-900 text-base">CJC/Ipamorelin 5/5mg</h3>
-                    </div>
-                    <div className="text-right">
-                      <p className="text-red-500 font-semibold text-base">Dhs. 699.00</p>
-                      <p className="text-gray-400 text-sm line-through">Dhs. 999.00</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Product Card 4 */}
-            <div className="flex-none w-80">
-              <div className="relative bg-white rounded-3xl overflow-hidden shadow-sm hover:shadow-xl transition-shadow group">
-                <div className="absolute top-4 left-4 flex flex-col gap-2 z-10">
-                  <span className="bg-red-500 text-white text-xs font-bold px-4 py-1.5 rounded-full">
-                    Save 20%
-                  </span>
-                  <span className="bg-gray-400 text-white text-xs font-bold px-4 py-1.5 rounded-full">
-                    Sold Out
-                  </span>
-                </div>
-                <div className="relative bg-gray-100 aspect-square flex items-center justify-center overflow-hidden">
-                  <img src="/product-4.jpg" alt="Product" className="w-full h-full object-cover group-hover:hidden" />
-                  <img src="/product-4-hover.jpg" alt="Product Hover" className="w-full h-full object-cover hidden group-hover:block" />
-                </div>
-                <div className="bg-gray-50 p-5">
-                  <div className="flex items-start justify-between mb-2">
-                    <div>
-                      <p className="text-gray-500 text-xs mb-1 uppercase tracking-wide">PEPT</p>
-                      <h3 className="text-gray-900 text-base">TB500 + BPC-157</h3>
-                    </div>
-                    <div className="text-right">
-                      <p className="text-red-500 font-semibold text-base">Dhs. 799.00</p>
-                      <p className="text-gray-400 text-sm line-through">Dhs. 999.00</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Product Card 5 - Partially visible */}
-            <div className="flex-none w-80">
-              <div className="relative bg-white rounded-3xl overflow-hidden shadow-sm hover:shadow-xl transition-shadow group">
-                <div className="absolute top-4 left-4 flex flex-col gap-2 z-10">
-                  <span className="bg-red-500 text-white text-xs font-bold px-4 py-1.5 rounded-full">
-                    Save 33%
-                  </span>
-                  <span className="bg-gray-400 text-white text-xs font-bold px-4 py-1.5 rounded-full">
-                    Sold Out
-                  </span>
-                </div>
-                <div className="relative bg-gray-100 aspect-square flex items-center justify-center overflow-hidden">
-                  <img src="/product-5.jpg" alt="Product" className="w-full h-full object-cover group-hover:hidden" />
-                  <img src="/product-5-hover.jpg" alt="Product Hover" className="w-full h-full object-cover hidden group-hover:block" />
-                </div>
-                <div className="bg-gray-50 p-5">
-                  <div className="flex items-start justify-between mb-2">
-                    <div>
-                      <p className="text-gray-500 text-xs mb-1 uppercase tracking-wide">PEPT</p>
-                      <h3 className="text-gray-900 text-base">Rapid Fat Loss Stack</h3>
-                    </div>
-                    <div className="text-right">
-                      <p className="text-red-500 font-semibold text-base">Dhs. 1,299.00</p>
-                      <p className="text-gray-400 text-sm line-through">Dhs. 1,899.00</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
+            )}
           </div>
         </div>
       </section>
@@ -344,13 +376,13 @@ export default function HomePage() {
 
       {/* Build Your Stack Section */}
       <section className="py-16 bg-white">
-        <div className="px-6 sm:px-8 lg:px-12">
+        <div className="px-6 sm:px-8 md:px-12 lg:px-12 xl:px-12 2xl:px-48">
           {/* Section Header */}
           <div className="mb-8">
-            <h2 className="text-4xl md:text-5xl font-extrabold text-gray-900 mb-4">
+            <h2 className="text-4xl md:text-5xl lg:text-5xl xl:text-5xl 2xl:text-7xl font-bold text-gray-900 mb-4">
               Build Your Stack
             </h2>
-            <p className="text-gray-600 text-base max-w-2xl">
+            <p className="text-gray-600 text-base lg:text-base xl:text-lg 2xl:text-xl max-w-2xl">
               The choice is yours. With our stack builder, you can select any combination from our range of products.
             </p>
           </div>
@@ -359,121 +391,160 @@ export default function HomePage() {
           <div className="grid lg:grid-cols-4 gap-6">
             {/* Stack Cards Container */}
             <div className="lg:col-span-3 grid md:grid-cols-3 gap-6">
-              {/* Recomp Stack Card */}
-              <div className="relative bg-white rounded-3xl overflow-hidden shadow-sm hover:shadow-xl transition-shadow">
-                {/* Badges */}
-                <div className="absolute top-4 left-4 flex flex-col gap-2 z-10">
-                  <span className="bg-red-500 text-white text-xs font-bold px-4 py-1.5 rounded-full">
-                    Save 31%
-                  </span>
-                  <span className="bg-gray-400 text-white text-xs font-bold px-4 py-1.5 rounded-full">
-                    Sold Out
-                  </span>
-                </div>
-
-                {/* Product Image */}
-                <div className="relative bg-gray-100 aspect-square flex items-center justify-center overflow-hidden">
-                  <img src="/stack-1.jpg" alt="Recomp Stack" className="w-full h-full object-cover" />
-                </div>
-
-                {/* Product Info */}
-                <div className="bg-gray-50 p-5">
-                  <div className="flex items-start justify-between mb-4">
-                    <div>
-                      <p className="text-gray-500 text-xs mb-1 uppercase tracking-wide">PEPT</p>
-                      <h3 className="text-gray-900 text-base">Recomp Stack</h3>
+              {stackProducts.length > 0 ? (
+                stackProducts.map((product) => (
+                  <div key={product.id} className="relative bg-white rounded-3xl overflow-hidden shadow-sm hover:shadow-xl transition-shadow">
+                    {/* Badges */}
+                    <div className="absolute top-4 left-4 flex flex-col gap-2 z-10">
+                      {product.onSale && product.regularPrice && product.salePrice && (
+                        <span className="bg-red-500 text-white text-xs lg:text-xs xl:text-sm 2xl:text-sm font-bold px-4 py-1.5 rounded-full">
+                          Save {Math.round(((parseFloat(product.regularPrice) - parseFloat(product.salePrice)) / parseFloat(product.regularPrice)) * 100)}%
+                        </span>
+                      )}
+                      {product.stockStatus !== 'instock' && (
+                        <span className="bg-gray-400 text-white text-xs lg:text-xs xl:text-sm 2xl:text-sm font-bold px-4 py-1.5 rounded-full">
+                          Sold Out
+                        </span>
+                      )}
                     </div>
-                    <div className="text-right">
-                      <p className="text-red-500 font-semibold text-base">Dhs. 1,999.00</p>
-                      <p className="text-gray-400 text-sm line-through">Dhs. 2,899.00</p>
+
+                    {/* Product Image */}
+                    <div className="relative bg-gray-100 aspect-square flex items-center justify-center overflow-hidden">
+                      {product.images && product.images.length > 0 ? (
+                        <img 
+                          src={product.images[0] || '/placeholder.jpg'} 
+                          alt={product.name} 
+                          className="w-full h-full object-cover" 
+                        />
+                      ) : (
+                        <div className="w-full h-full bg-gradient-to-br from-gray-200 to-gray-300" />
+                      )}
+                    </div>
+
+                    {/* Product Info */}
+                    <div className="bg-gray-50 p-5">
+                      <div className="flex items-start justify-between mb-4">
+                        <div>
+                          <p className="text-gray-500 text-xs lg:text-xs xl:text-sm 2xl:text-sm mb-1 uppercase tracking-wide">
+                            {product.categories && product.categories.length > 0 ? product.categories[0] : 'PEPT'}
+                          </p>
+                          <h3 className="text-gray-900 text-base lg:text-base xl:text-lg 2xl:text-xl">{product.name}</h3>
+                        </div>
+                        <div className="text-right">
+                          <p className="text-red-500 font-semibold text-base lg:text-base xl:text-lg 2xl:text-xl">
+                            Dhs. {parseFloat(product.price).toFixed(2)}
+                          </p>
+                          {product.onSale && product.regularPrice && parseFloat(product.regularPrice) > parseFloat(product.price) && (
+                            <p className="text-gray-400 text-sm lg:text-sm xl:text-base 2xl:text-lg line-through">
+                              Dhs. {parseFloat(product.regularPrice).toFixed(2)}
+                            </p>
+                          )}
+                        </div>
+                      </div>
+                      
+                      {/* Add to Stack or Sold Out Button */}
+                      {product.stockStatus === 'instock' ? (
+                        <button 
+                          onClick={() => addToStack(product)}
+                          className="w-full bg-gray-900 text-white font-semibold py-3 text-base lg:text-base xl:text-base 2xl:text-lg rounded-full hover:bg-gray-800 transition-colors"
+                        >
+                          Add to Stack
+                        </button>
+                      ) : (
+                        <button 
+                          className="w-full bg-gray-600 text-white font-semibold py-3 text-base lg:text-base xl:text-base 2xl:text-lg rounded-full cursor-not-allowed" 
+                          disabled
+                        >
+                          Sold Out
+                        </button>
+                      )}
                     </div>
                   </div>
-                  
-                  {/* Sold Out Button */}
-                  <button className="w-full bg-gray-600 text-white font-semibold py-3 rounded-full cursor-not-allowed" disabled>
-                    Sold Out
-                  </button>
-                </div>
-              </div>
-
-              {/* Rapid Fat Loss Stack Card */}
-              <div className="relative bg-white rounded-3xl overflow-hidden shadow-sm hover:shadow-xl transition-shadow">
-                <div className="absolute top-4 left-4 flex flex-col gap-2 z-10">
-                  <span className="bg-red-500 text-white text-xs font-bold px-4 py-1.5 rounded-full">
-                    Save 33%
-                  </span>
-                  <span className="bg-gray-400 text-white text-xs font-bold px-4 py-1.5 rounded-full">
-                    Sold Out
-                  </span>
-                </div>
-                <div className="relative bg-gray-100 aspect-square flex items-center justify-center overflow-hidden">
-                  <img src="/stack-2.jpg" alt="Rapid Fat Loss Stack" className="w-full h-full object-cover" />
-                </div>
-                <div className="bg-gray-50 p-5">
-                  <div className="flex items-start justify-between mb-4">
-                    <div>
-                      <p className="text-gray-500 text-xs mb-1 uppercase tracking-wide">PEPT</p>
-                      <h3 className="text-gray-900 text-base">Rapid Fat Loss Stack</h3>
-                    </div>
-                    <div className="text-right">
-                      <p className="text-red-500 font-semibold text-base">Dhs. 1,999.00</p>
-                      <p className="text-gray-400 text-sm line-through">Dhs. 2,899.00</p>
+                ))
+              ) : (
+                // Show placeholder cards while loading
+                [1, 2, 3].map((i) => (
+                  <div key={i} className="relative bg-white rounded-3xl overflow-hidden shadow-sm">
+                    <div className="relative bg-gray-100 aspect-square animate-pulse" />
+                    <div className="bg-gray-50 p-5">
+                      <div className="h-4 bg-gray-200 rounded mb-2 animate-pulse" />
+                      <div className="h-6 bg-gray-200 rounded mb-4 animate-pulse" />
+                      <div className="h-12 bg-gray-200 rounded animate-pulse" />
                     </div>
                   </div>
-                  <button className="w-full bg-gray-600 text-white font-semibold py-3 rounded-full cursor-not-allowed" disabled>
-                    Sold Out
-                  </button>
-                </div>
-              </div>
-
-              {/* Performance Stack Card */}
-              <div className="relative bg-white rounded-3xl overflow-hidden shadow-sm hover:shadow-xl transition-shadow">
-                <div className="absolute top-4 left-4 flex flex-col gap-2 z-10">
-                  <span className="bg-red-500 text-white text-xs font-bold px-4 py-1.5 rounded-full">
-                    Save 30%
-                  </span>
-                  <span className="bg-gray-400 text-white text-xs font-bold px-4 py-1.5 rounded-full">
-                    Sold Out
-                  </span>
-                </div>
-                <div className="relative bg-gray-100 aspect-square flex items-center justify-center overflow-hidden">
-                  <img src="/stack-3.jpg" alt="Performance Stack" className="w-full h-full object-cover" />
-                </div>
-                <div className="bg-gray-50 p-5">
-                  <div className="flex items-start justify-between mb-4">
-                    <div>
-                      <p className="text-gray-500 text-xs mb-1 uppercase tracking-wide">PEPT</p>
-                      <h3 className="text-gray-900 text-base">Performance Stack</h3>
-                    </div>
-                    <div className="text-right">
-                      <p className="text-red-500 font-semibold text-base">Dhs. 1,399.00</p>
-                      <p className="text-gray-400 text-sm line-through">Dhs. 1,899.00</p>
-                    </div>
-                  </div>
-                  <button className="w-full bg-gray-600 text-white font-semibold py-3 rounded-full cursor-not-allowed" disabled>
-                    Sold Out
-                  </button>
-                </div>
-              </div>
+                ))
+              )}
             </div>
 
             {/* Your Stack Card */}
             <div className="lg:col-span-1">
               <div className="bg-white border-4 border-gray-900 rounded-3xl p-8 sticky top-24 min-h-[400px] flex flex-col">
-                <h3 className="text-3xl font-extrabold text-gray-900 mb-auto">Your Stack</h3>
+                <h3 className="text-3xl lg:text-3xl xl:text-4xl 2xl:text-5xl font-extrabold text-gray-900 mb-4">Your Stack</h3>
                 
-                {/* Empty space */}
-                <div className="flex-grow"></div>
+                {/* Stack Items */}
+                <div className="flex-grow overflow-y-auto max-h-[300px] mb-4">
+                  {stackItems.length > 0 ? (
+                    <div className="space-y-3">
+                      {stackItems.map((item, index) => (
+                        <div key={`${item.id}-${index}`} className="flex items-center gap-3 bg-gray-50 p-3 rounded-xl">
+                          {/* Product Image */}
+                          <div className="w-16 h-16 flex-shrink-0 bg-gray-100 rounded-lg overflow-hidden">
+                            {item.image || (item.images && item.images.length > 0) ? (
+                              <img 
+                                src={item.image || item.images[0]} 
+                                alt={item.name}
+                                className="w-full h-full object-cover"
+                              />
+                            ) : (
+                              <div className="w-full h-full bg-gradient-to-br from-gray-200 to-gray-300" />
+                            )}
+                          </div>
+                          
+                          {/* Product Info */}
+                          <div className="flex-1 min-w-0">
+                            <p className="text-sm font-medium text-gray-900 line-clamp-1">{item.name}</p>
+                            <p className="text-xs text-gray-500">Dhs. {parseFloat(item.price).toFixed(2)}</p>
+                          </div>
+                          
+                          {/* Remove Button */}
+                          <button
+                            onClick={() => removeFromStack(item.id)}
+                            className="flex-shrink-0 text-red-500 hover:text-red-700 transition-colors"
+                            aria-label="Remove from stack"
+                          >
+                            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                          </button>
+                        </div>
+                      ))}
+                    </div>
+                  ) : (
+                    <div className="flex items-center justify-center h-full">
+                      <p className="text-gray-400 text-sm text-center">Your stack is empty.<br />Add products to build your stack!</p>
+                    </div>
+                  )}
+                </div>
                 
                 {/* Total Section */}
-                <div className="flex justify-between items-center mb-6">
-                  <span className="text-gray-900 font-semibold text-lg">Total</span>
-                  <span className="text-gray-900 font-bold text-lg">Dhs. 0.00 AED</span>
+                <div className="flex justify-between items-center mb-6 pt-4 border-t-2 border-gray-200">
+                  <span className="text-gray-900 font-semibold text-lg lg:text-lg xl:text-xl 2xl:text-2xl">Total</span>
+                  <span className="text-gray-900 font-bold text-lg lg:text-lg xl:text-xl 2xl:text-2xl">
+                    Dhs. {getStackTotal().toFixed(2)}
+                  </span>
                 </div>
 
                 {/* Add to Cart Button */}
-                <button className="w-full bg-gray-600 text-white font-semibold py-4 rounded-full cursor-not-allowed" disabled>
-                  Add to cart
+                <button 
+                  onClick={addStackToCart}
+                  className={`w-full font-semibold py-4 text-base lg:text-base xl:text-base 2xl:text-lg rounded-full transition-colors ${
+                    stackItems.length > 0
+                      ? 'bg-gray-900 text-white hover:bg-gray-800'
+                      : 'bg-gray-600 text-white cursor-not-allowed'
+                  }`}
+                  disabled={stackItems.length === 0}
+                >
+                  Add to cart ({stackItems.length})
                 </button>
               </div>
             </div>
@@ -483,9 +554,9 @@ export default function HomePage() {
 
       {/* Why Peptive Peptides Section */}
       <section className="py-16 bg-white">
-        <div className="px-6 sm:px-8 lg:px-12">
+        <div className="px-6 sm:px-8 md:px-12 lg:px-12 xl:px-12 2xl:px-48">
           {/* Section Title */}
-          <h2 className="text-4xl md:text-5xl font-bold text-center text-gray-900 mb-12">
+          <h2 className="text-4xl md:text-5xl lg:text-5xl xl:text-5xl 2xl:text-7xl font-bold text-center text-gray-900 mb-12">
             Why Peptive Peptides?
           </h2>
 
@@ -493,15 +564,15 @@ export default function HomePage() {
           <div className="grid md:grid-cols-3 gap-6 mb-16">
             {/* Precision-Focused Card */}
             <div className="bg-[#f6f6f6] rounded-xl p-6 hover:shadow-md transition-shadow">
-              <div className="flex items-start gap-4">
-                <div className="w-8 h-8 bg-white rounded-md flex items-center justify-center flex-shrink-0 shadow-sm">
-                  <svg className="w-4 h-4 text-gray-900" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <div className="flex flex-col items-center text-center">
+                <div className="w-12 h-12 bg-white rounded-md flex items-center justify-center mb-4 shadow-sm">
+                  <svg className="w-6 h-6 text-gray-900" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
                   </svg>
                 </div>
                 <div>
-                  <h3 className="text-sm font-bold text-gray-900 mb-1">Precision-Focused</h3>
-                  <p className="text-xs text-gray-600 leading-relaxed">
+                  <h3 className="text-base lg:text-lg xl:text-xl font-bold text-gray-900 mb-2">Precision-Focused</h3>
+                  <p className="text-sm lg:text-base text-gray-600 leading-relaxed font-normal">
                     Small-batch synthesis with exact amino-acid sequencing.
                   </p>
                 </div>
@@ -510,15 +581,15 @@ export default function HomePage() {
 
             {/* No Middlemen Card */}
             <div className="bg-[#f6f6f6] rounded-xl p-6 hover:shadow-md transition-shadow">
-              <div className="flex items-start gap-4">
-                <div className="w-8 h-8 bg-white rounded-md flex items-center justify-center flex-shrink-0 shadow-sm">
-                  <svg className="w-4 h-4 text-gray-900" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <div className="flex flex-col items-center text-center">
+                <div className="w-12 h-12 bg-white rounded-md flex items-center justify-center mb-4 shadow-sm">
+                  <svg className="w-6 h-6 text-gray-900" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
                   </svg>
                 </div>
                 <div>
-                  <h3 className="text-sm font-bold text-gray-900 mb-1">No Middlemen</h3>
-                  <p className="text-xs text-gray-600 leading-relaxed">
+                  <h3 className="text-base lg:text-lg xl:text-xl font-bold text-gray-900 mb-2">No Middlemen</h3>
+                  <p className="text-sm lg:text-base text-gray-600 leading-relaxed font-normal">
                     Direct from Swiss facility to your fridge.
                   </p>
                 </div>
@@ -527,15 +598,15 @@ export default function HomePage() {
 
             {/* Boldly Disruptive Card */}
             <div className="bg-[#f6f6f6] rounded-xl p-6 hover:shadow-md transition-shadow">
-              <div className="flex items-start gap-4">
-                <div className="w-8 h-8 bg-white rounded-md flex items-center justify-center flex-shrink-0 shadow-sm">
-                  <svg className="w-4 h-4 text-gray-900" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+              <div className="flex flex-col items-center text-center">
+                <div className="w-12 h-12 bg-white rounded-md flex items-center justify-center mb-4 shadow-sm">
+                  <svg className="w-6 h-6 text-gray-900" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
                   </svg>
                 </div>
                 <div>
-                  <h3 className="text-sm font-bold text-gray-900 mb-1">Boldly Disruptive</h3>
-                  <p className="text-xs text-gray-600 leading-relaxed">
+                  <h3 className="text-base lg:text-lg xl:text-xl font-bold text-gray-900 mb-2">Boldly Disruptive</h3>
+                  <p className="text-sm lg:text-base text-gray-600 leading-relaxed font-normal">
                     We say what legacy pharma won&apos;t: better biology is DIY.
                   </p>
                 </div>
@@ -544,10 +615,10 @@ export default function HomePage() {
           </div>
 
           {/* Marquee Section */}
-          <div className="relative overflow-hidden bg-white py-8 -mx-6 sm:-mx-8 lg:-mx-12">
+          <div className="relative overflow-hidden bg-white py-8 -mx-6 sm:-mx-8 md:-mx-12 lg:-mx-12 xl:-mx-12 2xl:-mx-48">
             <div className="flex animate-marquee-fast whitespace-nowrap">
               <div className="flex items-center gap-12 px-6">
-                <span className="relative inline-block text-4xl md:text-5xl font-black text-gray-900 pb-3">
+                <span className="relative inline-block text-4xl md:text-5xl lg:text-5xl xl:text-5xl 2xl:text-8xl font-black text-gray-900 pb-3">
                   PEPTIVE PEPTIDES
                   <svg className="absolute -bottom-1 left-0 w-full h-2 animate-wave" viewBox="0 0 200 10" preserveAspectRatio="none">
                     <path d="M0,5 Q25,0 50,5 T100,5 T150,5 T200,5" stroke="url(#gradient)" strokeWidth="2" fill="none" />
@@ -560,36 +631,36 @@ export default function HomePage() {
                   </svg>
                 </span>
                 <span className="w-1.5 h-1.5 rounded-full bg-gray-400"></span>
-                <span className="text-4xl md:text-5xl font-black text-gray-900">Research Grade Peptides</span>
+                <span className="text-4xl md:text-5xl lg:text-5xl xl:text-5xl font-black text-gray-900">Research Grade Peptides</span>
                 <span className="w-1.5 h-1.5 rounded-full bg-gray-400"></span>
-                <span className="relative inline-block text-4xl md:text-5xl font-black text-gray-900 pb-3">
+                <span className="relative inline-block text-4xl md:text-5xl lg:text-5xl xl:text-5xl font-black text-gray-900 pb-3">
                   PEPTIVE PEPTIDES
                   <svg className="absolute -bottom-1 left-0 w-full h-2 animate-wave" viewBox="0 0 200 10" preserveAspectRatio="none">
                     <path d="M0,5 Q25,0 50,5 T100,5 T150,5 T200,5" stroke="url(#gradient)" strokeWidth="2" fill="none" />
                   </svg>
                 </span>
                 <span className="w-1.5 h-1.5 rounded-full bg-gray-400"></span>
-                <span className="text-4xl md:text-5xl font-black text-gray-900">Research Grade Peptides</span>
+                <span className="text-4xl md:text-5xl lg:text-5xl xl:text-5xl 2xl:text-8xl font-black text-gray-900">Research Grade Peptides</span>
                 <span className="w-1.5 h-1.5 rounded-full bg-gray-400"></span>
               </div>
               <div className="flex items-center gap-12 px-6">
-                <span className="relative inline-block text-4xl md:text-5xl font-black text-gray-900 pb-3">
+                <span className="relative inline-block text-4xl md:text-5xl lg:text-5xl xl:text-5xl 2xl:text-8xl font-black text-gray-900 pb-3">
                   PEPTIVE PEPTIDES
                   <svg className="absolute -bottom-1 left-0 w-full h-2 animate-wave" viewBox="0 0 200 10" preserveAspectRatio="none">
                     <path d="M0,5 Q25,0 50,5 T100,5 T150,5 T200,5" stroke="url(#gradient)" strokeWidth="2" fill="none" />
                   </svg>
                 </span>
                 <span className="w-1.5 h-1.5 rounded-full bg-gray-400"></span>
-                <span className="text-4xl md:text-5xl font-black text-gray-900">Research Grade Peptides</span>
+                <span className="text-4xl md:text-5xl lg:text-5xl xl:text-5xl font-black text-gray-900">Research Grade Peptides</span>
                 <span className="w-1.5 h-1.5 rounded-full bg-gray-400"></span>
-                <span className="relative inline-block text-4xl md:text-5xl font-black text-gray-900 pb-3">
+                <span className="relative inline-block text-4xl md:text-5xl lg:text-5xl xl:text-5xl font-black text-gray-900 pb-3">
                   PEPTIVE PEPTIDES
                   <svg className="absolute -bottom-1 left-0 w-full h-2 animate-wave" viewBox="0 0 200 10" preserveAspectRatio="none">
                     <path d="M0,5 Q25,0 50,5 T100,5 T150,5 T200,5" stroke="url(#gradient)" strokeWidth="2" fill="none" />
                   </svg>
                 </span>
                 <span className="w-1.5 h-1.5 rounded-full bg-gray-400"></span>
-                <span className="text-4xl md:text-5xl font-black text-gray-900">Research Grade Peptides</span>
+                <span className="text-4xl md:text-5xl lg:text-5xl xl:text-5xl 2xl:text-8xl font-black text-gray-900">Research Grade Peptides</span>
                 <span className="w-1.5 h-1.5 rounded-full bg-gray-400"></span>
               </div>
             </div>
@@ -599,9 +670,9 @@ export default function HomePage() {
 
       {/* FAQs Section */}
       <section className="pt-6 pb-8 bg-white">
-        <div className="px-6 sm:px-8 lg:px-12">
+        <div className="px-6 sm:px-8 md:px-12 lg:px-12 xl:px-12 2xl:px-48">
           <div className="max-w-4xl mx-auto space-y-3">
-            <h2 className="text-5xl font-extrabold text-gray-900 mb-8">
+            <h2 className="text-5xl lg:text-5xl xl:text-5xl 2xl:text-7xl font-bold text-gray-900 mb-8">
               FAQs
             </h2>
             
@@ -614,7 +685,7 @@ export default function HomePage() {
                   onClick={() => toggleFaq(index)}
                   className="w-full flex items-center justify-between px-5 py-4 text-left"
                 >
-                  <span className="font-medium text-gray-900 text-base pr-6">
+                  <span className="font-medium text-gray-900 text-base lg:text-base xl:text-lg 2xl:text-xl pr-6">
                     {faq.question}
                   </span>
                   <span className="flex-shrink-0 text-gray-900 text-2xl font-light">
@@ -624,7 +695,7 @@ export default function HomePage() {
                 
                 {openFaqIndex === index && (
                   <div className="px-5 pb-4">
-                    <p className="text-gray-600 text-sm leading-relaxed">
+                    <p className="text-gray-600 text-sm lg:text-sm xl:text-base 2xl:text-lg leading-relaxed">
                       {faq.answer}
                     </p>
                   </div>

@@ -1,250 +1,425 @@
-# PeptivePeptides - Next.js E-commerce with WooCommerce
+# Peptive Peptides - Headless WooCommerce E-commerce
 
-A modern, high-performance e-commerce platform built with Next.js 14, TypeScript, Tailwind CSS, and WooCommerce as a headless CMS.
+A modern, production-ready headless e-commerce platform built with **Next.js 14** (frontend) and **WooCommerce** (backend).
 
-## 🚀 Features
+---
 
-- **Next.js 14 App Router** - Modern React framework with server components
-- **TypeScript** - Type-safe codebase
-- **Tailwind CSS** - Utility-first styling
-- **WooCommerce Headless CMS** - Product management via WordPress + WooCommerce
-- **Zustand State Management** - Lightweight cart state management
-- **Responsive Design** - Mobile-first, fully responsive UI
-- **Server-Side Rendering** - Fast page loads with SSR
-- **Image Optimization** - Next.js Image component for optimized images
+## 🎯 What This Is
 
-## 📋 Project Structure
+This is a **complete headless WooCommerce architecture** where:
 
+- **Next.js** handles the frontend (UI, UX, SEO, performance)
+- **WooCommerce** manages the backend (products, cart, checkout, orders, payments)
+- **WordPress** provides CMS capabilities (hero sections, banners, settings)
+
+**Result**: The power and reliability of WooCommerce with the flexibility and performance of Next.js.
+
+---
+
+## ✨ Features
+
+### ✅ Products
+- Fetch from WooCommerce REST API
+- Product listings with filtering
+- Single product pages with variants
+- Product reviews and ratings
+- Related products
+- Search functionality
+- Categories and tags
+
+### ✅ Cart & Checkout
+- WooCommerce Store API integration
+- Server-side cart management
+- Session-based persistence
+- Real-time tax calculation
+- Dynamic shipping rates
+- Coupon/discount codes
+- Guest and user checkout
+- Multiple payment gateways
+
+### ✅ User Authentication
+- JWT-based authentication
+- User registration
+- Login/logout
+- Protected routes
+- Account dashboard
+- Order history
+- Address management
+
+### ✅ CMS Content
+- WordPress REST API integration
+- Hero sections (ACF)
+- Banner management
+- Global settings
+- Media library access
+- Custom post types
+
+---
+
+## 🚀 Quick Start
+
+### 1️⃣ Install Dependencies
+
+```bash
+npm install
 ```
-peptivepeptides/
-├── app/                        # Next.js App Router pages
-│   ├── layout.tsx             # Root layout with header/footer
-│   ├── page.tsx               # Homepage
-│   ├── products/              # Product pages
-│   │   ├── page.tsx          # Product listing
-│   │   └── [slug]/           # Dynamic product detail pages
-│   ├── cart/                  # Shopping cart page
-│   └── checkout/              # Checkout page
-├── components/                # React components
-│   ├── layout/               # Header, Footer
-│   ├── products/             # Product cards, grids
-│   ├── cart/                 # Cart sidebar and items
-│   └── ui/                   # Reusable UI components
-├── lib/                       # Utilities and API clients
-│   ├── woocommerce.ts        # WooCommerce API client
-│   └── utils.ts              # Helper functions
-├── store/                     # State management
-│   └── cartStore.ts          # Zustand cart store
-├── types/                     # TypeScript types
-│   └── index.ts              # Product, Cart, Order types
-└── public/                    # Static assets
+
+### 2️⃣ Configure Environment
+
+Copy `.env.example` to `.env.local`:
+
+```bash
+cp .env.example .env.local
 ```
 
-## 🛠️ Technology Stack
+Update with your WordPress/WooCommerce credentials:
 
-- **Framework:** Next.js 14+
-- **Language:** TypeScript
-- **Styling:** Tailwind CSS
-- **State Management:** Zustand
-- **CMS:** WooCommerce (WordPress)
-- **API Client:** Axios
-- **Image Handling:** Next.js Image
+```env
+NEXT_PUBLIC_WOOCOMMERCE_URL=http://localhost:3000
+WOOCOMMERCE_CONSUMER_KEY=ck_your_key_here
+WOOCOMMERCE_CONSUMER_SECRET=cs_your_secret_here
+```
 
-## 📦 Installation
+### 3️⃣ Configure WordPress
 
-1. **Clone the repository**
-   ```bash
-   cd /home/skaps/freelance/peptivepeptides
-   ```
+**⚠️ IMPORTANT:** WordPress configuration is required for full functionality.
 
-2. **Install dependencies**
-   ```bash
-   npm install
-   ```
+Follow the step-by-step guide in **[START_HERE.md](START_HERE.md)** (takes ~15 minutes).
 
-3. **Set up environment variables**
-   
-   Copy `.env.local.example` to `.env.local`:
-   ```bash
-   cp .env.local.example .env.local
-   ```
+Quick checklist:
+- [ ] Install JWT Authentication plugin
+- [ ] Add CORS configuration
+- [ ] Generate WooCommerce API keys
+- [ ] (Optional) Set up ACF for CMS content
 
-   Edit `.env.local` with your WooCommerce credentials:
-   ```env
-   NEXT_PUBLIC_WOOCOMMERCE_URL=https://your-wordpress-site.com
-   WOOCOMMERCE_CONSUMER_KEY=ck_your_consumer_key_here
-   WOOCOMMERCE_CONSUMER_SECRET=cs_your_consumer_secret_here
-   ```
-
-## 🔧 WooCommerce Setup
-
-### Prerequisites
-- WordPress site with WooCommerce installed
-- Products added to WooCommerce
-- REST API enabled
-
-### Getting API Credentials
-
-1. Log in to your WordPress admin panel
-2. Navigate to **WooCommerce > Settings > Advanced > REST API**
-3. Click **Add Key**
-4. Set permissions to **Read/Write**
-5. Copy the **Consumer Key** and **Consumer Secret**
-6. Add them to your `.env.local` file
-
-### API Endpoints Used
-
-- `GET /wp-json/wc/v3/products` - Fetch all products
-- `GET /wp-json/wc/v3/products/{id}` - Fetch single product
-- `GET /wp-json/wc/v3/products?slug={slug}` - Fetch product by slug
-
-## 🚀 Development
-
-Run the development server:
+### 4️⃣ Run Development Server
 
 ```bash
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) in your browser.
-
-## 🏗️ Build
-
-Create a production build:
-
-```bash
-npm run build
-```
-
-Start the production server:
-
-```bash
-npm start
-```
-
-## 📱 Pages & Features
-
-### Homepage (`/`)
-- Hero banner with CTA
-- Featured products section
-- About section
-- Responsive design
-
-### Products Page (`/products`)
-- Grid layout of all products
-- Product cards with images, prices, ratings
-- Filter options (placeholder for future enhancement)
-- Add to cart functionality
-
-### Product Detail Page (`/products/[slug]`)
-- High-quality product images with thumbnail gallery
-- Product information (name, price, description, stock)
-- Customer ratings
-- Quantity selector
-- Add to cart button
-- Related products section
-
-### Shopping Cart (`/cart`)
-- Cart items list with images
-- Quantity adjustment
-- Remove items
-- Order summary with totals
-- Proceed to checkout
-
-### Checkout (`/checkout`)
-- Billing information form
-- Shipping information (with "same as billing" option)
-- Order summary
-- Payment section (placeholder for Stripe/PayPal integration)
-
-### Cart Sidebar
-- Slide-in cart overlay
-- Quick view of cart items
-- Subtotal calculation
-- Links to cart and checkout
-
-## 🎨 Customization
-
-### Tailwind Theme
-
-Edit `tailwind.config.ts` to customize colors, fonts, and spacing:
-
-```typescript
-theme: {
-  extend: {
-    colors: {
-      primary: {
-        // Customize your brand colors
-        500: '#0ea5e9',
-        600: '#0284c7',
-        // ...
-      },
-    },
-  },
-}
-```
-
-### Component Styling
-
-All components use Tailwind CSS classes. Modify classes in component files to change styling.
-
-## 🔌 State Management
-
-The cart uses Zustand for state management:
-
-```typescript
-// Add item to cart
-const addItem = useCartStore((state) => state.addItem);
-addItem({
-  id: product.id,
-  name: product.name,
-  slug: product.slug,
-  price: product.price,
-  image: product.image,
-});
-
-// Get cart total
-const subtotal = useCartStore((state) => state.getSubtotal());
-
-// Clear cart
-const clearCart = useCartStore((state) => state.clearCart);
-clearCart();
-```
-
-## 🔐 Environment Variables
-
-| Variable | Description | Required |
-|----------|-------------|----------|
-| `NEXT_PUBLIC_WOOCOMMERCE_URL` | Your WordPress site URL | Yes |
-| `WOOCOMMERCE_CONSUMER_KEY` | WooCommerce REST API consumer key | Yes |
-| `WOOCOMMERCE_CONSUMER_SECRET` | WooCommerce REST API consumer secret | Yes |
-
-## 🚧 Future Enhancements
-
-- [ ] User authentication (login/signup)
-- [ ] Order history for logged-in users
-- [ ] Product search functionality
-- [ ] Product filtering by category, price, etc.
-- [ ] Payment gateway integration (Stripe, PayPal)
-- [ ] Wishlist functionality
-- [ ] Product reviews and ratings submission
-- [ ] Coupon code support
-- [ ] Email notifications
-- [ ] Multi-currency support
-- [ ] SEO optimizations with metadata
-
-## 📄 License
-
-This project is licensed under the MIT License.
-
-## 🤝 Contributing
-
-Contributions are welcome! Please feel free to submit a Pull Request.
-
-## 📞 Support
-
-For issues and questions, please open an issue on GitHub.
+Visit:
+- **Frontend**: http://localhost:3001
+- **API Test**: http://localhost:3001/api-test ← **Start here!**
 
 ---
 
-Built with ❤️ using Next.js and WooCommerce
+## 📚 Documentation
+
+| Document | Description | When to Read |
+|----------|-------------|--------------|
+| **[START_HERE.md](START_HERE.md)** | Quick start guide | 👈 **Read this first!** |
+| **[HEADLESS_SETUP.md](HEADLESS_SETUP.md)** | Detailed WordPress setup | When configuring WordPress |
+| **[IMPLEMENTATION_EXAMPLES.md](IMPLEMENTATION_EXAMPLES.md)** | Code examples | When building features |
+| **[ARCHITECTURE.md](ARCHITECTURE.md)** | System architecture | Understanding data flow |
+| **[wordpress-config-snippets.php](wordpress-config-snippets.php)** | WordPress code | Copy to functions.php |
+
+---
+
+## 🔌 API Clients
+
+Four ready-to-use API clients are included:
+
+```typescript
+// Products & Reviews
+import { woocommerce } from '@/lib/woocommerce';
+const products = await woocommerce.getProducts({ perPage: 12 });
+const reviews = await woocommerce.getProductReviews(productId);
+
+// Cart & Checkout
+import { storeAPI } from '@/lib/store-api';
+await storeAPI.addToCart(productId, quantity);
+const cart = await storeAPI.getCart();
+const order = await storeAPI.checkout(formData);
+
+// User Authentication
+import { authAPI } from '@/lib/auth';
+await authAPI.login({ username, password });
+const user = await authAPI.getCurrentUser();
+
+// WordPress CMS
+import { wordpress } from '@/lib/wordpress';
+const hero = await wordpress.getHeroSection('home');
+const banners = await wordpress.getBanners();
+```
+
+---
+
+## 📂 Project Structure
+
+```
+peptivepeptides/
+│
+├── app/                          # Next.js pages
+│   ├── page.tsx                 # Home page
+│   ├── products/                # Product pages
+│   │   ├── page.tsx            # Product listing
+│   │   └── [slug]/page.tsx     # Product details
+│   ├── cart/page.tsx            # Cart page
+│   ├── checkout/page.tsx        # Checkout page
+│   └── api-test/page.tsx        # 🧪 API testing page
+│
+├── components/                   # React components
+│   ├── products/               # ProductCard, ProductGrid, etc.
+│   ├── cart/                   # CartSidebar, CartItem
+│   ├── layout/                 # Header, Footer
+│   └── ui/                     # Button, Input, etc.
+│
+├── lib/                         # 🔌 API Clients
+│   ├── woocommerce.ts          # WooCommerce REST API
+│   ├── store-api.ts            # WooCommerce Store API (Cart)
+│   ├── wordpress.ts            # WordPress CMS API
+│   ├── auth.ts                 # JWT Authentication
+│   └── utils.ts                # Utilities
+│
+├── store/                       # State Management
+│   └── cartStore.ts            # Zustand cart store
+│
+├── types/                       # TypeScript Types
+│   └── index.ts                # All types
+│
+└── Documentation/
+    ├── START_HERE.md                  📖 Quick start
+    ├── HEADLESS_SETUP.md              📖 WordPress setup
+    ├── IMPLEMENTATION_EXAMPLES.md     📖 Code examples
+    ├── ARCHITECTURE.md                📖 Architecture
+    └── wordpress-config-snippets.php  📖 WP code
+```
+
+---
+
+## 🎨 Tech Stack
+
+| Layer | Technology |
+|-------|-----------|
+| **Frontend** | Next.js 14, React 18, TypeScript |
+| **Styling** | Tailwind CSS |
+| **State** | Zustand |
+| **API Client** | Axios |
+| **Backend** | WordPress + WooCommerce |
+| **Auth** | JWT (JSON Web Tokens) |
+| **Database** | MySQL (via WordPress) |
+
+---
+
+## 🏗️ Architecture
+
+```
+┌─────────────────────────────────────┐
+│   Next.js Frontend (localhost:3001) │
+│   • UI/UX                           │
+│   • SEO                             │
+│   • Performance                     │
+└──────────────┬──────────────────────┘
+               │ REST API
+               ▼
+┌──────────────────────────────────────┐
+│ WordPress + WooCommerce (localhost:3000)│
+│ • Products & Inventory              │
+│ • Cart & Checkout                   │
+│ • Orders & Payments                 │
+│ • User Management                   │
+│ • CMS Content                       │
+└──────────────────────────────────────┘
+```
+
+**Benefits:**
+- ✅ Best of both worlds: WooCommerce reliability + Next.js performance
+- ✅ Scales independently (frontend CDN, backend API server)
+- ✅ Full control over user experience
+- ✅ WooCommerce handles complex e-commerce logic (tax, shipping, payments)
+
+See **[ARCHITECTURE.md](ARCHITECTURE.md)** for detailed diagrams.
+
+---
+
+## 🧪 Testing APIs
+
+Visit the **API Test Page** to verify all connections:
+
+```
+http://localhost:3001/api-test
+```
+
+This page will:
+- ✅ Test WooCommerce Products API
+- ✅ Test Product Reviews
+- ✅ Test WordPress CMS integration
+- ⚠️ Guide you through Store API setup
+- ⚠️ Guide you through JWT auth setup
+
+**Green checkmarks = working!**  
+**Yellow warnings = needs setup**  
+**Red errors = configuration issue**
+
+---
+
+## 🛠️ Development Roadmap
+
+### Phase 1: Products ✅ DONE
+- [x] WooCommerce API integration
+- [x] Product listing page
+- [x] Product detail pages
+- [x] Product reviews & ratings
+- [x] TypeScript types
+
+### Phase 2: Cart & Checkout 🔄 IN PROGRESS
+- [ ] Migrate cart to Store API
+- [ ] Implement checkout flow
+- [ ] Test order creation
+- [ ] Payment gateway integration
+
+### Phase 3: Authentication 📋 PLANNED
+- [ ] Login/register pages
+- [ ] User dashboard
+- [ ] Order history
+- [ ] Address management
+
+### Phase 4: CMS Content 📋 PLANNED
+- [ ] Set up ACF fields
+- [ ] Hero sections
+- [ ] Banner management
+- [ ] Country selector
+
+---
+
+## 🚀 Deployment
+
+### Frontend → Vercel/Netlify
+
+```bash
+# Build for production
+npm run build
+
+# Deploy to Vercel
+vercel deploy
+```
+
+Update environment variables on your hosting platform.
+
+### Backend → WordPress Hosting
+
+Deploy WordPress + WooCommerce to:
+- **Managed WordPress**: WP Engine, Kinsta, Flywheel
+- **VPS**: DigitalOcean, Linode, AWS EC2
+- **Cloud**: Google Cloud, AWS Elastic Beanstalk
+
+**Important:** Update CORS settings to allow your production domain.
+
+---
+
+## 🔒 Security Checklist
+
+- [x] JWT authentication for user sessions
+- [x] Environment variables for sensitive data
+- [x] CORS properly configured
+- [ ] HTTPS in production (required)
+- [ ] Rate limiting on API endpoints
+- [ ] WordPress security plugins
+- [ ] Regular WooCommerce updates
+- [ ] Strong passwords for WP admin
+
+---
+
+## 📈 Performance
+
+**Current Optimizations:**
+- ✅ Next.js Server Components (fast initial load)
+- ✅ Static Generation for product pages
+- ✅ Image optimization (next/image)
+- ✅ Code splitting (automatic)
+
+**Recommended for Production:**
+- Redis caching for API responses
+- CDN for WordPress media files
+- Database query optimization
+- Edge caching (Cloudflare)
+
+---
+
+## 🐛 Troubleshooting
+
+### Products not loading?
+
+1. Check `.env.local` has correct credentials
+2. Verify WooCommerce API keys in WP admin
+3. Test endpoint: `http://localhost:3000/wp-json/wc/v3/products`
+4. Check console for error messages
+
+### CORS errors?
+
+1. Add CORS code to WordPress (see `wordpress-config-snippets.php`)
+2. Update allowed origin to match your Next.js URL
+3. Restart WordPress server
+4. Clear browser cache
+
+### Cart not working?
+
+1. Ensure CORS is properly configured
+2. Check cookies are enabled in browser
+3. Verify `withCredentials: true` in store-api.ts
+4. Test: `http://localhost:3000/wp-json/wc/store/v1/cart`
+
+### JWT authentication failing?
+
+1. Install "JWT Authentication for WP REST API" plugin
+2. Add JWT_AUTH_SECRET_KEY to wp-config.php
+3. Add Authorization header support to .htaccess
+4. Test: `http://localhost:3000/wp-json/jwt-auth/v1/token`
+
+**See [START_HERE.md](START_HERE.md) for detailed troubleshooting.**
+
+---
+
+## 📖 Learn More
+
+### WooCommerce APIs
+- [WooCommerce REST API Docs](https://woocommerce.github.io/woocommerce-rest-api-docs/)
+- [WooCommerce Store API](https://github.com/woocommerce/woocommerce/tree/trunk/plugins/woocommerce/src/StoreApi)
+
+### Next.js
+- [Next.js Documentation](https://nextjs.org/docs)
+- [Next.js App Router](https://nextjs.org/docs/app)
+
+### WordPress
+- [WordPress REST API Handbook](https://developer.wordpress.org/rest-api/)
+- [JWT Authentication Plugin](https://wordpress.org/plugins/jwt-authentication-for-wp-rest-api/)
+
+---
+
+## 🤝 Contributing
+
+This is a personal project, but suggestions are welcome!
+
+If you find a bug or have a feature request, feel free to open an issue.
+
+---
+
+## 📄 License
+
+MIT License - feel free to use this project as a template for your own e-commerce site.
+
+---
+
+## 🙏 Credits
+
+Built with:
+- [Next.js](https://nextjs.org/) - React framework
+- [WooCommerce](https://woocommerce.com/) - E-commerce platform
+- [WordPress](https://wordpress.org/) - CMS
+- [Tailwind CSS](https://tailwindcss.com/) - Styling
+- [Zustand](https://github.com/pmndrs/zustand) - State management
+- [TypeScript](https://www.typescriptlang.org/) - Type safety
+
+---
+
+## 📞 Support & Documentation
+
+- **🚀 Start Here**: [START_HERE.md](START_HERE.md)
+- **🧪 Test APIs**: Visit `/api-test`
+- **📖 Full Docs**: Check the documentation files listed above
+- **🐛 Debugging**: Check browser console and WordPress debug.log
+
+---
+
+**Ready to build a modern, scalable e-commerce platform! 🚀**

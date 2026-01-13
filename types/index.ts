@@ -81,6 +81,8 @@ export interface Product {
   rating: number;
   ratingCount: number;
   relatedIds: number[];
+  attributes: WooCommerceAttribute[];
+  tags: string[];
 }
 
 // Cart Types
@@ -98,6 +100,242 @@ export interface Cart {
   totalItems: number;
   subtotal: number;
 }
+
+// ==================== PRODUCT REVIEWS ====================
+
+export interface ProductReview {
+  id: number;
+  product_id: number;
+  reviewer: string;
+  reviewer_email: string;
+  review: string;
+  rating: number;
+  date_created: string;
+  verified: boolean;
+  reviewer_avatar_urls: {
+    [key: string]: string;
+  };
+}
+
+// ==================== STORE API TYPES ====================
+
+export interface StoreCartItem {
+  key: string;
+  id: number;
+  quantity: number;
+  name: string;
+  short_description: string;
+  description: string;
+  sku: string;
+  prices: {
+    price: string;
+    regular_price: string;
+    sale_price: string;
+    currency_code: string;
+    currency_symbol: string;
+  };
+  images: Array<{
+    src: string;
+    thumbnail: string;
+    name: string;
+  }>;
+  totals: {
+    line_subtotal: string;
+    line_total: string;
+  };
+}
+
+export interface StoreCart {
+  items: StoreCartItem[];
+  items_count: number;
+  items_weight: number;
+  cross_sells: any[];
+  needs_payment: boolean;
+  needs_shipping: boolean;
+  has_calculated_shipping: boolean;
+  shipping_address: {
+    first_name: string;
+    last_name: string;
+    company: string;
+    address_1: string;
+    address_2: string;
+    city: string;
+    state: string;
+    postcode: string;
+    country: string;
+  };
+  billing_address: {
+    first_name: string;
+    last_name: string;
+    company: string;
+    address_1: string;
+    address_2: string;
+    city: string;
+    state: string;
+    postcode: string;
+    country: string;
+    email: string;
+    phone: string;
+  };
+  totals: {
+    total_items: string;
+    total_items_tax: string;
+    total_fees: string;
+    total_fees_tax: string;
+    total_discount: string;
+    total_discount_tax: string;
+    total_shipping: string;
+    total_shipping_tax: string;
+    total_tax: string;
+    total_price: string;
+    currency_code: string;
+    currency_symbol: string;
+  };
+  shipping_rates: Array<{
+    package_id: number;
+    name: string;
+    destination: any;
+    items: any[];
+    shipping_rates: Array<{
+      rate_id: string;
+      name: string;
+      description: string;
+      delivery_time: string;
+      price: string;
+      selected: boolean;
+    }>;
+  }>;
+  coupons: Array<{
+    code: string;
+    discount_type: string;
+    totals: {
+      total_discount: string;
+      total_discount_tax: string;
+    };
+  }>;
+  errors: any[];
+}
+
+export interface StoreCheckoutData {
+  billing_address: {
+    first_name: string;
+    last_name: string;
+    company?: string;
+    address_1: string;
+    address_2?: string;
+    city: string;
+    state: string;
+    postcode: string;
+    country: string;
+    email: string;
+    phone: string;
+  };
+  shipping_address?: {
+    first_name: string;
+    last_name: string;
+    company?: string;
+    address_1: string;
+    address_2?: string;
+    city: string;
+    state: string;
+    postcode: string;
+    country: string;
+  };
+  payment_method: string;
+  customer_note?: string;
+  create_account?: boolean;
+}
+
+export interface StoreOrder {
+  order_id: number;
+  status: string;
+  order_key: string;
+  customer_note: string;
+  customer_id: number;
+  billing_address: any;
+  shipping_address: any;
+  payment_method: string;
+  payment_result: {
+    payment_status: string;
+    payment_details: any[];
+    redirect_url: string;
+  };
+}
+
+// ==================== WORDPRESS CMS TYPES ====================
+
+export interface WordPressPage {
+  id: number;
+  date: string;
+  modified: string;
+  slug: string;
+  status: string;
+  type: string;
+  link: string;
+  title: {
+    rendered: string;
+  };
+  content: {
+    rendered: string;
+  };
+  excerpt: {
+    rendered: string;
+  };
+  featured_media: number;
+  acf?: {
+    [key: string]: any;
+  };
+}
+
+export interface HeroSection {
+  title: string;
+  subtitle: string;
+  image: string;
+  ctaText: string;
+  ctaLink: string;
+}
+
+export interface BannerSlide {
+  id: number;
+  title: string;
+  image: string;
+  link: string;
+  priority: number;
+  device: 'mobile' | 'desktop' | 'both';
+}
+
+export interface GlobalSettings {
+  supportedCountries: string[];
+  defaultCountry: string;
+  currencySymbol: string;
+  taxEnabled: boolean;
+}
+
+// ==================== AUTHENTICATION TYPES ====================
+
+export interface User {
+  id?: number;
+  email: string;
+  username: string;
+  displayName: string;
+  firstName?: string;
+  lastName?: string;
+  avatar?: string;
+}
+
+export interface UserLoginCredentials {
+  username: string;
+  password: string;
+}
+
+export interface UserRegistrationData {
+  username: string;
+  email: string;
+  password: string;
+  firstName?: string;
+  lastName?: string;
+}
+
 
 // Checkout Types
 export interface BillingDetails {

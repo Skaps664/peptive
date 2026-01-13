@@ -3,10 +3,13 @@
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { Product } from '@/types';
+import ProductGrid from '@/components/products/ProductGrid';
+import { wordpress } from '@/lib/wordpress';
 
 export default function ProductsPage() {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
+  const [bannerImage, setBannerImage] = useState<string | null>(null);
 
   useEffect(() => {
     async function loadProducts() {
@@ -21,6 +24,15 @@ export default function ProductsPage() {
       }
     }
     loadProducts();
+
+    // Fetch banner image
+    wordpress.getPageBySlug('site-page').then(page => {
+      console.log('Site page:', page);
+      if (page?.acf?.all_products_image) {
+        const banner = typeof page.acf.all_products_image === 'string' ? page.acf.all_products_image : page.acf.all_products_image?.url;
+        if (banner) setBannerImage(banner);
+      }
+    }).catch(console.error);
   }, []);
 
   return (
@@ -29,18 +41,31 @@ export default function ProductsPage() {
       <section className="pb-0">
         <div className="relative bg-gradient-to-br from-gray-900 via-gray-800 to-black text-white overflow-hidden rounded-t-3xl mx-2 min-h-[300px] md:min-h-[400px] flex items-center">
           {/* Background Image */}
-          <div 
-            className="absolute inset-0 bg-cover bg-center opacity-30"
-            style={{
-              backgroundImage: "url('/collection-banner.jpg')",
-            }}
-          />
+          {bannerImage && (
+            <div 
+              className="absolute inset-0 bg-cover bg-center opacity-40"
+              style={{
+                backgroundImage: `url(${bannerImage})`,
+              }}
+            />
+          )}
+          
+          {/* Geometric pattern background (fallback) */}
+          {!bannerImage && (
+            <div className="absolute inset-0 opacity-10">
+              <div className="absolute inset-0" style={{
+                backgroundImage: `radial-gradient(circle at 25px 25px, rgba(255, 255, 255, 0.2) 2%, transparent 0%), 
+                                 radial-gradient(circle at 75px 75px, rgba(255, 255, 255, 0.2) 2%, transparent 0%)`,
+                backgroundSize: '100px 100px'
+              }}></div>
+            </div>
+          )}
           
           {/* Overlay */}
           <div className="absolute inset-0 bg-gradient-to-br from-gray-900/80 via-gray-800/70 to-black/80" />
           
           {/* Content */}
-          <div className="relative px-6 sm:px-8 lg:px-12 pt-32 w-full">
+          <div className="relative px-6 sm:px-8 md:px-12 lg:px-12 xl:px-12 2xl:px-48 pt-32 w-full">
             {/* Breadcrumb */}
             <nav className="mb-6">
               <ol className="flex items-center gap-2 text-sm">
@@ -64,7 +89,7 @@ export default function ProductsPage() {
       </section>
 
       {/* Products Grid Section */}
-      <section className="px-6 sm:px-8 lg:px-12 py-12">
+      <section className="px-6 sm:px-8 md:px-12 lg:px-12 xl:px-12 2xl:px-48 py-12">
         {loading ? (
           <div className="text-center py-12">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900 mx-auto"></div>
@@ -73,83 +98,11 @@ export default function ProductsPage() {
         ) : products.length > 0 ? (
           <>
             {/* Products Grid */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-              {products.map((product) => (
-                <div key={product.id} className="relative bg-white rounded-3xl overflow-hidden shadow-sm hover:shadow-xl transition-shadow group">
-                  {/* Badges */}
-                  {(product.onSale || product.stockStatus !== 'instock') && (
-                    <div className="absolute top-4 left-4 flex flex-col gap-2 z-10">
-                      {product.onSale && product.regularPrice && product.salePrice && (
-                        <span className="bg-red-500 text-white text-xs font-bold px-4 py-1.5 rounded-full">
-                          Save {Math.round(((parseFloat(product.regularPrice) - parseFloat(product.salePrice)) / parseFloat(product.regularPrice)) * 100)}%
-                        </span>
-                      )}
-                      {product.stockStatus !== 'instock' && (
-                        <span className="bg-gray-400 text-white text-xs font-bold px-4 py-1.5 rounded-full">
-                          Sold Out
-                        </span>
-                      )}
-                    </div>
-                  )}
-
-                  {/* Product Image */}
-                  <div className="relative bg-gray-100 aspect-square flex items-center justify-center overflow-hidden">
-                    {product.images && product.images.length > 0 ? (
-                      <>
-                        <img 
-                          src={product.images[0] || '/placeholder.jpg'} 
-                          alt={product.name} 
-                          className="w-full h-full object-cover group-hover:hidden" 
-                        />
-                        <img 
-                          src={product.images[1] || product.images[0] || '/placeholder.jpg'} 
-                          alt={product.name} 
-                          className="w-full h-full object-cover hidden group-hover:block" 
-                        />
-                      </>
-                    ) : (
-                      <div className="w-full h-full bg-gradient-to-br from-gray-200 to-gray-300" />
-                    )}
-                  </div>
-
-                  {/* Product Info */}
-                  <div className="bg-gray-50 p-5">
-                    <div className="flex items-start justify-between mb-2">
-                      <div>
-                        <p className="text-gray-500 text-xs mb-1 uppercase tracking-wide">PEPT</p>
-                        <h3 className="text-gray-900 text-base">{product.name}</h3>
-                      </div>
-                      <div className="text-right">
-                        <p className="text-red-500 font-semibold text-base">
-                          Dhs. {product.price}
-                        </p>
-                        {product.onSale && product.regularPrice && (
-                          <p className="text-gray-400 text-sm line-through">
-                            Dhs. {product.regularPrice}
-                          </p>
-                        )}
-                      </div>
-                    </div>
-                    
-                    {/* View Details Button */}
-                    <Link 
-                      href={`/products/${product.slug}`}
-                      className={`block w-full text-center py-3 rounded-full font-semibold transition-colors ${
-                        product.stockStatus === 'instock'
-                          ? 'bg-gray-900 text-white hover:bg-gray-800'
-                          : 'bg-gray-600 text-white cursor-not-allowed'
-                      }`}
-                    >
-                      {product.stockStatus === 'instock' ? 'View Details' : 'Sold Out'}
-                    </Link>
-                  </div>
-                </div>
-              ))}
-            </div>
+            <ProductGrid products={products} />
             
             {/* Results Count */}
             <div className="mt-12 text-center text-gray-600">
-              Showing {products.length} products
+              Showing {products.length} {products.length === 1 ? 'product' : 'products'}
             </div>
           </>
         ) : (

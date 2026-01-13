@@ -22,59 +22,62 @@ export default function CartSidebar() {
     };
   }, [isOpen]);
 
-  if (!isOpen) return null;
-
   const subtotal = getSubtotal();
 
   return (
     <>
       {/* Overlay */}
       <div
-        className="fixed inset-0 bg-black bg-opacity-50 z-40 transition-opacity"
+        className={`fixed inset-0 bg-black transition-all duration-500 ease-in-out z-40 ${
+          isOpen ? 'bg-opacity-50 visible' : 'bg-opacity-0 invisible'
+        }`}
         onClick={closeCart}
         aria-hidden="true"
       />
 
       {/* Sidebar */}
-      <div className="fixed right-0 top-0 h-full w-full max-w-md bg-white shadow-xl z-50 flex flex-col">
+      <div 
+        className={`fixed right-0 top-0 h-full w-full sm:w-[90%] md:w-[70%] lg:w-[40%] xl:w-[30%] bg-white shadow-2xl z-50 flex flex-col transition-all duration-500 ease-in-out rounded-l-[2rem] ${
+          isOpen ? 'translate-x-0' : 'translate-x-full'
+        }`}
+      >
         {/* Header */}
-        <div className="flex items-center justify-between p-6 border-b border-gray-200">
-          <h2 className="text-xl font-bold text-gray-800">Shopping Cart</h2>
+        <div className="flex items-center justify-between p-8 border-b border-gray-100">
+          <h2 className="text-3xl font-bold text-gray-900">Cart</h2>
           <button
             onClick={closeCart}
-            className="text-gray-500 hover:text-gray-700 transition-colors"
+            className="text-gray-900 hover:text-gray-600 transition-colors p-1"
             aria-label="Close cart"
           >
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+            <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
             </svg>
           </button>
         </div>
 
         {/* Cart Items */}
-        <div className="flex-1 overflow-y-auto p-6">
+        <div className="flex-1 overflow-y-auto p-8">
           {items.length === 0 ? (
-            <div className="flex flex-col items-center justify-center h-full text-center">
-              <svg
-                className="w-24 h-24 text-gray-300 mb-4"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
+            <div className="flex flex-col items-center justify-center h-full text-center px-4">
+              <div className="mb-12 max-w-sm">
+                <h3 className="text-2xl font-bold text-gray-900 mb-3">
+                  Your cart is currently empty.
+                </h3>
+                <p className="text-base text-gray-600 mb-1">Not sure where to start?</p>
+                <p className="text-base text-gray-600">Try these collections:</p>
+              </div>
+              <button
+                onClick={closeCart}
+                className="inline-flex items-center gap-3 text-base font-medium text-gray-900 hover:gap-4 transition-all group"
               >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"
-                />
-              </svg>
-              <p className="text-gray-500 text-lg mb-4">Your cart is empty</p>
-              <Button onClick={closeCart} variant="primary">
-                Continue Shopping
-              </Button>
+                <span>Continue shopping</span>
+                <svg className="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+                </svg>
+              </button>
             </div>
           ) : (
-            <div className="space-y-2">
+            <div className="space-y-4">
               {items.map((item) => (
                 <CartItem key={item.id} item={item} />
               ))}
@@ -84,30 +87,30 @@ export default function CartSidebar() {
 
         {/* Footer */}
         {items.length > 0 && (
-          <div className="border-t border-gray-200 p-6 space-y-4">
+          <div className="border-t border-gray-100 p-8 space-y-5 bg-gray-50">
             {/* Subtotal */}
-            <div className="flex items-center justify-between text-lg font-semibold">
-              <span className="text-gray-700">Subtotal:</span>
-              <span className="text-gray-900">{formatPrice(subtotal)}</span>
+            <div className="flex items-center justify-between">
+              <span className="text-base text-gray-700 font-medium">Subtotal</span>
+              <span className="text-2xl font-bold text-gray-900">{formatPrice(subtotal)}</span>
             </div>
 
-            {/* Buttons */}
-            <div className="space-y-2">
-              <Link href="/checkout" onClick={closeCart} className="block">
-                <Button className="w-full" variant="primary" size="lg">
-                  Proceed to Checkout
-                </Button>
-              </Link>
-              <Link href="/cart" onClick={closeCart} className="block">
-                <Button className="w-full" variant="outline" size="lg">
-                  View Cart
-                </Button>
-              </Link>
-            </div>
-
-            <p className="text-xs text-gray-500 text-center">
+            <p className="text-sm text-gray-500">
               Shipping and taxes calculated at checkout
             </p>
+
+            {/* Buttons */}
+            <div className="space-y-3">
+              <Link href="/checkout" onClick={closeCart} className="block">
+                <button className="w-full bg-gray-900 text-white font-semibold py-4 text-base rounded-full hover:bg-gray-800 transition-colors">
+                  Proceed to Checkout
+                </button>
+              </Link>
+              <Link href="/cart" onClick={closeCart} className="block">
+                <button className="w-full border-2 border-gray-900 text-gray-900 font-semibold py-4 text-base rounded-full hover:bg-gray-50 transition-colors">
+                  View Cart
+                </button>
+              </Link>
+            </div>
           </div>
         )}
       </div>
