@@ -4,8 +4,10 @@ import { useState } from 'react';
 
 const languages = [
   'English',
-  'Arabic',
+  ' العربية',
 ];
+
+
 
 export default function LanguageSelector() {
   const [selectedLanguage, setSelectedLanguage] = useState('English');
