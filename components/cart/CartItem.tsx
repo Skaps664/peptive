@@ -27,8 +27,8 @@ export default function CartItem({ item }: CartItemProps) {
 
       {/* Product Details */}
       <div className="flex-1 min-w-0">
-        <h3 className="text-base md:text-lg lg:text-lg xl:text-lg 2xl:text-xl font-bold text-gray-900 mb-2">{item.name}</h3>
-        <p className="text-lg md:text-xl lg:text-xl xl:text-xl 2xl:text-2xl font-bold text-gray-900 mb-4">{formatPrice(item.price)}</p>
+        <h3 className="text-base md:text-lg lg:text-lg xl:text-lg 2xl:text-xl font-semibold text-gray-900 mb-2">{item.name}</h3>
+        <p className="text-lg md:text-xl lg:text-xl xl:text-xl 2xl:text-2xl font-semibold text-gray-900 mb-4">{formatPrice(item.price)}</p>
 
         {/* Quantity Controls */}
         <div className="flex items-center gap-3 lg:gap-3 xl:gap-3 2xl:gap-4">
@@ -39,7 +39,7 @@ export default function CartItem({ item }: CartItemProps) {
           >
             −
           </button>
-          <span className="text-base md:text-lg lg:text-lg xl:text-lg 2xl:text-xl font-bold w-10 text-center">{item.quantity}</span>
+          <span className="text-base md:text-lg lg:text-lg xl:text-lg 2xl:text-xl font-semibold w-10 text-center">{item.quantity}</span>
           <button
             onClick={() => updateQuantity(item.id, item.quantity + 1)}
             className="w-9 h-9 lg:w-9 xl:w-9 2xl:w-10 2xl:h-10 flex items-center justify-center border-2 border-gray-300 rounded-xl hover:bg-gray-900 hover:text-white hover:border-gray-900 transition-all font-bold text-lg"
@@ -54,7 +54,7 @@ export default function CartItem({ item }: CartItemProps) {
       <div className="flex flex-col items-end justify-between">
         <button
           onClick={() => removeItem(item.id)}
-          className="text-base md:text-lg lg:text-lg xl:text-lg font-bold text-red-600 hover:text-red-700 hover:underline transition-all"
+          className="text-base md:text-lg lg:text-lg xl:text-lg font-semibold text-red-600 hover:text-red-700 hover:underline transition-all"
           aria-label="Remove item"
         >
           Remove

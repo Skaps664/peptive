@@ -17,7 +17,7 @@ export default function CartPage() {
       <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-50 px-4 md:px-12 lg:px-12 xl:px-12 2xl:px-48 py-16 md:py-20 lg:py-20 xl:py-20 2xl:py-24">
         <div className="max-w-3xl mx-auto text-center py-16 lg:py-16 xl:py-16 2xl:py-24">
           <svg
-            className="w-40 h-40 lg:w-40 xl:w-40 2xl:w-48 2xl:h-48 text-gray-200 mx-auto mb-8 lg:mb-8 xl:mb-8 2xl:mb-12">
+            className="w-40 h-40 lg:w-40 xl:w-40 2xl:w-48 2xl:h-48 text-gray-200 mx-auto mb-8 lg:mb-8 xl:mb-8 2xl:mb-12"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
@@ -36,7 +36,7 @@ export default function CartPage() {
             Looks like you haven't added any items to your cart yet.
           </p>
           <Link href="/products">
-            <button className="bg-gray-900 text-white text-lg md:text-xl lg:text-xl xl:text-xl 2xl:text-2xl font-bold py-5 lg:py-5 xl:py-5 2xl:py-6 px-10 lg:px-10 xl:px-10 2xl:px-12 rounded-full hover:bg-gray-800 transform hover:scale-[1.02] transition-all duration-200 shadow-lg">
+            <button className="bg-gray-900 text-white text-lg md:text-xl lg:text-xl xl:text-xl 2xl:text-2xl font-semibold py-5 lg:py-5 xl:py-5 2xl:py-6 px-10 lg:px-10 xl:px-10 2xl:px-12 rounded-full hover:bg-gray-800 transform hover:scale-[1.02] transition-all duration-200 shadow-lg">
               Continue Shopping
             </button>
           </Link>
@@ -61,12 +61,12 @@ export default function CartPage() {
         <div className="lg:col-span-2">
           <div className="bg-white rounded-3xl shadow-xl border border-gray-100 p-8 md:p-10 lg:p-10 xl:p-10 2xl:p-12">
             <div className="flex items-center justify-between mb-8 lg:mb-8 xl:mb-8 2xl:mb-10 pb-6 border-b-2 border-gray-100">
-              <h2 className="text-2xl md:text-3xl lg:text-3xl xl:text-3xl font-bold text-gray-900">
+              <h2 className="text-2xl md:text-3xl lg:text-3xl xl:text-3xl font-semibold text-gray-900">
                 Cart Items
               </h2>
               <button
                 onClick={clearCart}
-                className="text-base md:text-lg lg:text-lg xl:text-lg font-bold text-red-600 hover:text-red-700 hover:underline transition-all"
+                className="text-base md:text-lg lg:text-lg xl:text-lg font-semibold text-red-600 hover:text-red-700 hover:underline transition-all"
               >
                 Clear Cart
               </button>
@@ -80,7 +80,7 @@ export default function CartPage() {
 
             <div className="mt-10 lg:mt-10 xl:mt-10 2xl:mt-12 pt-8 lg:pt-8 xl:pt-8 2xl:pt-10 border-t-2 border-gray-100">
               <Link href="/products">
-                <button className="border-2 border-gray-900 text-gray-900 text-base md:text-lg lg:text-lg xl:text-lg 2xl:text-xl font-bold py-4 lg:py-4 xl:py-4 2xl:py-5 px-8 lg:px-8 xl:px-8 2xl:px-10 rounded-full hover:bg-gray-50 transition-all">
+                <button className="border-2 border-gray-900 text-gray-900 text-base md:text-lg lg:text-lg xl:text-lg 2xl:text-xl font-semibold py-4 lg:py-4 xl:py-4 2xl:py-5 px-8 lg:px-8 xl:px-8 2xl:px-10 rounded-full hover:bg-gray-50 transition-all">
                   Continue Shopping
                 </button>
               </Link>
@@ -91,16 +91,16 @@ export default function CartPage() {
         {/* Order Summary */}
         <div className="lg:col-span-1">
           <div className="bg-white rounded-3xl shadow-xl border border-gray-100 p-8 md:p-10 lg:p-10 xl:p-10 2xl:p-12 sticky top-24">
-            <h2 className="text-2xl md:text-3xl lg:text-3xl xl:text-3xl font-bold text-gray-900 mb-8 lg:mb-8 xl:mb-8 2xl:mb-10">Order Summary</h2>
+            <h2 className="text-2xl md:text-3xl lg:text-3xl xl:text-3xl font-semibold text-gray-900 mb-8 lg:mb-8 xl:mb-8 2xl:mb-10">Order Summary</h2>
 
             <div className="space-y-5 lg:space-y-5 xl:space-y-5 2xl:space-y-6 mb-8">
               <div className="flex justify-between text-base md:text-lg lg:text-lg xl:text-lg 2xl:text-xl text-gray-700">
                 <span className="font-semibold">Subtotal</span>
-                <span className="font-bold">{formatPrice(subtotal)}</span>
+                <span className="font-semibold">{formatPrice(subtotal)}</span>
               </div>
               <div className="flex justify-between text-base md:text-lg lg:text-lg xl:text-lg 2xl:text-xl text-gray-700">
                 <span className="font-semibold">Estimated Tax</span>
-                <span className="font-bold">{formatPrice(estimatedTax)}</span>
+                <span className="font-semibold">{formatPrice(estimatedTax)}</span>
               </div>
               <div className="flex justify-between text-base md:text-lg lg:text-lg xl:text-lg text-gray-600">
                 <span>Shipping</span>
@@ -110,13 +110,13 @@ export default function CartPage() {
 
             <div className="border-t-2 border-gray-100 pt-6 lg:pt-6 xl:pt-6 2xl:pt-7 mb-8 lg:mb-8 xl:mb-8 2xl:mb-10">
               <div className="flex justify-between items-center">
-                <span className="text-xl md:text-2xl lg:text-2xl xl:text-2xl 2xl:text-3xl font-bold text-gray-900">Total</span>
+                <span className="text-xl md:text-2xl lg:text-2xl xl:text-2xl 2xl:text-3xl font-semibold text-gray-900">Total</span>
                 <span className="text-xl md:text-2xl lg:text-2xl xl:text-2xl 2xl:text-3xl font-extrabold text-gray-900">{formatPrice(estimatedTotal)}</span>
               </div>
             </div>
 
             <Link href="/checkout">
-              <button className="w-full bg-gray-900 text-white text-lg md:text-xl lg:text-xl xl:text-xl 2xl:text-2xl font-bold py-5 lg:py-5 xl:py-5 2xl:py-6 px-6 rounded-full hover:bg-gray-800 transform hover:scale-[1.02] transition-all duration-200 shadow-lg mb-6">
+              <button className="w-full bg-gray-900 text-white text-lg md:text-xl lg:text-xl xl:text-xl 2xl:text-2xl font-semibold py-5 lg:py-5 xl:py-5 2xl:py-6 px-6 rounded-full hover:bg-gray-800 transform hover:scale-[1.02] transition-all duration-200 shadow-lg mb-6">
                 Proceed to Checkout
               </button>
             </Link>

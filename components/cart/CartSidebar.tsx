@@ -26,41 +26,32 @@ export default function CartSidebar() {
 
   return (
     <>
-      {/* Overlay */}
-      <div
-        className={`fixed inset-0 bg-black transition-all duration-500 ease-in-out z-40 ${
-          isOpen ? 'bg-opacity-50 visible' : 'bg-opacity-0 invisible'
-        }`}
-        onClick={closeCart}
-        aria-hidden="true"
-      />
-
       {/* Sidebar */}
       <div 
-        className={`fixed right-0 top-0 h-full w-full sm:w-[90%] md:w-[70%] lg:w-[40%] xl:w-[30%] bg-white shadow-2xl z-50 flex flex-col transition-all duration-500 ease-in-out rounded-l-[2rem] ${
+        className={`fixed right-0 top-0 h-full w-full sm:w-[90%] md:w-[70%] lg:w-[40%] xl:w-[30%] bg-white shadow-2xl z-[60] flex flex-col transition-all duration-500 ease-in-out rounded-l-[2rem] ${
           isOpen ? 'translate-x-0' : 'translate-x-full'
         }`}
       >
         {/* Header */}
-        <div className="flex items-center justify-between p-8 border-b border-gray-100">
-          <h2 className="text-3xl font-bold text-gray-900">Cart</h2>
+        <div className="flex items-center justify-between p-6 sm:p-8 border-b border-gray-100">
+          <h2 className="text-2xl sm:text-3xl font-semibold text-gray-900">Cart</h2>
           <button
             onClick={closeCart}
-            className="text-gray-900 hover:text-gray-600 transition-colors p-1"
+            className="text-gray-900 hover:text-gray-600 transition-colors p-1 -mr-1"
             aria-label="Close cart"
           >
-            <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
+            <svg className="w-8 h-8 sm:w-7 sm:h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
             </svg>
           </button>
         </div>
 
         {/* Cart Items */}
-        <div className="flex-1 overflow-y-auto p-8">
+        <div className="flex-1 overflow-y-auto p-6 sm:p-8">
           {items.length === 0 ? (
             <div className="flex flex-col items-center justify-center h-full text-center px-4">
               <div className="mb-12 max-w-sm">
-                <h3 className="text-2xl font-bold text-gray-900 mb-3">
+                <h3 className="text-2xl font-semibold text-gray-900 mb-3">
                   Your cart is currently empty.
                 </h3>
                 <p className="text-base text-gray-600 mb-1">Not sure where to start?</p>
@@ -87,11 +78,11 @@ export default function CartSidebar() {
 
         {/* Footer */}
         {items.length > 0 && (
-          <div className="border-t border-gray-100 p-8 space-y-5 bg-gray-50">
+          <div className="border-t border-gray-100 p-6 sm:p-8 space-y-5 bg-gray-50">
             {/* Subtotal */}
             <div className="flex items-center justify-between">
               <span className="text-base text-gray-700 font-medium">Subtotal</span>
-              <span className="text-2xl font-bold text-gray-900">{formatPrice(subtotal)}</span>
+              <span className="text-2xl font-semibold text-gray-900">{formatPrice(subtotal)}</span>
             </div>
 
             <p className="text-sm text-gray-500">

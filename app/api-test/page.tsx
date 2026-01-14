@@ -176,7 +176,7 @@ export default async function APITestPage() {
               <ol className="list-decimal list-inside text-sm space-y-1">
                 <li>Open browser console on any page</li>
                 <li>Run: <code className="bg-gray-200 px-2 py-1 rounded">
-                  import('{`@/lib/store-api`}').then(m =&gt; m.storeAPI.getCart())
+                  import(&apos;@/lib/store-api&apos;).then(m =&gt; m.storeAPI.getCart())
                 </code></li>
                 <li>Check for cart data in response</li>
               </ol>
@@ -200,7 +200,7 @@ export default async function APITestPage() {
             <div className="bg-gray-50 p-4 rounded">
               <p className="font-semibold mb-2">Setup checklist:</p>
               <ul className="list-disc list-inside text-sm space-y-1">
-                <li>Install "JWT Authentication for WP REST API" plugin</li>
+                <li>Install &quot;JWT Authentication for WP REST API&quot; plugin</li>
                 <li>Add JWT_AUTH_SECRET_KEY to wp-config.php</li>
                 <li>Test endpoint: http://localhost:3000/wp-json/jwt-auth/v1/token</li>
                 <li>See HEADLESS_SETUP.md for detailed instructions</li>

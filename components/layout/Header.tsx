@@ -13,7 +13,6 @@ import CountrySelector from '@/components/CountrySelector';
 export default function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [logoUrl, setLogoUrl] = useState<string | null>(null);
   const itemCount = useCartStore((state) => state.getItemCount());
   const toggleCart = useCartStore((state) => state.toggleCart);
   const { t } = useLanguage();
@@ -21,15 +20,6 @@ export default function Header() {
   useEffect(() => {
     // Check if user is logged in
     setIsLoggedIn(authAPI.isLoggedIn());
-
-    // Fetch logo from ACF
-    wordpress.getPageBySlug('site-settings').then(page => {
-      console.log('Site settings page:', page);
-      if (page?.acf?.site_logo) {
-        const logo = typeof page.acf.site_logo === 'string' ? page.acf.site_logo : page.acf.site_logo?.url;
-        if (logo) setLogoUrl(logo);
-      }
-    }).catch(console.error);
   }, []);
 
   // Prevent body scroll when mobile menu is open
@@ -52,32 +42,18 @@ export default function Header() {
   ];
 
   return (
-    <header className="bg-white sticky top-0 z-[100] ">
+    <header className="bg-white sticky top-0 z-40">
       <nav className="px-6 sm:px-8 md:px-12 lg:px-12 xl:px-12 2xl:px-48">
         <div className="flex justify-between items-center h-32">
           {/* Logo */}
           <Link href="/" className="flex items-center">
-            {logoUrl ? (
-              <Image
-                src={logoUrl}
-                alt="Peptive Logo"
-                width={64}
-                height={64}
-                className="w-16 h-16 rounded-xl"
-                onError={(e) => {
-                  // @ts-ignore
-                  e.target.src = '/logo.avif';
-                }}
-              />
-            ) : (
-              <Image
-                src="/logo.avif"
-                alt="Peptive Logo"
-                width={64}
-                height={64}
-                className="w-16 h-16 rounded-xl"
-              />
-            )}
+            <Image
+              src="/logo.avif"
+              alt="Peptive Logo"
+              width={64}
+              height={64}
+              className="w-16 h-16 rounded-xl"
+            />
           </Link>
 
           {/* Desktop Navigation */}
@@ -166,18 +142,9 @@ export default function Header() {
 
         {/* Mobile Navigation Drawer */}
         <>
-          {/* Overlay */}
-          <div
-            className={`fixed inset-0 bg-black transition-all duration-500 ease-in-out z-[90] md:hidden ${
-              isMobileMenuOpen ? 'bg-opacity-50 visible' : 'bg-opacity-0 invisible'
-            }`}
-            onClick={() => setIsMobileMenuOpen(false)}
-            aria-hidden="true"
-          />
-
           {/* Drawer */}
           <div 
-            className={`fixed right-0 top-0 h-full w-full sm:w-[90%] bg-white shadow-2xl z-[100] flex flex-col transition-all duration-500 ease-in-out rounded-l-[2rem] md:hidden ${
+            className={`fixed right-0 top-0 h-full w-full sm:w-[90%] bg-white shadow-2xl z-60 flex flex-col transition-all duration-500 ease-in-out rounded-l-[2rem] md:hidden ${
               isMobileMenuOpen ? 'translate-x-0' : 'translate-x-full'
             }`}
           >

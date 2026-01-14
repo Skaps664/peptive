@@ -11,7 +11,6 @@ export default function ProductsPage() {
   const { t } = useLanguage();
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
-  const [bannerImage, setBannerImage] = useState<string | null>(null);
 
   useEffect(() => {
     async function loadProducts() {
@@ -26,15 +25,6 @@ export default function ProductsPage() {
       }
     }
     loadProducts();
-
-    // Fetch banner image
-    wordpress.getPageBySlug('site-page').then(page => {
-      console.log('Site page:', page);
-      if (page?.acf?.all_products_image) {
-        const banner = typeof page.acf.all_products_image === 'string' ? page.acf.all_products_image : page.acf.all_products_image?.url;
-        if (banner) setBannerImage(banner);
-      }
-    }).catch(console.error);
   }, []);
 
   return (
@@ -43,25 +33,12 @@ export default function ProductsPage() {
       <section className="pb-0">
         <div className="relative bg-gradient-to-br from-gray-900 via-gray-800 to-black text-white overflow-hidden rounded-t-3xl mx-2 min-h-[300px] md:min-h-[400px] flex items-center">
           {/* Background Image */}
-          {bannerImage && (
-            <div 
-              className="absolute inset-0 bg-cover bg-center opacity-40"
-              style={{
-                backgroundImage: `url(${bannerImage})`,
-              }}
-            />
-          )}
-          
-          {/* Geometric pattern background (fallback) */}
-          {!bannerImage && (
-            <div className="absolute inset-0 opacity-10">
-              <div className="absolute inset-0" style={{
-                backgroundImage: `radial-gradient(circle at 25px 25px, rgba(255, 255, 255, 0.2) 2%, transparent 0%), 
-                                 radial-gradient(circle at 75px 75px, rgba(255, 255, 255, 0.2) 2%, transparent 0%)`,
-                backgroundSize: '100px 100px'
-              }}></div>
-            </div>
-          )}
+          <div 
+            className="absolute inset-0 bg-cover bg-center opacity-40"
+            style={{
+              backgroundImage: "url('/banner.png')",
+            }}
+          />
           
           {/* Overlay */}
           <div className="absolute inset-0 bg-gradient-to-br from-gray-900/80 via-gray-800/70 to-black/80" />

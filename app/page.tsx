@@ -18,8 +18,6 @@ export default function HomePage() {
   const [stackProducts, setStackProducts] = useState<Product[]>([]);
   const [stackItems, setStackItems] = useState<Product[]>([]);
   const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(null);
-  const [heroImage, setHeroImage] = useState<string | null>(null);
-  const [logoUrl, setLogoUrl] = useState<string | null>(null);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -36,23 +34,6 @@ export default function HomePage() {
         console.error('Error loading stack:', error);
       }
     }
-
-    // Fetch ACF images
-    wordpress.getPageBySlug('site-settings').then(page => {
-      console.log('Site settings page:', page);
-      if (page?.acf?.site_logo) {
-        const logo = typeof page.acf.site_logo === 'string' ? page.acf.site_logo : page.acf.site_logo?.url;
-        if (logo) setLogoUrl(logo);
-      }
-    }).catch(console.error);
-
-    wordpress.getPageBySlug('site-page').then(page => {
-      console.log('Site page:', page);
-      if (page?.acf?.hero_image) {
-        const hero = typeof page.acf.hero_image === 'string' ? page.acf.hero_image : page.acf.hero_image?.url;
-        if (hero) setHeroImage(hero);
-      }
-    }).catch(console.error);
     
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
@@ -183,7 +164,7 @@ export default function HomePage() {
           <div 
             className="absolute inset-0 bg-cover bg-center opacity-40"
             style={{
-              backgroundImage: heroImage ? `url(${heroImage})` : "url('/hero-bg.jpg')",
+              backgroundImage: "url('/banner.png')",
               transform: `translateX(${scrollY * 0.15}px)`,
               transition: 'transform 0.1s ease-out'
             }}
@@ -227,27 +208,13 @@ export default function HomePage() {
           <h2 className="text-4xl md:text-5xl lg:text-5xl xl:text-6xl 2xl:text-7xl font-extrabold text-gray-900 inline-flex items-center justify-center flex-wrap gap-x-3">
             <span>{t('brand.research')}</span>
             <span className="inline-flex items-center justify-center w-14 h-14 lg:w-24 xl:w-24 2xl:w-24 lg:h-24 xl:h-24 2xl:h-24">
-              {logoUrl ? (
-                <Image
-                  src={logoUrl}
-                  alt="Peptive Logo"
-                  width={80}
-                  height={80}
-                  className="w-full h-full rounded-lg object-cover"
-                  onError={(e) => {
-                    // @ts-ignore
-                    e.target.src = '/logo.avif';
-                  }}
-                />
-              ) : (
-                <Image
-                  src="/logo.avif"
-                  alt="Peptive Logo"
-                  width={80}
-                  height={80}
-                  className="w-full h-full rounded-lg object-cover"
-                />
-              )}
+              <Image
+                src="/logo.avif"
+                alt="Peptive Logo"
+                width={80}
+                height={80}
+                className="w-full h-full rounded-lg object-cover"
+              />
             </span>
             <span>{t('brand.starts_with')}</span>
             <span className="relative inline-block">

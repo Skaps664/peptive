@@ -105,7 +105,7 @@ export default function AccountPage() {
               <div className="pt-4 border-t-2 border-gray-100">
                 <button
                   onClick={handleLogout}
-                  className="w-full text-left px-5 lg:px-6 py-4 lg:py-5 rounded-2xl text-base md:text-lg lg:text-xl font-bold text-red-600 hover:bg-red-50 transition-all"
+                  className="w-full text-left px-5 lg:px-6 py-4 lg:py-5 rounded-2xl text-base md:text-lg lg:text-xl font-semibold text-red-600 hover:bg-red-50 transition-all"
                 >
                   Logout
                 </button>
@@ -122,7 +122,7 @@ export default function AccountPage() {
                   <div className="space-y-7 lg:space-y-8">
                     <div className="grid md:grid-cols-2 gap-6 lg:gap-7">
                       <div>
-                        <label className="block text-base md:text-lg lg:text-xl font-bold text-gray-900 mb-3 lg:mb-4">
+                        <label className="block text-base md:text-lg lg:text-xl font-semibold text-gray-900 mb-3 lg:mb-4">
                           First Name
                         </label>
                         <input
@@ -132,7 +132,7 @@ export default function AccountPage() {
                         />
                       </div>
                       <div>
-                        <label className="block text-base md:text-lg lg:text-xl font-bold text-gray-900 mb-3 lg:mb-4">
+                        <label className="block text-base md:text-lg lg:text-xl font-semibold text-gray-900 mb-3 lg:mb-4">
                           Last Name
                         </label>
                         <input
@@ -143,7 +143,7 @@ export default function AccountPage() {
                       </div>
                     </div>
                     <div>
-                      <label className="block text-base md:text-lg lg:text-xl font-bold text-gray-900 mb-3 lg:mb-4">
+                      <label className="block text-base md:text-lg lg:text-xl font-semibold text-gray-900 mb-3 lg:mb-4">
                         Email
                       </label>
                       <input
@@ -153,7 +153,7 @@ export default function AccountPage() {
                       />
                     </div>
                     <div>
-                      <label className="block text-base md:text-lg lg:text-xl font-bold text-gray-900 mb-3 lg:mb-4">
+                      <label className="block text-base md:text-lg lg:text-xl font-semibold text-gray-900 mb-3 lg:mb-4">
                         Username
                       </label>
                       <input
@@ -163,7 +163,7 @@ export default function AccountPage() {
                         className="w-full px-5 lg:px-6 py-4 lg:py-5 text-base md:text-lg border-2 border-gray-300 rounded-2xl bg-gray-100 cursor-not-allowed"
                       />
                     </div>
-                    <button className="bg-gray-900 text-white text-lg md:text-xl lg:text-2xl font-bold py-5 lg:py-6 px-10 lg:px-12 rounded-full hover:bg-gray-800 transform hover:scale-[1.02] transition-all duration-200 shadow-lg">
+                    <button className="bg-gray-900 text-white text-lg md:text-xl lg:text-2xl font-semibold py-5 lg:py-6 px-10 lg:px-12 rounded-full hover:bg-gray-800 transform hover:scale-[1.02] transition-all duration-200 shadow-lg">
                       Save Changes
                     </button>
                   </div>
@@ -180,11 +180,11 @@ export default function AccountPage() {
                           <div className="flex justify-between items-start mb-6">
                             <div>
                               <p className="text-base md:text-lg text-gray-500 mb-1">Order #{order.id}</p>
-                              <p className="text-lg md:text-xl lg:text-2xl font-bold text-gray-900">
+                              <p className="text-lg md:text-xl lg:text-2xl font-semibold text-gray-900">
                                 {new Date(order.date_created).toLocaleDateString()}
                               </p>
                             </div>
-                            <span className="px-5 py-2 bg-gray-100 text-gray-900 rounded-full text-base md:text-lg font-bold">
+                            <span className="px-5 py-2 bg-gray-100 text-gray-900 rounded-full text-base md:text-lg font-semibold">
                               {order.status}
                             </span>
                           </div>
@@ -194,7 +194,7 @@ export default function AccountPage() {
                             </p>
                             <Link 
                               href={`/orders/${order.id}`}
-                              className="inline-block mt-4 text-base md:text-lg font-bold text-gray-900 hover:text-gray-700 hover:underline transition-all"
+                              className="inline-block mt-4 text-base md:text-lg font-semibold text-gray-900 hover:text-gray-700 hover:underline transition-all"
                             >
                               View Details →
                             </Link>
@@ -207,7 +207,7 @@ export default function AccountPage() {
                       <p className="text-lg md:text-xl lg:text-2xl text-gray-600 mb-8">No orders yet</p>
                       <Link 
                         href="/products"
-                        className="inline-block bg-gray-900 text-white text-lg md:text-xl lg:text-2xl font-bold py-5 lg:py-6 px-10 lg:px-12 rounded-full hover:bg-gray-800 transform hover:scale-[1.02] transition-all duration-200 shadow-lg"
+                        className="inline-block bg-gray-900 text-white text-lg md:text-xl lg:text-2xl font-semibold py-5 lg:py-6 px-10 lg:px-12 rounded-full hover:bg-gray-800 transform hover:scale-[1.02] transition-all duration-200 shadow-lg"
                       >
                         Start Shopping
                       </Link>
@@ -222,7 +222,7 @@ export default function AccountPage() {
                   <div className="grid md:grid-cols-2 gap-6 lg:gap-8">
                     {/* Billing Address */}
                     <div className="border-2 border-gray-200 rounded-3xl p-7 lg:p-8 hover:border-gray-900 transition-all">
-                      <h3 className="text-xl md:text-2xl font-bold text-gray-900 mb-5">Billing Address</h3>
+                      <h3 className="text-xl md:text-2xl font-semibold text-gray-900 mb-5">Billing Address</h3>
                       <div className="text-gray-600 text-base md:text-lg space-y-2 mb-6">
                         <p>No billing address saved</p>
                       </div>
@@ -233,7 +233,7 @@ export default function AccountPage() {
 
                     {/* Shipping Address */}
                     <div className="border-2 border-gray-200 rounded-3xl p-7 lg:p-8 hover:border-gray-900 transition-all">
-                      <h3 className="text-xl md:text-2xl font-bold text-gray-900 mb-5">Shipping Address</h3>
+                      <h3 className="text-xl md:text-2xl font-semibold text-gray-900 mb-5">Shipping Address</h3>
                       <div className="text-gray-600 text-base md:text-lg space-y-2 mb-6">
                         <p>No shipping address saved</p>
                       </div>
