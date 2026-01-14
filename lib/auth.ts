@@ -17,7 +17,8 @@ class AuthAPI {
   private token: string | null = null;
 
   constructor() {
-    const baseURL = process.env.NEXT_PUBLIC_WOOCOMMERCE_URL;
+    // Remove trailing slash from URL to prevent double slashes
+    const baseURL = process.env.NEXT_PUBLIC_WOOCOMMERCE_URL?.replace(/\/$/, '');
 
     if (!baseURL) {
       throw new Error('NEXT_PUBLIC_WOOCOMMERCE_URL is not defined');

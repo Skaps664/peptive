@@ -163,7 +163,7 @@ export default function ProductDetailPage() {
               src={product.images[selectedImage] || product.image}
               alt={product.name}
               fill
-              className="object-cover"
+              className="object-contain p-4"
               sizes="(max-width: 1024px) 100vw, 50vw"
               priority
             />
@@ -186,7 +186,7 @@ export default function ProductDetailPage() {
                     src={image}
                     alt={`${product.name} - ${index + 1}`}
                     fill
-                    className="object-cover"
+                    className="object-contain p-1"
                     sizes="150px"
                   />
                 </button>

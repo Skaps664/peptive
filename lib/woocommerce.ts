@@ -50,7 +50,8 @@ class WooCommerceAPI {
   private consumerSecret: string;
 
   constructor() {
-    const baseURL = process.env.NEXT_PUBLIC_WOOCOMMERCE_URL;
+    // Remove trailing slash from URL to prevent double slashes
+    const baseURL = process.env.NEXT_PUBLIC_WOOCOMMERCE_URL?.replace(/\/$/, '');
     const hostHeader = process.env.NEXT_PUBLIC_WOOCOMMERCE_HOST || '';
     this.consumerKey = process.env.WOOCOMMERCE_CONSUMER_KEY || '';
     this.consumerSecret = process.env.WOOCOMMERCE_CONSUMER_SECRET || '';
