@@ -125,6 +125,11 @@ export const translations = {
       visualization: "Syringe Scale Visualization",
       fill_fields: "Please fill in all fields above to calculate your dose."
     },
+    units: {
+      mg: "mg",
+      ml: "ml",
+      mcg: "mcg"
+    },
     product_detail: {
       reviews: "reviews",
       out_of_stock: "Out of stock",
@@ -279,6 +284,11 @@ export const translations = {
       on_u100: "على محقن U-100.",
       visualization: "رسم توضيحي لقياس المحقن",
       fill_fields: "يرجى ملء جميع الحقول أعلاه لحساب جرعتك."
+    },
+    units: {
+      mg: "ملغ",
+      ml: "مل",
+      mcg: "ميكروغرام"
     },
     product_detail: {
       reviews: "تقييمات",

@@ -33,7 +33,7 @@ export default function CartPage() {
             Your Cart is Empty
           </h1>
           <p className="text-lg md:text-xl lg:text-xl xl:text-xl 2xl:text-2xl text-gray-600 mb-10 lg:mb-10 xl:mb-10 2xl:mb-12">
-            Looks like you haven't added any items to your cart yet.
+            Looks like you haven&apos;t added any items to your cart yet.
           </p>
           <Link href="/products">
             <button className="bg-gray-900 text-white text-lg md:text-xl lg:text-xl xl:text-xl 2xl:text-2xl font-semibold py-5 lg:py-5 xl:py-5 2xl:py-6 px-10 lg:px-10 xl:px-10 2xl:px-12 rounded-full hover:bg-gray-800 transform hover:scale-[1.02] transition-all duration-200 shadow-lg">

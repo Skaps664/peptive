@@ -112,6 +112,7 @@ class WooCommerceAPI {
       image: wcProduct.images[0]?.src || '/placeholder-product.jpg',
       images: wcProduct.images.map(img => img.src),
       categories: wcProduct.categories.map(cat => cat.name),
+      tags: wcProduct.tags?.map(tag => tag.name) || [],
       stockStatus: wcProduct.stock_status,
       stockQuantity: wcProduct.stock_quantity,
       rating: parseFloat(wcProduct.average_rating) || 0,

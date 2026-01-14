@@ -587,8 +587,8 @@ export default function HomePage() {
           <div className="relative overflow-hidden bg-white py-8 -mx-6 sm:-mx-8 md:-mx-12 lg:-mx-12 xl:-mx-12 2xl:-mx-48">
             <div className="flex animate-marquee-fast whitespace-nowrap">
               <div className="flex items-center gap-12 px-6">
-                <span className="relative inline-block text-4xl md:text-5xl lg:text-5xl xl:text-5xl 2xl:text-8xl font-black text-gray-900 pb-3">
-                  PEPTIVE PEPTIDES
+                <span className="relative inline-block text-4xl md:text-5xl lg:text-5xl xl:text-5xl font-black text-gray-900 pb-3">
+                  {t('moving_text.stimulating_peptides')}
                   <svg className="absolute -bottom-1 left-0 w-full h-2 animate-wave" viewBox="0 0 200 10" preserveAspectRatio="none">
                     <path d="M0,5 Q25,0 50,5 T100,5 T150,5 T200,5" stroke="url(#gradient)" strokeWidth="2" fill="none" />
                     <defs>
@@ -600,36 +600,36 @@ export default function HomePage() {
                   </svg>
                 </span>
                 <span className="w-1.5 h-1.5 rounded-full bg-gray-400"></span>
-                <span className="text-4xl md:text-5xl lg:text-5xl xl:text-5xl font-black text-gray-900">Research Grade Peptides</span>
+                <span className="text-4xl md:text-5xl lg:text-5xl xl:text-5xl font-black text-gray-900">{t('moving_text.research_grade_peptides')}</span>
                 <span className="w-1.5 h-1.5 rounded-full bg-gray-400"></span>
                 <span className="relative inline-block text-4xl md:text-5xl lg:text-5xl xl:text-5xl font-black text-gray-900 pb-3">
-                  PEPTIVE PEPTIDES
+                  {t('moving_text.stimulating_peptides')}
                   <svg className="absolute -bottom-1 left-0 w-full h-2 animate-wave" viewBox="0 0 200 10" preserveAspectRatio="none">
                     <path d="M0,5 Q25,0 50,5 T100,5 T150,5 T200,5" stroke="url(#gradient)" strokeWidth="2" fill="none" />
                   </svg>
                 </span>
                 <span className="w-1.5 h-1.5 rounded-full bg-gray-400"></span>
-                <span className="text-4xl md:text-5xl lg:text-5xl xl:text-5xl 2xl:text-8xl font-black text-gray-900">Research Grade Peptides</span>
+                <span className="text-4xl md:text-5xl lg:text-5xl xl:text-5xl font-black text-gray-900">{t('moving_text.research_grade_peptides')}</span>
                 <span className="w-1.5 h-1.5 rounded-full bg-gray-400"></span>
               </div>
               <div className="flex items-center gap-12 px-6">
-                <span className="relative inline-block text-4xl md:text-5xl lg:text-5xl xl:text-5xl 2xl:text-8xl font-black text-gray-900 pb-3">
-                  PEPTIVE PEPTIDES
+                <span className="relative inline-block text-4xl md:text-5xl lg:text-5xl xl:text-5xl font-black text-gray-900 pb-3">
+                  {t('moving_text.stimulating_peptides')}
                   <svg className="absolute -bottom-1 left-0 w-full h-2 animate-wave" viewBox="0 0 200 10" preserveAspectRatio="none">
                     <path d="M0,5 Q25,0 50,5 T100,5 T150,5 T200,5" stroke="url(#gradient)" strokeWidth="2" fill="none" />
                   </svg>
                 </span>
                 <span className="w-1.5 h-1.5 rounded-full bg-gray-400"></span>
-                <span className="text-4xl md:text-5xl lg:text-5xl xl:text-5xl font-black text-gray-900">Research Grade Peptides</span>
+                <span className="text-4xl md:text-5xl lg:text-5xl xl:text-5xl font-black text-gray-900">{t('moving_text.research_grade_peptides')}</span>
                 <span className="w-1.5 h-1.5 rounded-full bg-gray-400"></span>
                 <span className="relative inline-block text-4xl md:text-5xl lg:text-5xl xl:text-5xl font-black text-gray-900 pb-3">
-                  PEPTIVE PEPTIDES
+                  {t('moving_text.stimulating_peptides')}
                   <svg className="absolute -bottom-1 left-0 w-full h-2 animate-wave" viewBox="0 0 200 10" preserveAspectRatio="none">
                     <path d="M0,5 Q25,0 50,5 T100,5 T150,5 T200,5" stroke="url(#gradient)" strokeWidth="2" fill="none" />
                   </svg>
                 </span>
                 <span className="w-1.5 h-1.5 rounded-full bg-gray-400"></span>
-                <span className="text-4xl md:text-5xl lg:text-5xl xl:text-5xl 2xl:text-8xl font-black text-gray-900">Research Grade Peptides</span>
+                <span className="text-4xl md:text-5xl lg:text-5xl xl:text-5xl 2xl:text-8xl font-black text-gray-900">{t('moving_text.research_grade_peptides')}</span>
                 <span className="w-1.5 h-1.5 rounded-full bg-gray-400"></span>
               </div>
             </div>

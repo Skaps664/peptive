@@ -259,9 +259,9 @@ export default function ProductDetailPage() {
           {/* Parse and Show Contains & Instructions from product.description */}
           {product.description && (
             (() => {
-              // Extract sections using regex
-              const containsMatch = product.description.match(/Contains:(.*?)(Instructions:|$)/is);
-              const instructionsMatch = product.description.match(/Instructions:(.*?)(<\/p>|$)/is);
+              // Extract sections using regex (without 's' flag for ES compatibility)
+              const containsMatch = product.description.match(/Contains:([\s\S]*?)(Instructions:|$)/i);
+              const instructionsMatch = product.description.match(/Instructions:([\s\S]*?)(<\/p>|$)/i);
               const contains = containsMatch ? containsMatch[1].replace(/<[^>]+>/g, '').trim() : '';
               const instructions = instructionsMatch ? instructionsMatch[1].replace(/<[^>]+>/g, '').trim() : '';
               return (

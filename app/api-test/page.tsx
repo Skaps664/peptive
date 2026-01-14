@@ -235,7 +235,7 @@ export default async function APITestPage() {
       <div className="mt-8 border-2 border-blue-500 rounded-lg p-6 bg-blue-50">
         <h2 className="text-xl font-semibold mb-4">🚀 Next Steps</h2>
         <ol className="list-decimal list-inside space-y-2">
-          <li>If all tests pass, you're ready to integrate!</li>
+          <li>If all tests pass, you&apos;re ready to integrate!</li>
           <li>See IMPLEMENTATION_EXAMPLES.md for code examples</li>
           <li>Migrate your cart to Store API for better functionality</li>
           <li>Set up JWT authentication for user accounts</li>

@@ -1,8 +1,10 @@
 'use client';
 
 import { useState } from 'react';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 export default function DosageCalculator() {
+  const { t } = useLanguage();
   const [selectedSyringe, setSelectedSyringe] = useState(0.3);
   const [peptideQuantity, setPeptideQuantity] = useState<number | null>(null);
   const [waterVolume, setWaterVolume] = useState<number | null>(null);
@@ -51,14 +53,14 @@ export default function DosageCalculator() {
       {/* Header */}
       <div className="px-6 sm:px-8 md:px-12 lg:px-12 xl:px-12 2xl:px-48 py-12">
         <h1 className="text-5xl md:text-6xl font-extrabold text-gray-900 text-center mb-24">
-          Dosage Calculator
+          {t('calculator.title')}
         </h1>
 
         {/* Main Calculator Section */}
         <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-12">
           {/* Left Side - Syringe Reference */}
           <div>
-            <h2 className="text-xl font-bold text-gray-900 mb-6 text-center">Syringe Reference</h2>
+            <h2 className="text-xl font-bold text-gray-900 mb-6 text-center">{t('calculator.syringe_reference')}</h2>
             <div className="flex flex-col items-center gap-10">
               {/* Top row: 0.3 ml and 0.5 ml */}
               <div className="flex gap-12 items-end">
@@ -72,7 +74,7 @@ export default function DosageCalculator() {
                   style={{ boxSizing: 'content-box' }}
                 >
                   <img src="/0.3ml.webp" alt="0.3 ml syringe" className="w-24 h-56 object-contain mb-2" />
-                  <span className="text-base font-semibold text-gray-900">0.3 ml</span>
+                  <span className="text-base font-semibold text-gray-900">0.3 {t('units.ml')}</span>
                 </button>
                 <button
                   onClick={() => setSelectedSyringe(0.5)}
@@ -84,7 +86,7 @@ export default function DosageCalculator() {
                   style={{ boxSizing: 'content-box' }}
                 >
                   <img src="/0.5ml.webp" alt="0.5 ml syringe" className="w-24 h-56 object-contain mb-2" />
-                  <span className="text-base font-semibold text-gray-900">0.5 ml</span>
+                  <span className="text-base font-semibold text-gray-900">0.5 {t('units.ml')}</span>
                 </button>
               </div>
               {/* Bottom row: 1.0 ml centered */}
@@ -99,7 +101,7 @@ export default function DosageCalculator() {
                   style={{ boxSizing: 'content-box' }}
                 >
                   <img src="/1ml.webp" alt="1.0 ml syringe" className="w-24 h-56 object-contain mb-2" />
-                  <span className="text-base font-semibold text-gray-900">1.0 ml</span>
+                  <span className="text-base font-semibold text-gray-900">1.0 {t('units.ml')}</span>
                 </button>
               </div>
             </div>
@@ -113,7 +115,7 @@ export default function DosageCalculator() {
                 <div className="w-24 h-24 rounded-lg flex items-center justify-center overflow-hidden">
                   <img src="/Peptide Vial Quantity.webp" alt="Peptide Vial" className="w-full h-full object-cover" />
                 </div>
-                <h3 className="text-base font-bold text-gray-900">Peptide Vial Quantity (mg)</h3>
+                <h3 className="text-base font-bold text-gray-900">{t('calculator.peptide_vial')}</h3>
               </div>
               <div className="flex flex-wrap gap-3">
                 {[2, 3, 5, 10, 15].map((mg) => (
@@ -131,7 +133,7 @@ export default function DosageCalculator() {
                     }`}
                   >
                     <span className="absolute inset-0 bg-gray-900 origin-bottom scale-y-0 group-hover:scale-y-100 transition-transform duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] rounded-lg"></span>
-                    <span className="relative z-10 group-hover:text-white transition-colors duration-400">{mg} mg</span>
+                    <span className="relative z-10 group-hover:text-white transition-colors duration-400">{mg} {t('units.mg')}</span>
                   </button>
                 ))}
                 <button
@@ -143,13 +145,13 @@ export default function DosageCalculator() {
                   }`}
                 >
                   <span className="absolute inset-0 bg-gray-900 origin-bottom scale-y-0 group-hover:scale-y-100 transition-transform duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] rounded-lg"></span>
-                  <span className="relative z-10 group-hover:text-white transition-colors duration-400">Other</span>
+                  <span className="relative z-10 group-hover:text-white transition-colors duration-400">{t('calculator.other')}</span>
                 </button>
               </div>
               {showPeptideOther && (
                 <input
                   type="number"
-                  placeholder="Enter amount"
+                  placeholder={t('calculator.enter_amount')}
                   value={customPeptide}
                   onChange={(e) => {
                     setCustomPeptide(e.target.value);
@@ -167,7 +169,7 @@ export default function DosageCalculator() {
                 <div className="w-24 h-24 rounded-lg flex items-center justify-center overflow-hidden">
                   <img src="/Bacteriostatic Water Volume.webp" alt="Bacteriostatic Water" className="w-full h-full object-cover" />
                 </div>
-                <h3 className="text-base font-bold text-gray-900">Bacteriostatic Water Volume (ml)</h3>
+                <h3 className="text-base font-bold text-gray-900">{t('calculator.water_volume')}</h3>
               </div>
               <div className="flex flex-wrap gap-3">
                 {[1, 2, 3, 5].map((ml) => (
@@ -185,7 +187,7 @@ export default function DosageCalculator() {
                     }`}
                   >
                     <span className="absolute inset-0 bg-gray-900 origin-bottom scale-y-0 group-hover:scale-y-100 transition-transform duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] rounded-lg"></span>
-                    <span className="relative z-10 group-hover:text-white transition-colors duration-400">{ml} ml</span>
+                    <span className="relative z-10 group-hover:text-white transition-colors duration-400">{ml} {t('units.ml')}</span>
                   </button>
                 ))}
                 <button
@@ -203,7 +205,7 @@ export default function DosageCalculator() {
               {showWaterOther && (
                 <input
                   type="number"
-                  placeholder="Enter volume"
+                  placeholder={t('calculator.enter_volume')}
                   value={customWater}
                   onChange={(e) => {
                     setCustomWater(e.target.value);
@@ -217,15 +219,15 @@ export default function DosageCalculator() {
 
             {/* Desired Dose */}
             <div>
-              <h3 className="text-base font-bold text-gray-900 mb-4">Desired Dose</h3>
+              <h3 className="text-base font-bold text-gray-900 mb-4">{t('calculator.desired_dose')}</h3>
               <div className="flex flex-wrap gap-3">
                 {[
-                  { label: '50 mcg', value: 50, unit: 'mcg' },
-                  { label: '100 mcg', value: 100, unit: 'mcg' },
-                  { label: '250 mcg', value: 250, unit: 'mcg' },
-                  { label: '500 mcg', value: 500, unit: 'mcg' },
-                  { label: '1 mg', value: 1, unit: 'mg' },
-                  { label: '2.5 mg', value: 2.5, unit: 'mg' },
+                  { label: `50 ${t('units.mcg')}`, value: 50, unit: 'mcg' },
+                  { label: `100 ${t('units.mcg')}`, value: 100, unit: 'mcg' },
+                  { label: `250 ${t('units.mcg')}`, value: 250, unit: 'mcg' },
+                  { label: `500 ${t('units.mcg')}`, value: 500, unit: 'mcg' },
+                  { label: `1 ${t('units.mg')}`, value: 1, unit: 'mg' },
+                  { label: `2.5 ${t('units.mg')}`, value: 2.5, unit: 'mg' },
                 ].map((dose) => (
                   <button
                     key={dose.label}
@@ -261,7 +263,7 @@ export default function DosageCalculator() {
                 <div className="mt-3 flex gap-2">
                   <input
                     type="number"
-                    placeholder="Enter dose"
+                    placeholder={t('calculator.enter_dose')}
                     value={customDose}
                     onChange={(e) => {
                       setCustomDose(e.target.value);
@@ -276,8 +278,8 @@ export default function DosageCalculator() {
                     onChange={(e) => setDoseUnit(e.target.value as 'mcg' | 'mg')}
                     className="px-4 py-2.5 border-2 border-gray-300 rounded-lg text-sm font-medium focus:border-gray-900 focus:outline-none"
                   >
-                    <option value="mcg">mcg</option>
-                    <option value="mg">mg</option>
+                    <option value="mcg">{t('units.mcg')}</option>
+                    <option value="mg">{t('units.mg')}</option>
                   </select>
                 </div>
               )}
@@ -289,34 +291,34 @@ export default function DosageCalculator() {
         <div className="max-w-7xl mx-auto mt-8">
           <div className="border-2 border-gray-900 rounded-3xl p-12">
             <h2 className="text-xl  text-gray-900 text-center mb-2">
-              Your Required Dose
+              {t('calculator.result_title')}
             </h2>
             
             {result ? (
               result.exceedsSyringe ? (
                 <div className="text-center space-y-2">
                   <div className="text-red-500">
-                    <strong>Warning:</strong> Required dose ({result.volumeFormatted} ml) exceeds selected syringe capacity ({selectedSyringe} ml).
+                    <strong>{t('calculator.warning')}</strong> {t('calculator.exceeds_syringe').replace('{volume}', result.volumeFormatted).replace('{capacity}', selectedSyringe.toString())}
                   </div>
                   <div className="text-gray-600">
-                    Please select a larger syringe or adjust your dose.
+                    {t('calculator.select_larger')}
                   </div>
                 </div>
               ) : (
                 <div className="space-y-4">
                   <div className="text-center space-y-2">
                     <p className="text-lg text-gray-900">
-                      Draw to the <span className="font-bold text-lg">{result.volumeFormatted} ml</span> mark on your {selectedSyringe} ml syringe.
+                      {t('calculator.draw_to')} <span className="font-bold text-lg">{result.volumeFormatted} ml</span> {t('calculator.mark')} {selectedSyringe} ml {t('calculator.syringe')}
                     </p>
                     <p className="text-lg text-gray-900">
-                      This is equal to <span className="font-bold text-lg">{result.units} units</span> on a U-100 syringe.
+                      {t('calculator.equal_to')} <span className="font-bold text-lg">{result.units} {t('calculator.units')}</span> {t('calculator.on_u100')}
                     </p>
                   </div>
 
                   {/* Syringe Scale Visualization */}
                   <div>
                     <h3 className="text-lg font-bold text-gray-900 text-center mb-6">
-                      Syringe Scale Visualization
+                      {t('calculator.visualization')}
                     </h3>
                     <div className="relative max-w-xl mx-auto">
                       {/* Syringe */}
@@ -351,7 +353,7 @@ export default function DosageCalculator() {
               )
             ) : (
               <p className="text-center text-gray-500 italic">
-                Please fill in all fields above to calculate your dose.
+                {t('calculator.fill_fields')}
               </p>
             )}
           </div>
