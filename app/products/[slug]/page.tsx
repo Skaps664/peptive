@@ -122,31 +122,40 @@ export default function ProductDetailPage() {
     );
   }
 
-  // Calculate bundle options
-  const basePrice = parseFloat(product.price);
+  // Calculate bundle options using WooCommerce prices
+  // Use sale_price as the current price, regular_price as the original price
+  const currentPrice = parseFloat(product.salePrice || product.price); // Discounted price
+  const originalPrice = parseFloat(product.regularPrice || product.price); // Original price before discount
+  
+  // Calculate savings per item
+  const savingsPerItem = originalPrice - currentPrice;
+  const savingsPercentPerItem = originalPrice > 0 ? ((savingsPerItem / originalPrice) * 100) : 0;
+  
   const bundleOptions: BundleOption[] = [
     {
       id: '1-month',
       months: 1,
       label: '1 month',
-      price: basePrice,
+      price: currentPrice,
+      savings: savingsPerItem,
+      savingsPercent: Math.round(savingsPercentPerItem),
     },
     {
       id: '3-months',
       months: 3,
       label: '3 months',
-      price: basePrice * 3 * 0.62, // 38% discount
-      savings: basePrice * 3 * 0.38,
-      savingsPercent: 38,
+      price: currentPrice * 3,
+      savings: savingsPerItem * 3, // Total savings for 3 items
+      savingsPercent: Math.round(savingsPercentPerItem), // Same percentage as single item
       isPopular: true,
     },
     {
       id: '6-months',
       months: 6,
       label: '6 months',
-      price: basePrice * 6 * 0.62, // 38% discount
-      savings: basePrice * 6 * 0.38,
-      savingsPercent: 38,
+      price: currentPrice * 6,
+      savings: savingsPerItem * 6, // Total savings for 6 items
+      savingsPercent: Math.round(savingsPercentPerItem), // Same percentage as single item
     },
   ];
 
@@ -335,9 +344,9 @@ export default function ProductDetailPage() {
                         <div className="text-sm md:text-base lg:text-base xl:text-base font-bold text-gray-900">
                           {bundle.label}
                         </div>
-                        {bundle.savings ? (
+                        {bundle.savings && bundle.savings > 0 ? (
                           <div className="text-xs md:text-xs lg:text-xs xl:text-xs text-[#4d7c0f] font-medium">
-                            {t('product_detail.save').toUpperCase()} {formatPrice(bundle.savings)} • {t('product_detail.you_save')} {bundle.savingsPercent}%
+                            {t('product_detail.you_save')} {formatPrice(bundle.savings)} ({bundle.savingsPercent}%)
                           </div>
                         ) : (
                           <div className="text-xs md:text-xs lg:text-xs xl:text-xs text-gray-500">
@@ -349,9 +358,9 @@ export default function ProductDetailPage() {
                         <div className="text-base md:text-lg lg:text-lg xl:text-lg font-bold text-gray-900">
                           {formatPrice(bundle.price)}
                         </div>
-                        {bundle.savings && (
+                        {bundle.savings && bundle.savings > 0 && (
                           <div className="text-xs md:text-xs lg:text-xs xl:text-xs text-gray-500 line-through">
-                            {formatPrice(basePrice * bundle.months)}
+                            {formatPrice(originalPrice * bundle.months)}
                           </div>
                         )}
                       </div>

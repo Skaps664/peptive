@@ -1,0 +1,99 @@
+import { NextRequest, NextResponse } from 'next/server';
+import Stripe from 'stripe';
+
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
+  apiVersion: '2024-12-18.acacia',
+});
+
+export async function POST(request: NextRequest) {
+  try {
+    const body = await request.json();
+    const { items, couponCode, customerEmail, billingDetails, shippingDetails } = body;
+
+    if (!items || items.length === 0) {
+      return NextResponse.json(
+        { error: 'No items in cart' },
+        { status: 400 }
+      );
+    }
+
+    // Transform cart items to Stripe line items
+    const lineItems: Stripe.Checkout.SessionCreateParams.LineItem[] = items.map((item: any) => ({
+      price_data: {
+        currency: 'aed', // UAE Dirham
+        product_data: {
+          name: item.name,
+          images: item.image ? [item.image] : [],
+          description: item.shortDescription || '',
+          metadata: {
+            product_id: item.id.toString(), // Store WooCommerce product ID
+          },
+        },
+        unit_amount: Math.round(parseFloat(item.price) * 100), // Convert to fils (cents)
+      },
+      quantity: item.quantity,
+    }));
+
+    // Prepare session parameters
+    const sessionParams: Stripe.Checkout.SessionCreateParams = {
+      payment_method_types: ['card'],
+      line_items: lineItems,
+      mode: 'payment',
+      success_url: `${process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3001'}/checkout/success?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3001'}/checkout/cancel`,
+      customer_email: customerEmail,
+      billing_address_collection: 'required',
+      shipping_address_collection: {
+        allowed_countries: ['AE', 'SA', 'KW', 'QA', 'BH', 'OM', 'US', 'GB', 'CA'], // Customize based on your shipping regions
+      },
+      metadata: {
+        billingDetails: JSON.stringify(billingDetails),
+        shippingDetails: JSON.stringify(shippingDetails),
+      },
+    };
+
+    // Apply coupon/discount code if provided
+    if (couponCode) {
+      try {
+        // Check if it's a promo code
+        const promoCodes = await stripe.promotionCodes.list({
+          code: couponCode,
+          active: true,
+          limit: 1,
+        });
+
+        if (promoCodes.data.length > 0) {
+          sessionParams.discounts = [{
+            promotion_code: promoCodes.data[0].id,
+          }];
+        } else {
+          // Try as a coupon ID
+          const coupon = await stripe.coupons.retrieve(couponCode);
+          if (coupon && coupon.valid) {
+            sessionParams.discounts = [{
+              coupon: couponCode,
+            }];
+          }
+        }
+      } catch (error) {
+        console.error('Coupon validation error:', error);
+        // Continue without coupon if invalid
+      }
+    }
+
+    // Create Stripe checkout session
+    const session = await stripe.checkout.sessions.create(sessionParams);
+
+    return NextResponse.json({
+      sessionId: session.id,
+      url: session.url,
+    });
+
+  } catch (error: any) {
+    console.error('Stripe checkout error:', error);
+    return NextResponse.json(
+      { error: error.message || 'Failed to create checkout session' },
+      { status: 500 }
+    );
+  }
+}
