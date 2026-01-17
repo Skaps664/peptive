@@ -159,7 +159,7 @@ export default function HomePage() {
       
       {/* Hero Section */}
       <section className="px-6 sm:px-8 md:px-12 lg:px-12 xl:px-12 2xl:px-48 pb-0">
-        <div className="relative bg-gradient-to-br from-gray-900 via-gray-800 to-black text-white overflow-hidden rounded-3xl">
+        <div className="relative  text-white overflow-hidden rounded-3xl">
           {/* Background Image with Parallax Effect */}
           <div 
             className="absolute inset-0 bg-cover bg-center opacity-40"
@@ -240,10 +240,13 @@ export default function HomePage() {
                   const container = document.querySelector('#trending-carousel');
                   if (container) container.scrollBy({ left: -400, behavior: 'smooth' });
                 }}
-                className="w-14 h-14 rounded-full bg-white border-2 border-gray-900 flex items-center justify-center hover:border-gray-700 transition-colors"
+                className="relative w-14 h-14 rounded-full bg-white border-2 border-gray-900 flex items-center justify-center overflow-hidden group transition-colors"
                 aria-label="Previous"
               >
-                <svg className="w-6 h-6 text-gray-900" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                {/* Liquid fill animation background */}
+                <span className="absolute inset-0 bg-gray-900 origin-bottom scale-y-0 group-hover:scale-y-100 transition-transform duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] rounded-full"></span>
+                
+                <svg className="relative z-10 w-6 h-6 text-gray-900 group-hover:text-white transition-colors duration-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
                 </svg>
               </button>
@@ -252,10 +255,13 @@ export default function HomePage() {
                   const container = document.querySelector('#trending-carousel');
                   if (container) container.scrollBy({ left: 400, behavior: 'smooth' });
                 }}
-                className="w-14 h-14 rounded-full bg-white border-2 border-gray-900 flex items-center justify-center hover:border-gray-700 transition-colors"
+                className="relative w-14 h-14 rounded-full bg-white border-2 border-gray-900 flex items-center justify-center overflow-hidden group transition-colors"
                 aria-label="Next"
               >
-                <svg className="w-6 h-6 text-gray-900" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                {/* Liquid fill animation background */}
+                <span className="absolute inset-0 bg-gray-900 origin-bottom scale-y-0 group-hover:scale-y-100 transition-transform duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] rounded-full"></span>
+                
+                <svg className="relative z-10 w-6 h-6 text-gray-900 group-hover:text-white transition-colors duration-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                 </svg>
               </button>

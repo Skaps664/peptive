@@ -154,6 +154,40 @@ export const translations = {
       copyright: "© 2026 Peptive Pept. Powered by Shopify",
       privacy_policy: "Privacy policy"
     },
+    authentication: {
+      title: "Authentication",
+      step1_title: "Scan the QR code",
+      step1_desc: "Scan the QR code on the back of the package",
+      step2_title: "Enter verification code",
+      step2_desc: "Scratch the QR code and enter the code in the box to check whether the product is verified or not",
+      important: "IMPORTANT",
+      info_once: "Each code can only be used",
+      once: "ONCE",
+      info_cannot: "Once a code is verified and used, it",
+      cannot: "CANNOT BE VERIFIED AGAIN",
+      placeholder: "ENTER CODE",
+      verify_btn: "VERIFY CODE",
+      verifying: "VERIFYING...",
+      error_empty: "⚠️ Please enter a code.",
+      result_valid: "✓ Code is verified",
+      result_used: "⚠ Code has already been used",
+      result_invalid: "✕ Code is wrong"
+    },
+    welcome_popup: {
+      title: "FREE Peptide Protocol Map Sent On Whatsapp",
+      subtitle: "Please enter your details to continue",
+      name_placeholder: "Your Name",
+      phone_placeholder: "Phone Number",
+      email_placeholder: "Your Email",
+      submit_button: "CLAIM FREE PROTOCOL & CONTINUE TO SHOP",
+      name_error: "Please enter your name",
+      phone_error: "Please enter a valid phone number",
+      email_error: "Please enter a valid email",
+      geo_detected: "✓ Country detected automatically",
+      geo_failed: "⚠️ Could not detect location automatically",
+      loading: "Loading...",
+      please_wait: "Please wait..."
+    },
     moving_text: {
       stimulating_peptides: "Stimulating Peptides",
       research_grade_peptides: "Research Grade Peptides"
@@ -314,11 +348,43 @@ export const translations = {
       copyright: "© 2026 Peptive Pept. مدعوم من Shopify",
       privacy_policy: "سياسة الخصوصية"
     },
+    authentication: {
+      title: "مصادقة",
+      step1_title: "مسح رمز الاستجابة السريعة",
+      step1_desc: "امسح رمز الاستجابة السريعة الموجود على ظهر العبوة",
+      step2_title: "أدخل رمز التحقق",
+      step2_desc: "اخدش رمز الاستجابة السريعة وأدخل الرمز في المربع للتحقق مما إذا كان المنتج معتمدًا أم لا",
+      important: "مهم",
+      info_once: "كل رمز يمكن استخدامه",
+      once: "مرة واحدة فقط",
+      info_cannot: "بمجرد التحقق من الرمز واستخدامه،",
+      cannot: "لا يمكن التحقق منه مرة أخرى",
+      placeholder: "أدخل الرمز",
+      verify_btn: "تحقق من الرمز",
+      verifying: "جاري التحقق...",
+      error_empty: "⚠️ الرجاء إدخال رمز.",
+      result_valid: "✓ تم التحقق من الرمز",
+      result_used: "⚠ تم استخدام الرمز بالفعل",
+      result_invalid: "✕ الرمز خاطئ"
+    },
+    welcome_popup: {
+      title: "خريطة بروتوكول الببتيد المجانية ترسل على واتساب",
+      subtitle: "يرجى إدخال بياناتك للمتابعة",
+      name_placeholder: "اسمك",
+      phone_placeholder: "رقم الهاتف",
+      email_placeholder: "بريدك الإلكتروني",
+      submit_button: "احصل على البروتوكول المجاني واستمر في التسوق",
+      name_error: "يرجى إدخال اسمك",
+      phone_error: "يرجى إدخال رقم هاتف صالح",
+      email_error: "يرجى إدخال بريد إلكتروني صالح",
+      geo_detected: "✓ تم اكتشاف البلد تلقائياً",
+      geo_failed: "⚠️ تعذر اكتشاف الموقع تلقائياً",
+      loading: "جاري التحميل...",
+      please_wait: "يرجى الانتظار..."
+    },
     moving_text: {
       stimulating_peptides: "الببتيدات المحفزة",
       research_grade_peptides: "ببتيدات من الدرجة البحثية"
     }
   }
 };
-
-export type TranslationKey = keyof typeof translations.en;

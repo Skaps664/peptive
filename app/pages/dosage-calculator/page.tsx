@@ -49,75 +49,75 @@ export default function DosageCalculator() {
   const result = calculateDose();
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-white overflow-x-hidden">
       {/* Header */}
-      <div className="px-6 sm:px-8 md:px-12 lg:px-12 xl:px-12 2xl:px-48 py-12">
-        <h1 className="text-5xl md:text-6xl font-extrabold text-gray-900 text-center mb-24">
+      <div className="px-4 sm:px-8 md:px-12 lg:px-12 xl:px-12 2xl:px-48 py-8 sm:py-12">
+        <h1 className="text-3xl sm:text-4xl md:text-6xl font-extrabold text-gray-900 text-center mb-8 sm:mb-16 md:mb-24">
           {t('calculator.title')}
         </h1>
 
         {/* Main Calculator Section */}
-        <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-12">
+        <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-8 sm:gap-12">
           {/* Left Side - Syringe Reference */}
           <div>
-            <h2 className="text-xl font-bold text-gray-900 mb-6 text-center">{t('calculator.syringe_reference')}</h2>
-            <div className="flex flex-col items-center gap-10">
+            <h2 className="text-lg sm:text-xl font-bold text-gray-900 mb-4 sm:mb-6 text-center">{t('calculator.syringe_reference')}</h2>
+            <div className="flex flex-col items-center gap-6 sm:gap-10">
               {/* Top row: 0.3 ml and 0.5 ml */}
-              <div className="flex gap-12 items-end">
+              <div className="flex gap-4 sm:gap-8 md:gap-12 items-end">
                 <button
                   onClick={() => setSelectedSyringe(0.3)}
-                  className={`border-2 rounded-2xl p-4 w-36 h-72 flex flex-col items-center justify-between transition-all ${
+                  className={`border-2 rounded-2xl p-3 sm:p-4 w-24 h-48 sm:w-32 sm:h-64 md:w-36 md:h-72 flex flex-col items-center justify-between transition-all ${
                     selectedSyringe === 0.3
                       ? 'border-gray-900 bg-gray-50'
                       : 'border-gray-200 hover:border-gray-400'
                   }`}
                   style={{ boxSizing: 'content-box' }}
                 >
-                  <img src="/0.3ml.webp" alt="0.3 ml syringe" className="w-24 h-56 object-contain mb-2" />
-                  <span className="text-base font-semibold text-gray-900">0.3 {t('units.ml')}</span>
+                  <img src="/0.3ml.webp" alt="0.3 ml syringe" className="w-16 h-36 sm:w-20 sm:h-48 md:w-24 md:h-56 object-contain mb-2" />
+                  <span className="text-xs sm:text-sm md:text-base font-semibold text-gray-900">0.3 {t('units.ml')}</span>
                 </button>
                 <button
                   onClick={() => setSelectedSyringe(0.5)}
-                  className={`border-2 rounded-2xl p-4 w-36 h-72 flex flex-col items-center justify-between transition-all ${
+                  className={`border-2 rounded-2xl p-3 sm:p-4 w-24 h-48 sm:w-32 sm:h-64 md:w-36 md:h-72 flex flex-col items-center justify-between transition-all ${
                     selectedSyringe === 0.5
                       ? 'border-gray-900 bg-gray-50'
                       : 'border-gray-200 hover:border-gray-400'
                   }`}
                   style={{ boxSizing: 'content-box' }}
                 >
-                  <img src="/0.5ml.webp" alt="0.5 ml syringe" className="w-24 h-56 object-contain mb-2" />
-                  <span className="text-base font-semibold text-gray-900">0.5 {t('units.ml')}</span>
+                  <img src="/0.5ml.webp" alt="0.5 ml syringe" className="w-16 h-36 sm:w-20 sm:h-48 md:w-24 md:h-56 object-contain mb-2" />
+                  <span className="text-xs sm:text-sm md:text-base font-semibold text-gray-900">0.5 {t('units.ml')}</span>
                 </button>
               </div>
               {/* Bottom row: 1.0 ml centered */}
               <div className="flex justify-center ">
                 <button
                   onClick={() => setSelectedSyringe(1.0)}
-                  className={`border-2 rounded-2xl p-4 w-36 h-72 flex flex-col items-center justify-between transition-all ${
+                  className={`border-2 rounded-2xl p-3 sm:p-4 w-24 h-48 sm:w-32 sm:h-64 md:w-36 md:h-72 flex flex-col items-center justify-between transition-all ${
                     selectedSyringe === 1.0
                       ? 'border-gray-900 bg-gray-50'
                       : 'border-gray-200 hover:border-gray-400'
                   }`}
                   style={{ boxSizing: 'content-box' }}
                 >
-                  <img src="/1ml.webp" alt="1.0 ml syringe" className="w-24 h-56 object-contain mb-2" />
-                  <span className="text-base font-semibold text-gray-900">1.0 {t('units.ml')}</span>
+                  <img src="/1ml.webp" alt="1.0 ml syringe" className="w-16 h-36 sm:w-20 sm:h-48 md:w-24 md:h-56 object-contain mb-2" />
+                  <span className="text-xs sm:text-sm md:text-base font-semibold text-gray-900">1.0 {t('units.ml')}</span>
                 </button>
               </div>
             </div>
           </div>
 
           {/* Right Side - Input Options */}
-          <div className="space-y-8">
+          <div className="space-y-6 sm:space-y-8">
             {/* Peptide Vial Quantity */}
             <div>
-              <div className="flex items-center gap-3 mb-4">
-                <div className="w-24 h-24 rounded-lg flex items-center justify-center overflow-hidden">
+              <div className="flex items-center gap-2 sm:gap-3 mb-3 sm:mb-4">
+                <div className="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 rounded-lg flex items-center justify-center overflow-hidden flex-shrink-0">
                   <img src="/Peptide Vial Quantity.webp" alt="Peptide Vial" className="w-full h-full object-cover" />
                 </div>
-                <h3 className="text-base font-bold text-gray-900">{t('calculator.peptide_vial')}</h3>
+                <h3 className="text-sm sm:text-base font-bold text-gray-900">{t('calculator.peptide_vial')}</h3>
               </div>
-              <div className="flex flex-wrap gap-3">
+              <div className="flex flex-wrap gap-2 sm:gap-3">
                 {[2, 3, 5, 10, 15].map((mg) => (
                   <button
                     key={mg}
@@ -126,7 +126,7 @@ export default function DosageCalculator() {
                       setCustomPeptide('');
                       setShowPeptideOther(false);
                     }}
-                    className={`relative px-6 py-2.5 border-2 rounded-lg text-sm font-medium overflow-hidden group transition-all ${
+                    className={`relative px-4 sm:px-6 py-2 sm:py-2.5 border-2 rounded-lg text-xs sm:text-sm font-medium overflow-hidden group transition-all ${
                       peptideQuantity === mg
                         ? 'border-gray-900 bg-gray-900 text-white'
                         : 'border-gray-900 text-gray-900'
@@ -138,7 +138,7 @@ export default function DosageCalculator() {
                 ))}
                 <button
                   onClick={() => setShowPeptideOther(!showPeptideOther)}
-                  className={`relative px-6 py-2.5 border-2 rounded-lg text-sm font-medium overflow-hidden group transition-all ${
+                  className={`relative px-4 sm:px-6 py-2 sm:py-2.5 border-2 rounded-lg text-xs sm:text-sm font-medium overflow-hidden group transition-all ${
                     showPeptideOther
                       ? 'border-gray-900 bg-gray-900 text-white'
                       : 'border-gray-900 text-gray-900'
@@ -165,13 +165,13 @@ export default function DosageCalculator() {
 
             {/* Bacteriostatic Water Volume */}
             <div>
-              <div className="flex items-center gap-3 mb-4">
-                <div className="w-24 h-24 rounded-lg flex items-center justify-center overflow-hidden">
+              <div className="flex items-center gap-2 sm:gap-3 mb-3 sm:mb-4">
+                <div className="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 rounded-lg flex items-center justify-center overflow-hidden flex-shrink-0">
                   <img src="/Bacteriostatic Water Volume.webp" alt="Bacteriostatic Water" className="w-full h-full object-cover" />
                 </div>
-                <h3 className="text-base font-bold text-gray-900">{t('calculator.water_volume')}</h3>
+                <h3 className="text-sm sm:text-base font-bold text-gray-900">{t('calculator.water_volume')}</h3>
               </div>
-              <div className="flex flex-wrap gap-3">
+              <div className="flex flex-wrap gap-2 sm:gap-3">
                 {[1, 2, 3, 5].map((ml) => (
                   <button
                     key={ml}
@@ -180,7 +180,7 @@ export default function DosageCalculator() {
                       setCustomWater('');
                       setShowWaterOther(false);
                     }}
-                    className={`relative px-6 py-2.5 border-2 rounded-lg text-sm font-medium overflow-hidden group transition-all ${
+                    className={`relative px-4 sm:px-6 py-2 sm:py-2.5 border-2 rounded-lg text-xs sm:text-sm font-medium overflow-hidden group transition-all ${
                       waterVolume === ml
                         ? 'border-gray-900 bg-gray-900 text-white'
                         : 'border-gray-900 text-gray-900'
@@ -192,7 +192,7 @@ export default function DosageCalculator() {
                 ))}
                 <button
                   onClick={() => setShowWaterOther(!showWaterOther)}
-                  className={`relative px-6 py-2.5 border-2 rounded-lg text-sm font-medium overflow-hidden group transition-all ${
+                  className={`relative px-4 sm:px-6 py-2 sm:py-2.5 border-2 rounded-lg text-xs sm:text-sm font-medium overflow-hidden group transition-all ${
                     showWaterOther
                       ? 'border-gray-900 bg-gray-900 text-white'
                       : 'border-gray-900 text-gray-900'
@@ -288,9 +288,9 @@ export default function DosageCalculator() {
         </div>
 
         {/* Result Section */}
-        <div className="max-w-7xl mx-auto mt-8">
-          <div className="border-2 border-gray-900 rounded-3xl p-12">
-            <h2 className="text-xl  text-gray-900 text-center mb-2">
+        <div className="max-w-7xl mx-auto mt-6 sm:mt-8">
+          <div className="border-2 border-gray-900 rounded-3xl p-4 sm:p-8 md:p-12">
+            <h2 className="text-base sm:text-lg md:text-xl text-gray-900 text-center mb-2">
               {t('calculator.result_title')}
             </h2>
             
@@ -305,19 +305,19 @@ export default function DosageCalculator() {
                   </div>
                 </div>
               ) : (
-                <div className="space-y-4">
+                <div className="space-y-3 sm:space-y-4">
                   <div className="text-center space-y-2">
-                    <p className="text-lg text-gray-900">
-                      {t('calculator.draw_to')} <span className="font-bold text-lg">{result.volumeFormatted} ml</span> {t('calculator.mark')} {selectedSyringe} ml {t('calculator.syringe')}
+                    <p className="text-sm sm:text-base md:text-lg text-gray-900">
+                      {t('calculator.draw_to')} <span className="font-bold text-sm sm:text-base md:text-lg">{result.volumeFormatted} ml</span> {t('calculator.mark')} {selectedSyringe} ml {t('calculator.syringe')}
                     </p>
-                    <p className="text-lg text-gray-900">
-                      {t('calculator.equal_to')} <span className="font-bold text-lg">{result.units} {t('calculator.units')}</span> {t('calculator.on_u100')}
+                    <p className="text-sm sm:text-base md:text-lg text-gray-900">
+                      {t('calculator.equal_to')} <span className="font-bold text-sm sm:text-base md:text-lg">{result.units} {t('calculator.units')}</span> {t('calculator.on_u100')}
                     </p>
                   </div>
 
                   {/* Syringe Scale Visualization */}
                   <div>
-                    <h3 className="text-lg font-bold text-gray-900 text-center mb-6">
+                    <h3 className="text-sm sm:text-base md:text-lg font-bold text-gray-900 text-center mb-4 sm:mb-6">
                       {t('calculator.visualization')}
                     </h3>
                     <div className="relative max-w-xl mx-auto">
@@ -343,7 +343,7 @@ export default function DosageCalculator() {
                             markers = ['0', '0.2', '0.4', '0.6', '0.8', '1.0'];
                           }
                           return markers.map((m) => (
-                            <span key={m} className="text-sm font-medium text-gray-600">{m}</span>
+                            <span key={m} className="text-xs sm:text-sm font-medium text-gray-600">{m}</span>
                           ));
                         })()}
                       </div>

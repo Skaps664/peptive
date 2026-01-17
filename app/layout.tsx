@@ -5,6 +5,7 @@ import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import CartSidebar from '@/components/cart/CartSidebar';
 import AnnouncementBar from '@/components/layout/AnnouncementBar';
+import WelcomePopup from '@/components/WelcomePopup';
 import { LanguageProvider } from '@/contexts/LanguageContext';
 
 const inter = Inter({ 
@@ -41,6 +42,7 @@ export default function RootLayout({
           </main>
           <Footer />
           <CartSidebar />
+          <WelcomePopup />
           {/* WhatsApp Button - global */}
           <a
             href="https://wa.me/971558225919"
