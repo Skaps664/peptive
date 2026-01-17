@@ -100,48 +100,7 @@ export default function WelcomePopup() {
   const [nameError, setNameError] = useState('');
   const [phoneError, setPhoneError] = useState('');
   const [emailError, setEmailError] = useState('');
-  const [geoStatus, setGeoStatus] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
-
-  // Detect user's country on mount
-  useEffect(() => {
-    const detectCountry = async () => {
-      const geoAPIs = [
-        'https://ipapi.co/json/',
-        'https://ipinfo.io/json/',
-        'https://api.country.is/',
-        'https://geolocation-db.com/json/',
-      ];
-
-      for (const apiUrl of geoAPIs) {
-        try {
-          const response = await fetch(apiUrl);
-          if (!response.ok) continue;
-
-          const data = await response.json();
-          const detectedCode = data.country_code || data.country || data.countryCode;
-
-          if (detectedCode) {
-            const country = countries.find((c) => c.code === detectedCode);
-            if (country) {
-              setCountryCode(country.dial);
-              setGeoStatus(t('welcome_popup.geo_detected'));
-              setTimeout(() => setGeoStatus(''), 3000);
-            }
-            return;
-          }
-        } catch (error) {
-          continue;
-        }
-      }
-
-      // Default to US if detection fails
-      setCountryCode('+1');
-      setGeoStatus(t('welcome_popup.geo_failed'));
-    };
-
-    detectCountry();
-  }, [t]);
 
   // Show popup after delay
   useEffect(() => {
