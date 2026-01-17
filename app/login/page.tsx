@@ -43,25 +43,25 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-50 px-4 md:px-12 lg:px-12 xl:px-48 2xl:px-64 py-16 md:py-20 lg:py-20 xl:py-24">
-      <div className="max-w-2xl mx-auto">
-        <div className="text-center mb-12 lg:mb-12 xl:mb-16">
-          <h1 className="text-4xl md:text-5xl lg:text-5xl xl:text-6xl 2xl:text-7xl font-extrabold text-gray-900 mb-4 lg:mb-4 xl:mb-6">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-50 px-4 py-12">
+      <div className="max-w-md mx-auto">
+        <div className="text-center mb-6">
+          <h1 className="text-2xl text-gray-900 mb-2">
             Welcome Back
           </h1>
-          <p className="text-lg md:text-xl lg:text-xl xl:text-2xl text-gray-600">Sign in to your account</p>
+          <p className="text-sm text-gray-600">Sign in to your account</p>
         </div>
 
-        <div className="bg-white rounded-3xl shadow-xl border border-gray-100 p-8 md:p-10 lg:p-10 xl:p-12 2xl:p-14">
+        <div className="bg-white rounded-lg shadow-lg border border-gray-100 p-6">
           {error && (
-            <div className="mb-8 p-5 bg-red-50 border-2 border-red-200 rounded-2xl">
-              <p className="text-red-700 text-base md:text-lg lg:text-lg font-medium">{error}</p>
+            <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg">
+              <p className="text-red-700 text-sm">{error}</p>
             </div>
           )}
 
-          <form onSubmit={handleSubmit} className="space-y-7 lg:space-y-7 xl:space-y-8">
+          <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <label htmlFor="username" className="block text-base md:text-lg lg:text-lg xl:text-xl font-bold text-gray-900 mb-3 lg:mb-3 xl:mb-4">
+              <label htmlFor="username" className="block text-sm text-gray-900 mb-1">
                 Username or Email
               </label>
               <input
@@ -71,13 +71,13 @@ export default function LoginPage() {
                 required
                 value={formData.username}
                 onChange={handleChange}
-                className="w-full px-5 lg:px-5 xl:px-6 py-4 lg:py-4 xl:py-5 text-base md:text-lg lg:text-lg border-2 border-gray-300 rounded-2xl focus:border-gray-900 focus:ring-4 focus:ring-gray-100 outline-none transition-all"
+                className="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:border-gray-900 focus:ring-2 focus:ring-gray-100 outline-none transition-all"
                 placeholder="Enter your username or email"
               />
             </div>
 
             <div>
-              <label htmlFor="password" className="block text-base md:text-lg lg:text-lg xl:text-xl font-bold text-gray-900 mb-3 lg:mb-3 xl:mb-4">
+              <label htmlFor="password" className="block text-sm text-gray-900 mb-1">
                 Password
               </label>
               <input
@@ -87,7 +87,7 @@ export default function LoginPage() {
                 required
                 value={formData.password}
                 onChange={handleChange}
-                className="w-full px-5 lg:px-5 xl:px-6 py-4 lg:py-4 xl:py-5 text-base md:text-lg lg:text-lg border-2 border-gray-300 rounded-2xl focus:border-gray-900 focus:ring-4 focus:ring-gray-100 outline-none transition-all"
+                className="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:border-gray-900 focus:ring-2 focus:ring-gray-100 outline-none transition-all"
                 placeholder="Enter your password"
               />
             </div>
@@ -98,13 +98,13 @@ export default function LoginPage() {
                   id="remember"
                   name="remember"
                   type="checkbox"
-                  className="h-5 w-5 border-gray-300 rounded focus:ring-gray-900"
+                  className="h-4 w-4 border-gray-300 rounded focus:ring-gray-900"
                 />
-                <label htmlFor="remember" className="ml-3 text-base md:text-lg lg:text-lg text-gray-600">
+                <label htmlFor="remember" className="ml-2 text-sm text-gray-600">
                   Remember me
                 </label>
               </div>
-              <Link href="/forgot-password" className="text-base md:text-lg lg:text-lg font-semibold text-gray-900 hover:underline transition-all">
+              <Link href="/forgot-password" className="text-sm text-gray-900 hover:underline transition-all">
                 Forgot password?
               </Link>
             </div>
@@ -112,16 +112,16 @@ export default function LoginPage() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-gray-900 text-white text-lg md:text-xl lg:text-xl xl:text-2xl font-bold py-5 lg:py-5 xl:py-6 px-6 rounded-full hover:bg-gray-800 transform hover:scale-[1.02] transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none shadow-lg"
+              className="w-full bg-gray-900 text-white text-sm py-2.5 px-4 rounded-lg hover:bg-gray-800 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed shadow-md"
             >
               {loading ? 'Signing in...' : 'Sign In'}
             </button>
           </form>
 
-          <div className="mt-10 lg:mt-10 xl:mt-12 pt-8 lg:pt-8 xl:pt-10 border-t-2 border-gray-100 text-center">
-            <p className="text-base md:text-lg lg:text-lg xl:text-xl text-gray-600">
+          <div className="mt-6 pt-4 border-t border-gray-100 text-center">
+            <p className="text-sm text-gray-600">
               Don&apos;t have an account?{' '}
-              <Link href="/signup" className="font-bold text-gray-900 hover:underline transition-all">
+              <Link href="/signup" className="text-gray-900 hover:underline transition-all">
                 Sign up
               </Link>
             </p>

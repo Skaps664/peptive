@@ -28,7 +28,6 @@ class AuthAPI {
       baseURL: `${baseURL}/wp-json`,
       headers: {
         'Content-Type': 'application/json',
-        'Host': 'peptivepeptides.local', // Required for Local by Flywheel virtual host routing
       },
     });
 
@@ -89,7 +88,7 @@ class AuthAPI {
       console.error('Login error:', error);
       return {
         success: false,
-        message: error.response?.data?.message || 'Login failed',
+        message: error.response?.data?.message || 'Invalid username or password',
       };
     }
   }
@@ -218,22 +217,37 @@ class AuthAPI {
   // ==================== WOOCOMMERCE CUSTOMER DATA ====================
 
   /**
-   * Get customer orders (requires WooCommerce REST API)
+   * Get customer orders from WooCommerce via API route
    */
-  async getCustomerOrders(): Promise<any[]> {
-    if (!this.token) return [];
-
+  async getCustomerOrders(customerId?: number): Promise<any[]> {
     try {
-      // Note: You may need to use WooCommerce API credentials for this
-      const response = await this.client.get('/wc/v3/orders', {
-        params: {
-          customer: await this.getCurrentUser().then(u => u?.id),
-        },
-      });
-      return response.data;
+      const userId = customerId || (await this.getCurrentUser())?.id;
+      if (!userId) return [];
+
+      const response = await axios.get(`/api/customer-orders?customerId=${userId}`);
+      return response.data.orders || [];
     } catch (error) {
       console.error('Error fetching customer orders:', error);
       return [];
+    }
+  }
+
+  /**
+   * Get customer billing and shipping addresses via API route
+   */
+  async getCustomerAddresses(): Promise<{billing: any; shipping: any} | null> {
+    try {
+      const user = await this.getCurrentUser();
+      if (!user?.id) return null;
+
+      const response = await axios.get(`/api/customer-addresses?customerId=${user.id}`);
+      return {
+        billing: response.data.billing,
+        shipping: response.data.shipping,
+      };
+    } catch (error) {
+      console.error('Error fetching customer addresses:', error);
+      return null;
     }
   }
 }

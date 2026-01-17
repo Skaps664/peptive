@@ -271,6 +271,67 @@ class WooCommerceAPI {
   getStoreClient() {
     return this.storeClient;
   }
+
+  // ==================== ORDERS ====================
+  
+  // Get orders (with optional filters)
+  async getOrders(params?: {
+    customer?: string;
+    perPage?: number;
+    page?: number;
+    orderby?: string;
+    order?: string;
+  }): Promise<any[]> {
+    try {
+      const response = await this.client.get('/orders', {
+        params: {
+          customer: params?.customer,
+          per_page: params?.perPage || 10,
+          page: params?.page || 1,
+          orderby: params?.orderby || 'date',
+          order: params?.order || 'desc',
+        },
+      });
+      return response.data;
+    } catch (error) {
+      console.error('Error fetching orders:', error);
+      return [];
+    }
+  }
+
+  // ==================== CUSTOMERS ====================
+  
+  // Get customer by ID
+  async getCustomer(customerId: number): Promise<any> {
+    try {
+      const response = await this.client.get(`/customers/${customerId}`);
+      return response.data;
+    } catch (error) {
+      console.error(`Error fetching customer ${customerId}:`, error);
+      return null;
+    }
+  }
+
+  // ==================== COUPONS ====================
+  
+  // Get coupons (with optional filters)
+  async getCoupons(params?: {
+    code?: string;
+    perPage?: number;
+  }): Promise<any[]> {
+    try {
+      const response = await this.client.get('/coupons', {
+        params: {
+          code: params?.code,
+          per_page: params?.perPage || 10,
+        },
+      });
+      return response.data;
+    } catch (error) {
+      console.error('Error fetching coupons:', error);
+      return [];
+    }
+  }
 }
 
 // Export singleton instance

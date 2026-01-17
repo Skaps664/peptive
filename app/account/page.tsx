@@ -12,6 +12,7 @@ export default function AccountPage() {
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState<'profile' | 'orders' | 'addresses'>('profile');
   const [orders, setOrders] = useState<any[]>([]);
+  const [addresses, setAddresses] = useState<{billing: any; shipping: any} | null>(null);
 
   useEffect(() => {
     checkAuth();
@@ -29,9 +30,11 @@ export default function AccountPage() {
     
     if (currentUser) {
       setUser(currentUser);
-      // Load orders
+      // Load orders and addresses
       const customerOrders = await authAPI.getCustomerOrders();
+      const customerAddresses = await authAPI.getCustomerAddresses();
       setOrders(customerOrders);
+      setAddresses(customerAddresses);
     } else {
       router.push('/login');
     }
@@ -57,26 +60,26 @@ export default function AccountPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-50">
-      <div className="px-4 md:px-12 lg:px-48 xl:px-64 py-16 md:py-20 lg:py-24">
+      <div className="px-4 py-12 max-w-6xl mx-auto">
         {/* Header */}
-        <div className="mb-12 lg:mb-16">
-          <h1 className="text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-extrabold text-gray-900 mb-4 lg:mb-6">
+        <div className="mb-6">
+          <h1 className="text-2xl text-gray-900 mb-2">
             My Account
           </h1>
-          <p className="text-lg md:text-xl lg:text-2xl text-gray-600">
+          <p className="text-sm text-gray-600">
             Welcome back, {user?.firstName || user?.displayName || user?.username}
           </p>
         </div>
 
-        <div className="grid lg:grid-cols-4 gap-8 lg:gap-10">
+        <div className="grid lg:grid-cols-4 gap-6">
           {/* Sidebar */}
           <div className="lg:col-span-1">
-            <div className="bg-white rounded-3xl shadow-xl border border-gray-100 p-6 lg:p-8 space-y-3">
+            <div className="bg-white rounded-lg shadow-lg border border-gray-100 p-4 space-y-2">
               <button
                 onClick={() => setActiveTab('profile')}
-                className={`w-full text-left px-5 lg:px-6 py-4 lg:py-5 rounded-2xl text-base md:text-lg lg:text-xl font-bold transition-all ${
+                className={`w-full text-left px-3 py-2 rounded-lg text-sm transition-all ${
                   activeTab === 'profile'
-                    ? 'bg-gray-900 text-white shadow-lg'
+                    ? 'bg-gray-900 text-white shadow-md'
                     : 'text-gray-700 hover:bg-gray-100'
                 }`}
               >
@@ -84,9 +87,9 @@ export default function AccountPage() {
               </button>
               <button
                 onClick={() => setActiveTab('orders')}
-                className={`w-full text-left px-5 lg:px-6 py-4 lg:py-5 rounded-2xl text-base md:text-lg lg:text-xl font-bold transition-all ${
+                className={`w-full text-left px-3 py-2 rounded-lg text-sm transition-all ${
                   activeTab === 'orders'
-                    ? 'bg-gray-900 text-white shadow-lg'
+                    ? 'bg-gray-900 text-white shadow-md'
                     : 'text-gray-700 hover:bg-gray-100'
                 }`}
               >
@@ -94,18 +97,18 @@ export default function AccountPage() {
               </button>
               <button
                 onClick={() => setActiveTab('addresses')}
-                className={`w-full text-left px-5 lg:px-6 py-4 lg:py-5 rounded-2xl text-base md:text-lg lg:text-xl font-bold transition-all ${
+                className={`w-full text-left px-3 py-2 rounded-lg text-sm transition-all ${
                   activeTab === 'addresses'
-                    ? 'bg-gray-900 text-white shadow-lg'
+                    ? 'bg-gray-900 text-white shadow-md'
                     : 'text-gray-700 hover:bg-gray-100'
                 }`}
               >
                 Addresses
               </button>
-              <div className="pt-4 border-t-2 border-gray-100">
+              <div className="pt-2 border-t border-gray-100">
                 <button
                   onClick={handleLogout}
-                  className="w-full text-left px-5 lg:px-6 py-4 lg:py-5 rounded-2xl text-base md:text-lg lg:text-xl font-semibold text-red-600 hover:bg-red-50 transition-all"
+                  className="w-full text-left px-3 py-2 rounded-lg text-sm text-red-600 hover:bg-red-50 transition-all"
                 >
                   Logout
                 </button>
@@ -115,55 +118,55 @@ export default function AccountPage() {
 
           {/* Main Content */}
           <div className="lg:col-span-3">
-            <div className="bg-white rounded-3xl shadow-xl border border-gray-100 p-8 md:p-10 lg:p-12 xl:p-14">
+            <div className="bg-white rounded-lg shadow-lg border border-gray-100 p-6">
               {activeTab === 'profile' && (
                 <div>
-                  <h2 className="text-2xl md:text-3xl lg:text-4xl font-extrabold text-gray-900 mb-8 lg:mb-10">Profile Information</h2>
-                  <div className="space-y-7 lg:space-y-8">
-                    <div className="grid md:grid-cols-2 gap-6 lg:gap-7">
+                  <h2 className="text-xl text-gray-900 mb-6">Profile Information</h2>
+                  <div className="space-y-4">
+                    <div className="grid md:grid-cols-2 gap-4">
                       <div>
-                        <label className="block text-base md:text-lg lg:text-xl font-semibold text-gray-900 mb-3 lg:mb-4">
+                        <label className="block text-sm text-gray-900 mb-1">
                           First Name
                         </label>
                         <input
                           type="text"
                           defaultValue={user?.firstName || ''}
-                          className="w-full px-5 lg:px-6 py-4 lg:py-5 text-base md:text-lg border-2 border-gray-300 rounded-2xl focus:border-gray-900 focus:ring-4 focus:ring-gray-100 outline-none transition-all"
+                          className="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:border-gray-900 focus:ring-2 focus:ring-gray-100 outline-none transition-all"
                         />
                       </div>
                       <div>
-                        <label className="block text-base md:text-lg lg:text-xl font-semibold text-gray-900 mb-3 lg:mb-4">
+                        <label className="block text-sm text-gray-900 mb-1">
                           Last Name
                         </label>
                         <input
                           type="text"
                           defaultValue={user?.lastName || ''}
-                          className="w-full px-5 lg:px-6 py-4 lg:py-5 text-base md:text-lg border-2 border-gray-300 rounded-2xl focus:border-gray-900 focus:ring-4 focus:ring-gray-100 outline-none transition-all"
+                          className="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:border-gray-900 focus:ring-2 focus:ring-gray-100 outline-none transition-all"
                         />
                       </div>
                     </div>
                     <div>
-                      <label className="block text-base md:text-lg lg:text-xl font-semibold text-gray-900 mb-3 lg:mb-4">
+                      <label className="block text-sm text-gray-900 mb-1">
                         Email
                       </label>
                       <input
                         type="email"
                         defaultValue={user?.email || ''}
-                        className="w-full px-5 lg:px-6 py-4 lg:py-5 text-base md:text-lg border-2 border-gray-300 rounded-2xl focus:border-gray-900 focus:ring-4 focus:ring-gray-100 outline-none transition-all"
+                        className="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:border-gray-900 focus:ring-2 focus:ring-gray-100 outline-none transition-all"
                       />
                     </div>
                     <div>
-                      <label className="block text-base md:text-lg lg:text-xl font-semibold text-gray-900 mb-3 lg:mb-4">
+                      <label className="block text-sm text-gray-900 mb-1">
                         Username
                       </label>
                       <input
                         type="text"
                         defaultValue={user?.username || ''}
                         disabled
-                        className="w-full px-5 lg:px-6 py-4 lg:py-5 text-base md:text-lg border-2 border-gray-300 rounded-2xl bg-gray-100 cursor-not-allowed"
+                        className="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg bg-gray-100 cursor-not-allowed"
                       />
                     </div>
-                    <button className="bg-gray-900 text-white text-lg md:text-xl lg:text-2xl font-semibold py-5 lg:py-6 px-10 lg:px-12 rounded-full hover:bg-gray-800 transform hover:scale-[1.02] transition-all duration-200 shadow-lg">
+                    <button className="bg-gray-900 text-white text-sm py-2.5 px-6 rounded-lg hover:bg-gray-800 transition-all duration-200 shadow-md">
                       Save Changes
                     </button>
                   </div>
@@ -172,29 +175,29 @@ export default function AccountPage() {
 
               {activeTab === 'orders' && (
                 <div>
-                  <h2 className="text-2xl md:text-3xl lg:text-4xl font-extrabold text-gray-900 mb-8 lg:mb-10">Order History</h2>
+                  <h2 className="text-xl text-gray-900 mb-6">Order History</h2>
                   {orders.length > 0 ? (
-                    <div className="space-y-6 lg:space-y-7">
+                    <div className="space-y-4">
                       {orders.map((order) => (
-                        <div key={order.id} className="border-2 border-gray-200 rounded-3xl p-7 lg:p-8 hover:border-gray-900 hover:shadow-xl transition-all">
-                          <div className="flex justify-between items-start mb-6">
+                        <div key={order.id} className="border border-gray-200 rounded-lg p-4 hover:border-gray-900 hover:shadow-md transition-all">
+                          <div className="flex justify-between items-start mb-4">
                             <div>
-                              <p className="text-base md:text-lg text-gray-500 mb-1">Order #{order.id}</p>
-                              <p className="text-lg md:text-xl lg:text-2xl font-semibold text-gray-900">
+                              <p className="text-xs text-gray-500 mb-1">Order #{order.id}</p>
+                              <p className="text-sm text-gray-900">
                                 {new Date(order.date_created).toLocaleDateString()}
                               </p>
                             </div>
-                            <span className="px-5 py-2 bg-gray-100 text-gray-900 rounded-full text-base md:text-lg font-semibold">
+                            <span className="px-3 py-1 bg-gray-100 text-gray-900 rounded-full text-xs">
                               {order.status}
                             </span>
                           </div>
-                          <div className="border-t-2 border-gray-200 pt-6">
-                            <p className="text-2xl md:text-3xl font-extrabold text-gray-900">
+                          <div className="border-t border-gray-200 pt-4">
+                            <p className="text-lg text-gray-900">
                               Dhs. {parseFloat(order.total).toFixed(2)}
                             </p>
                             <Link 
                               href={`/orders/${order.id}`}
-                              className="inline-block mt-4 text-base md:text-lg font-semibold text-gray-900 hover:text-gray-700 hover:underline transition-all"
+                              className="inline-block mt-2 text-sm text-gray-900 hover:text-gray-700 hover:underline transition-all"
                             >
                               View Details →
                             </Link>
@@ -203,11 +206,11 @@ export default function AccountPage() {
                       ))}
                     </div>
                   ) : (
-                    <div className="text-center py-16 lg:py-20">
-                      <p className="text-lg md:text-xl lg:text-2xl text-gray-600 mb-8">No orders yet</p>
+                    <div className="text-center py-12">
+                      <p className="text-sm text-gray-600 mb-6">No orders yet</p>
                       <Link 
                         href="/products"
-                        className="inline-block bg-gray-900 text-white text-lg md:text-xl lg:text-2xl font-semibold py-5 lg:py-6 px-10 lg:px-12 rounded-full hover:bg-gray-800 transform hover:scale-[1.02] transition-all duration-200 shadow-lg"
+                        className="inline-block bg-gray-900 text-white text-sm py-2.5 px-6 rounded-lg hover:bg-gray-800 transition-all duration-200 shadow-md"
                       >
                         Start Shopping
                       </Link>
@@ -218,27 +221,51 @@ export default function AccountPage() {
 
               {activeTab === 'addresses' && (
                 <div>
-                  <h2 className="text-2xl md:text-3xl lg:text-4xl font-extrabold text-gray-900 mb-8 lg:mb-10">Saved Addresses</h2>
-                  <div className="grid md:grid-cols-2 gap-6 lg:gap-8">
+                  <h2 className="text-xl text-gray-900 mb-6">Saved Addresses</h2>
+                  <div className="grid md:grid-cols-2 gap-4">
                     {/* Billing Address */}
-                    <div className="border-2 border-gray-200 rounded-3xl p-7 lg:p-8 hover:border-gray-900 transition-all">
-                      <h3 className="text-xl md:text-2xl font-semibold text-gray-900 mb-5">Billing Address</h3>
-                      <div className="text-gray-600 text-base md:text-lg space-y-2 mb-6">
-                        <p>No billing address saved</p>
-                      </div>
-                      <button className="text-base md:text-lg font-bold text-gray-900 hover:text-gray-700 hover:underline transition-all">
-                        Add Address →
+                    <div className="border border-gray-200 rounded-lg p-4 hover:border-gray-900 transition-all">
+                      <h3 className="text-base text-gray-900 mb-3">Billing Address</h3>
+                      {addresses?.billing && (addresses.billing.address_1 || addresses.billing.city) ? (
+                        <div className="text-gray-600 text-sm space-y-1 mb-4">
+                          <p>{addresses.billing.first_name} {addresses.billing.last_name}</p>
+                          {addresses.billing.company && <p>{addresses.billing.company}</p>}
+                          <p>{addresses.billing.address_1}</p>
+                          {addresses.billing.address_2 && <p>{addresses.billing.address_2}</p>}
+                          <p>{addresses.billing.city}, {addresses.billing.state} {addresses.billing.postcode}</p>
+                          <p>{addresses.billing.country}</p>
+                          {addresses.billing.phone && <p>Phone: {addresses.billing.phone}</p>}
+                          {addresses.billing.email && <p>Email: {addresses.billing.email}</p>}
+                        </div>
+                      ) : (
+                        <div className="text-gray-600 text-sm space-y-1 mb-4">
+                          <p>No billing address saved</p>
+                        </div>
+                      )}
+                      <button className="text-sm text-gray-900 hover:text-gray-700 hover:underline transition-all">
+                        {addresses?.billing && (addresses.billing.address_1 || addresses.billing.city) ? 'Edit Address' : 'Add Address'} →
                       </button>
                     </div>
 
                     {/* Shipping Address */}
-                    <div className="border-2 border-gray-200 rounded-3xl p-7 lg:p-8 hover:border-gray-900 transition-all">
-                      <h3 className="text-xl md:text-2xl font-semibold text-gray-900 mb-5">Shipping Address</h3>
-                      <div className="text-gray-600 text-base md:text-lg space-y-2 mb-6">
-                        <p>No shipping address saved</p>
-                      </div>
-                      <button className="text-base md:text-lg font-bold text-gray-900 hover:text-gray-700 hover:underline transition-all">
-                        Add Address →
+                    <div className="border border-gray-200 rounded-lg p-4 hover:border-gray-900 transition-all">
+                      <h3 className="text-base text-gray-900 mb-3">Shipping Address</h3>
+                      {addresses?.shipping && (addresses.shipping.address_1 || addresses.shipping.city) ? (
+                        <div className="text-gray-600 text-sm space-y-1 mb-4">
+                          <p>{addresses.shipping.first_name} {addresses.shipping.last_name}</p>
+                          {addresses.shipping.company && <p>{addresses.shipping.company}</p>}
+                          <p>{addresses.shipping.address_1}</p>
+                          {addresses.shipping.address_2 && <p>{addresses.shipping.address_2}</p>}
+                          <p>{addresses.shipping.city}, {addresses.shipping.state} {addresses.shipping.postcode}</p>
+                          <p>{addresses.shipping.country}</p>
+                        </div>
+                      ) : (
+                        <div className="text-gray-600 text-sm space-y-1 mb-4">
+                          <p>No shipping address saved</p>
+                        </div>
+                      )}
+                      <button className="text-sm text-gray-900 hover:text-gray-700 hover:underline transition-all">
+                        {addresses?.shipping && (addresses.shipping.address_1 || addresses.shipping.city) ? 'Edit Address' : 'Add Address'} →
                       </button>
                     </div>
                   </div>

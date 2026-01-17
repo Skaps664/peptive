@@ -8,7 +8,7 @@
 import { useEffect, useState } from 'react';
 
 export default function APITestPage() {
-  const [productsTest, setProductsTest] = useState({ success: false, data: null as any, error: null as any, loading: true });
+  const [productsTest, setProductsTest] = useState({ success: false, data: null as any, error: null as any, loading: true, hasKey: false, hasSecret: false });
   const [heroTest, setHeroTest] = useState({ success: false, data: null as any, error: null as any, loading: true });
   const [reviewsTest, setReviewsTest] = useState({ success: false, data: null as any, error: null as any, loading: true });
 
@@ -18,24 +18,28 @@ export default function APITestPage() {
       try {
         const response = await fetch('/api/test-woocommerce');
         const data = await response.json();
-        if (response.ok) {
-          setProductsTest({ success: true, data: data.products, error: null, loading: false });
-        } else {
-          setProductsTest({ success: false, data: null, error: data.error, loading: false });
-        }
+        setProductsTest({ 
+          success: data.success, 
+          data: data.products, 
+          error: data.error, 
+          loading: false,
+          hasKey: data.hasKey || false,
+          hasSecret: data.hasSecret || false
+        });
       } catch (error: any) {
-        setProductsTest({ success: false, data: null, error: error.message, loading: false });
+        setProductsTest({ success: false, data: null, error: error.message, loading: false, hasKey: false, hasSecret: false });
       }
 
       // Test 2: WordPress Hero Section
       try {
         const response = await fetch('/api/test-wordpress');
         const data = await response.json();
-        if (response.ok) {
-          setHeroTest({ success: true, data: data.hero, error: null, loading: false });
-        } else {
-          setHeroTest({ success: false, data: null, error: data.error, loading: false });
-        }
+        setHeroTest({ 
+          success: data.success, 
+          data: data.hero, 
+          error: data.error, 
+          loading: false 
+        });
       } catch (error: any) {
         setHeroTest({ success: false, data: null, error: error.message, loading: false });
       }
@@ -222,19 +226,19 @@ export default function APITestPage() {
       {/* Environment Info */}
       <div className="mt-8 border rounded-lg p-6 bg-gray-50">
         <h2 className="text-xl font-semibold mb-4">📋 Environment Info</h2>
-        <div className="grid grid-cols-2 gap-4 text-sm">
+        <div className="space-y-2 text-sm">
           <div>
-            <span className="font-semibold">WordPress URL:</span>
+            <span className="font-semibold">WooCommerce Consumer Key:</span>
             <br />
             <code className="bg-gray-200 px-2 py-1 rounded">
-              {process.env.NEXT_PUBLIC_WOOCOMMERCE_URL || 'Not configured'}
+              {productsTest.loading ? '...' : productsTest.hasKey ? '✓ Configured' : '❌ Missing'}
             </code>
           </div>
           <div>
-            <span className="font-semibold">Consumer Key:</span>
+            <span className="font-semibold">WooCommerce Consumer Secret:</span>
             <br />
             <code className="bg-gray-200 px-2 py-1 rounded">
-              {process.env.WOOCOMMERCE_CONSUMER_KEY ? '✓ Configured' : '❌ Missing'}
+              {productsTest.loading ? '...' : productsTest.hasSecret ? '✓ Configured' : '❌ Missing'}
             </code>
           </div>
         </div>

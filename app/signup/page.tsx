@@ -74,26 +74,26 @@ export default function SignupPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-50 px-4 md:px-12 lg:px-48 xl:px-64 py-16 md:py-20 lg:py-24">
-      <div className="max-w-3xl mx-auto">
-        <div className="text-center mb-12 lg:mb-16">
-          <h1 className="text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-extrabold text-gray-900 mb-4 lg:mb-6">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-50 px-4 py-12">
+      <div className="max-w-lg mx-auto">
+        <div className="text-center mb-6">
+          <h1 className="text-2xl text-gray-900 mb-2">
             Create Account
           </h1>
-          <p className="text-lg md:text-xl lg:text-2xl text-gray-600">Join Peptive today</p>
+          <p className="text-sm text-gray-600">Join Peptive today</p>
         </div>
 
-        <div className="bg-white rounded-3xl shadow-xl border border-gray-100 p-8 md:p-10 lg:p-12 xl:p-14">
+        <div className="bg-white rounded-lg shadow-lg border border-gray-100 p-6">
           {error && (
-            <div className="mb-8 p-5 bg-red-50 border-2 border-red-200 rounded-2xl">
-              <p className="text-red-700 text-base md:text-lg font-medium">{error}</p>
+            <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg">
+              <p className="text-red-700 text-sm">{error}</p>
             </div>
           )}
 
-          <form onSubmit={handleSubmit} className="space-y-7 lg:space-y-8">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-7">
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label htmlFor="firstName" className="block text-base md:text-lg lg:text-xl font-bold text-gray-900 mb-3 lg:mb-4">
+                <label htmlFor="firstName" className="block text-sm text-gray-900 mb-1">
                   First Name
                 </label>
                 <input
@@ -103,13 +103,13 @@ export default function SignupPage() {
                   required
                   value={formData.firstName}
                   onChange={handleChange}
-                  className="w-full px-5 lg:px-6 py-4 lg:py-5 text-base md:text-lg border-2 border-gray-300 rounded-2xl focus:border-gray-900 focus:ring-4 focus:ring-gray-100 outline-none transition-all"
+                  className="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:border-gray-900 focus:ring-2 focus:ring-gray-100 outline-none transition-all"
                   placeholder="John"
                 />
               </div>
 
               <div>
-                <label htmlFor="lastName" className="block text-base md:text-lg lg:text-xl font-bold text-gray-900 mb-3 lg:mb-4">
+                <label htmlFor="lastName" className="block text-sm text-gray-900 mb-1">
                   Last Name
                 </label>
                 <input
@@ -119,14 +119,14 @@ export default function SignupPage() {
                   required
                   value={formData.lastName}
                   onChange={handleChange}
-                  className="w-full px-5 lg:px-6 py-4 lg:py-5 text-base md:text-lg border-2 border-gray-300 rounded-2xl focus:border-gray-900 focus:ring-4 focus:ring-gray-100 outline-none transition-all"
+                  className="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:border-gray-900 focus:ring-2 focus:ring-gray-100 outline-none transition-all"
                   placeholder="Doe"
                 />
               </div>
             </div>
 
             <div>
-              <label htmlFor="username" className="block text-base md:text-lg lg:text-xl font-bold text-gray-900 mb-3 lg:mb-4">
+              <label htmlFor="username" className="block text-sm text-gray-900 mb-1">
                 Username
               </label>
               <input
@@ -136,13 +136,13 @@ export default function SignupPage() {
                 required
                 value={formData.username}
                 onChange={handleChange}
-                className="w-full px-5 lg:px-6 py-4 lg:py-5 text-base md:text-lg border-2 border-gray-300 rounded-2xl focus:border-gray-900 focus:ring-4 focus:ring-gray-100 outline-none transition-all"
+                className="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:border-gray-900 focus:ring-2 focus:ring-gray-100 outline-none transition-all"
                 placeholder="johndoe"
               />
             </div>
 
             <div>
-              <label htmlFor="email" className="block text-base md:text-lg lg:text-xl font-bold text-gray-900 mb-3 lg:mb-4">
+              <label htmlFor="email" className="block text-sm text-gray-900 mb-1">
                 Email Address
               </label>
               <input
@@ -152,13 +152,13 @@ export default function SignupPage() {
                 required
                 value={formData.email}
                 onChange={handleChange}
-                className="w-full px-5 lg:px-6 py-4 lg:py-5 text-base md:text-lg border-2 border-gray-300 rounded-2xl focus:border-gray-900 focus:ring-4 focus:ring-gray-100 outline-none transition-all"
+                className="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:border-gray-900 focus:ring-2 focus:ring-gray-100 outline-none transition-all"
                 placeholder="john@example.com"
               />
             </div>
 
             <div>
-              <label htmlFor="password" className="block text-base md:text-lg lg:text-xl font-bold text-gray-900 mb-3 lg:mb-4">
+              <label htmlFor="password" className="block text-sm text-gray-900 mb-1">
                 Password
               </label>
               <input
@@ -168,13 +168,13 @@ export default function SignupPage() {
                 required
                 value={formData.password}
                 onChange={handleChange}
-                className="w-full px-5 lg:px-6 py-4 lg:py-5 text-base md:text-lg border-2 border-gray-300 rounded-2xl focus:border-gray-900 focus:ring-4 focus:ring-gray-100 outline-none transition-all"
+                className="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:border-gray-900 focus:ring-2 focus:ring-gray-100 outline-none transition-all"
                 placeholder="At least 6 characters"
               />
             </div>
 
             <div>
-              <label htmlFor="confirmPassword" className="block text-base md:text-lg lg:text-xl font-bold text-gray-900 mb-3 lg:mb-4">
+              <label htmlFor="confirmPassword" className="block text-sm text-gray-900 mb-1">
                 Confirm Password
               </label>
               <input
@@ -184,7 +184,7 @@ export default function SignupPage() {
                 required
                 value={formData.confirmPassword}
                 onChange={handleChange}
-                className="w-full px-5 lg:px-6 py-4 lg:py-5 text-base md:text-lg border-2 border-gray-300 rounded-2xl focus:border-gray-900 focus:ring-4 focus:ring-gray-100 outline-none transition-all"
+                className="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:border-gray-900 focus:ring-2 focus:ring-gray-100 outline-none transition-all"
                 placeholder="Re-enter your password"
               />
             </div>
@@ -192,16 +192,16 @@ export default function SignupPage() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-gray-900 text-white text-lg md:text-xl lg:text-2xl font-bold py-5 lg:py-6 px-6 rounded-full hover:bg-gray-800 transform hover:scale-[1.02] transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none shadow-lg mt-2"
+              className="w-full bg-gray-900 text-white text-sm py-2.5 px-4 rounded-lg hover:bg-gray-800 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed shadow-md mt-2"
             >
               {loading ? 'Creating account...' : 'Create Account'}
             </button>
           </form>
 
-          <div className="mt-10 lg:mt-12 pt-8 lg:pt-10 border-t-2 border-gray-100 text-center">
-            <p className="text-base md:text-lg lg:text-xl text-gray-600">
+          <div className="mt-6 pt-4 border-t border-gray-100 text-center">
+            <p className="text-sm text-gray-600">
               Already have an account?{' '}
-              <Link href="/login" className="font-bold text-gray-900 hover:underline transition-all">
+              <Link href="/login" className="text-gray-900 hover:underline transition-all">
                 Sign in
               </Link>
             </p>
