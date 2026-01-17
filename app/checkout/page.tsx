@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import Image from 'next/image';
 import { useCartStore } from '@/store/cartStore';
 import { formatPrice } from '@/lib/utils';
@@ -34,6 +34,7 @@ const COUNTRY_STATES: Record<string, string[]> = {
 
 export default function CheckoutPage() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const { items, getSubtotal, clearCart } = useCartStore();
   const [loading, setLoading] = useState(false);
   const [sameAsShipping, setSameAsShipping] = useState(true);
@@ -43,6 +44,14 @@ export default function CheckoutPage() {
   const [validatingCoupon, setValidatingCoupon] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [calculatingShipping, setCalculatingShipping] = useState(false);
+
+  // Check for payment cancellation
+  useEffect(() => {
+    const cancelled = searchParams?.get('cancelled');
+    if (cancelled === 'true') {
+      setError('Payment was cancelled. Please try again or use a different payment method.');
+    }
+  }, [searchParams]);
   
   const subtotal = getSubtotal();
   const [tax, setTax] = useState(0);
