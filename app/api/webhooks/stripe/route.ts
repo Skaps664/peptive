@@ -3,7 +3,7 @@ import Stripe from 'stripe';
 import axios from 'axios';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-  apiVersion: '2024-12-18.acacia',
+  apiVersion: '2025-12-15.clover',
 });
 
 // This is your Stripe webhook secret (get it from Stripe Dashboard → Webhooks)
