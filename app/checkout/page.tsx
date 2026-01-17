@@ -7,9 +7,6 @@ import { useCartStore } from '@/store/cartStore';
 import { formatPrice } from '@/lib/utils';
 import Input from '@/components/ui/Input';
 import Button from '@/components/ui/Button';
-import { loadStripe } from '@stripe/stripe-js';
-
-const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!);
 
 // Countries we operate in (from CountrySelector)
 const AVAILABLE_COUNTRIES = [
@@ -153,18 +150,11 @@ export default function CheckoutPage() {
         throw new Error(data.error || 'Failed to create checkout session');
       }
 
-      // Redirect to Stripe Checkout
-      const stripe = await stripePromise;
-      if (stripe && data.sessionId) {
-        const { error: stripeError } = await stripe.redirectToCheckout({
-          sessionId: data.sessionId,
-        });
-
-        if (stripeError) {
-          throw new Error(stripeError.message);
-        }
+      // Redirect to Stripe Checkout URL directly
+      if (data.url) {
+        window.location.href = data.url;
       } else {
-        throw new Error('Stripe failed to load');
+        throw new Error('No checkout URL received');
       }
     } catch (err: any) {
       console.error('Checkout error:', err);

@@ -2,24 +2,12 @@ import { NextRequest, NextResponse } from 'next/server';
 import Stripe from 'stripe';
 import axios from 'axios';
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || 'sk_test_placeholder', {
   apiVersion: '2025-12-15.clover',
 });
 
 // This is your Stripe webhook secret (get it from Stripe Dashboard → Webhooks)
-const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET!;
-
-// WooCommerce API setup
-const woocommerceAPI = axios.create({
-  baseURL: `${process.env.NEXT_PUBLIC_WOOCOMMERCE_URL}/wp-json/wc/v3`,
-  auth: {
-    username: process.env.WOOCOMMERCE_CONSUMER_KEY!,
-    password: process.env.WOOCOMMERCE_CONSUMER_SECRET!,
-  },
-  headers: {
-    'Content-Type': 'application/json',
-  },
-});
+const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET || 'whsec_placeholder';
 
 export async function POST(request: NextRequest) {
   try {
@@ -163,6 +151,18 @@ async function createWooCommerceOrder(session: Stripe.Checkout.Session) {
       },
     ],
   };
+
+  // Create WooCommerce API client
+  const woocommerceAPI = axios.create({
+    baseURL: `${process.env.NEXT_PUBLIC_WOOCOMMERCE_URL}/wp-json/wc/v3`,
+    auth: {
+      username: process.env.WOOCOMMERCE_CONSUMER_KEY!,
+      password: process.env.WOOCOMMERCE_CONSUMER_SECRET!,
+    },
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
 
   const response = await woocommerceAPI.post('/orders', orderData);
   return response.data;

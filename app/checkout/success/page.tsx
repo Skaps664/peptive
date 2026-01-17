@@ -12,7 +12,7 @@ export default function CheckoutSuccessPage() {
   const [sessionId, setSessionId] = useState<string | null>(null);
 
   useEffect(() => {
-    const session = searchParams.get('session_id');
+    const session = searchParams?.get('session_id');
     if (session) {
       setSessionId(session);
       // Clear cart after successful payment

@@ -1,20 +1,20 @@
 import { NextResponse } from 'next/server';
 import axios from 'axios';
 
-// WooCommerce API setup
-const woocommerceAPI = axios.create({
-  baseURL: `${process.env.NEXT_PUBLIC_WOOCOMMERCE_URL}/wp-json/wc/v3`,
-  auth: {
-    username: process.env.WOOCOMMERCE_CONSUMER_KEY!,
-    password: process.env.WOOCOMMERCE_CONSUMER_SECRET!,
-  },
-  headers: {
-    'Content-Type': 'application/json',
-  },
-});
-
 export async function GET() {
   try {
+    // Create WooCommerce API client
+    const woocommerceAPI = axios.create({
+      baseURL: `${process.env.NEXT_PUBLIC_WOOCOMMERCE_URL}/wp-json/wc/v3`,
+      auth: {
+        username: process.env.WOOCOMMERCE_CONSUMER_KEY!,
+        password: process.env.WOOCOMMERCE_CONSUMER_SECRET!,
+      },
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
     // Fetch shipping zones from WooCommerce
     const zonesResponse = await woocommerceAPI.get('/shipping/zones');
     const zones = zonesResponse.data;

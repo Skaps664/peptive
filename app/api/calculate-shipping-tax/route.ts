@@ -1,22 +1,6 @@
 import { NextResponse } from 'next/server';
 import axios from 'axios';
 
-const WOOCOMMERCE_API_URL = process.env.WOOCOMMERCE_API_URL;
-const WOOCOMMERCE_CONSUMER_KEY = process.env.WOOCOMMERCE_CONSUMER_KEY;
-const WOOCOMMERCE_CONSUMER_SECRET = process.env.WOOCOMMERCE_CONSUMER_SECRET;
-
-// WooCommerce API client
-const wooClient = axios.create({
-  baseURL: WOOCOMMERCE_API_URL,
-  auth: {
-    username: WOOCOMMERCE_CONSUMER_KEY || '',
-    password: WOOCOMMERCE_CONSUMER_SECRET || '',
-  },
-  headers: {
-    'Content-Type': 'application/json',
-  },
-});
-
 export async function POST(request: Request) {
   try {
     const { items, country, state, postcode, city } = await request.json();
@@ -34,6 +18,18 @@ export async function POST(request: Request) {
         { status: 400 }
       );
     }
+
+    // Create WooCommerce API client
+    const wooClient = axios.create({
+      baseURL: process.env.WOOCOMMERCE_API_URL,
+      auth: {
+        username: process.env.WOOCOMMERCE_CONSUMER_KEY || '',
+        password: process.env.WOOCOMMERCE_CONSUMER_SECRET || '',
+      },
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
 
     // Prepare line items for WooCommerce
     const lineItems = items.map((item: any) => ({
