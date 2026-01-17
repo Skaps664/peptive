@@ -3,39 +3,48 @@
  * Visit /api-test to verify all API connections are working
  */
 
-import { woocommerce } from '@/lib/woocommerce';
-import { wordpress } from '@/lib/wordpress';
+'use client';
 
-export default async function APITestPage() {
-  let productsTest = { success: false, data: null as any, error: null as any };
-  let heroTest = { success: false, data: null as any, error: null as any };
-  let reviewsTest = { success: false, data: null as any, error: null as any };
+import { useEffect, useState } from 'react';
 
-  // Test 1: WooCommerce Products API
-  try {
-    const products = await woocommerce.getProducts({ perPage: 3 });
-    productsTest = { success: true, data: products, error: null };
-  } catch (error: any) {
-    productsTest = { success: false, data: null, error: error.message };
-  }
+export default function APITestPage() {
+  const [productsTest, setProductsTest] = useState({ success: false, data: null as any, error: null as any, loading: true });
+  const [heroTest, setHeroTest] = useState({ success: false, data: null as any, error: null as any, loading: true });
+  const [reviewsTest, setReviewsTest] = useState({ success: false, data: null as any, error: null as any, loading: true });
 
-  // Test 2: WordPress Hero Section
-  try {
-    const hero = await wordpress.getHeroSection('home');
-    heroTest = { success: true, data: hero, error: null };
-  } catch (error: any) {
-    heroTest = { success: false, data: null, error: error.message };
-  }
+  useEffect(() => {
+    async function runTests() {
+      // Test 1: WooCommerce Products API
+      try {
+        const response = await fetch('/api/test-woocommerce');
+        const data = await response.json();
+        if (response.ok) {
+          setProductsTest({ success: true, data: data.products, error: null, loading: false });
+        } else {
+          setProductsTest({ success: false, data: null, error: data.error, loading: false });
+        }
+      } catch (error: any) {
+        setProductsTest({ success: false, data: null, error: error.message, loading: false });
+      }
 
-  // Test 3: Product Reviews (if we have products)
-  if (productsTest.success && productsTest.data.length > 0) {
-    try {
-      const reviews = await woocommerce.getProductReviews(productsTest.data[0].id);
-      reviewsTest = { success: true, data: reviews, error: null };
-    } catch (error: any) {
-      reviewsTest = { success: false, data: null, error: error.message };
+      // Test 2: WordPress Hero Section
+      try {
+        const response = await fetch('/api/test-wordpress');
+        const data = await response.json();
+        if (response.ok) {
+          setHeroTest({ success: true, data: data.hero, error: null, loading: false });
+        } else {
+          setHeroTest({ success: false, data: null, error: data.error, loading: false });
+        }
+      } catch (error: any) {
+        setHeroTest({ success: false, data: null, error: error.message, loading: false });
+      }
+      
+      setReviewsTest({ success: false, data: null, error: null, loading: false });
     }
-  }
+
+    runTests();
+  }, []);
 
   return (
     <div className="container mx-auto px-4 py-8">

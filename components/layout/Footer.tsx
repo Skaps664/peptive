@@ -18,7 +18,7 @@ export default function Footer() {
 
   return (
     <>
-      <footer className="bg-[#1f1f1f] text-white rounded-b-3xl">
+      <footer className="bg-[#1f1f1f] text-white ">
         <div className="px-6 sm:px-8 md:px-12 lg:px-12 xl:px-12 2xl:px-48 pt-24 pb-12">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-12 xl:gap-12 2xl:gap-24">
             {/* Left Column - Quick Links & Contact */}
@@ -78,11 +78,11 @@ export default function Footer() {
       </footer>
 
       {/* Bottom Bar Section */}
-      <div className="bg-[#171717] py-4">
+      <div className="bg-[#1f1f1f] py-4">
         <div className="px-6 sm:px-8 md:px-12 lg:px-12 xl:px-12 2xl:px-48 flex flex-col md:flex-row justify-between items-center gap-6">
           <div className="flex items-center gap-4 text-gray-600 text-sm">
             <span>©{currentYear} Peptive Pept.</span>
-            <Link href="/privacy" className="hover:text-gray-900 transition-colors">
+            <Link href="/privacy-policy" className="hover:text-gray-900 transition-colors">
               {t('footer.privacy_policy')}
             </Link>
           </div>
