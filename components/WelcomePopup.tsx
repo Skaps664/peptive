@@ -324,7 +324,6 @@ export default function WelcomePopup() {
                 />
               </div>
             </div>
-            {geoStatus && <div className={`text-green-600 text-xs mt-2 ${isRTL ? 'text-right' : 'text-left'}`}>{geoStatus}</div>}
             {phoneError && <div className={`text-red-500 text-sm mt-2 ${isRTL ? 'text-right' : 'text-left'}`}>{phoneError}</div>}
           </div>
 

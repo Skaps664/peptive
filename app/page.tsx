@@ -5,7 +5,6 @@ import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import Button from '@/components/ui/Button';
 import ProductGrid from '@/components/products/ProductGrid';
-import WelcomePopup from '@/components/WelcomePopup';
 import { Product } from '@/types';
 import { wordpress } from '@/lib/wordpress';
 import { useLanguage } from '@/contexts/LanguageContext';
@@ -154,9 +153,6 @@ export default function HomePage() {
 
   return (
     <div>
-      {/* Welcome Popup */}
-      <WelcomePopup />
-      
       {/* Hero Section */}
       <section className="px-6 sm:px-8 md:px-12 lg:px-12 xl:px-12 2xl:px-48 pb-0">
         <div className="relative  text-white overflow-hidden rounded-3xl">
