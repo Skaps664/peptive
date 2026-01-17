@@ -474,7 +474,7 @@ export default function CheckoutPage() {
                       Secure Payment via Stripe
                     </p>
                     <p className="text-xs md:text-sm text-blue-800">
-                      You will be redirected to Stripe's secure checkout to complete your payment.
+                      You will be redirected to Stripe&apos;s secure checkout to complete your payment.
                     </p>
                   </div>
                 </div>
