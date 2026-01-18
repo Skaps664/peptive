@@ -87,14 +87,21 @@ class WooCommerceAPI {
       httpsAgent,
     });
 
-    // Store API client (for cart, checkout - no auth needed)
+    // Store API client - use proxy to avoid CORS issues
+    // In browser, use Next.js API proxy route
+    // On server, use direct WooCommerce URL
+    const isServer = typeof window === 'undefined';
+    const storeBaseURL = isServer 
+      ? `${baseURL}/wp-json/wc/store/v1`
+      : '/api/proxy/wc-store';
+    
     this.storeClient = axios.create({
-      baseURL: `${baseURL}/wp-json/wc/store/v1`,
+      baseURL: storeBaseURL,
       headers,
-      withCredentials: true, // Important for cart session cookies
+      withCredentials: !isServer, // Only use credentials in browser
       timeout: 30000, // 30 second timeout
-      httpAgent,
-      httpsAgent,
+      httpAgent: isServer ? httpAgent : undefined,
+      httpsAgent: isServer ? httpsAgent : undefined,
     });
   }
 
