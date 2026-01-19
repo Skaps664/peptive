@@ -14,7 +14,7 @@ export default function ProductCard({ product }: ProductCardProps) {
     : 0;
 
   return (
-    <Link href={`/products/${product.slug}`} className="relative bg-white rounded-3xl overflow-hidden shadow-sm hover:shadow-xl transition-shadow group block">
+    <Link href={`/products/${product.slug}`} className="relative bg-white rounded-3xl overflow-hidden shadow-sm group block">
       {/* Badges */}
       <div className="absolute top-4 left-4 flex flex-col gap-2 z-10">
         {product.onSale && discountPercent > 0 && (
@@ -58,7 +58,7 @@ export default function ProductCard({ product }: ProductCardProps) {
         <div className="flex items-start justify-between mb-2">
           <div className="flex-1">
             <p className="text-gray-500 text-xs lg:text-sm xl:text-sm mb-1 uppercase tracking-wide">
-              {product.categories && product.categories.length > 0 ? product.categories[0] : 'PEPT'}
+              Peptive
             </p>
             <h3 className="text-gray-900 text-base lg:text-lg xl:text-xl font-medium">{product.name}</h3>
           </div>

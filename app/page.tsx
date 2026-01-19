@@ -167,7 +167,7 @@ export default function HomePage() {
           />
           
           {/* Overlay */}
-          <div className="absolute inset-0 bg-gradient-to-br from-gray-900/80 via-gray-800/70 to-black/80" />
+          <div className="absolute inset-0 bg-black/75" />
           
           {/* Content */}
           <div className="relative px-6 sm:px-8 md:px-12 lg:px-12 xl:px-12 2xl:px-32 pb-12 md:pb-16 pt-12 md:pt-52">
@@ -270,8 +270,8 @@ export default function HomePage() {
           <div className="flex gap-6 px-6 sm:px-8 md:px-12 lg:px-12 xl:px-12 2xl:px-48 pb-6">
             {trendingProducts.length > 0 ? (
               trendingProducts.map((product) => (
-                <Link key={product.id} href={`/products/${product.slug}`} className="flex-none w-80 md:w-96 lg:w-96 xl:w-[440px] 2xl:w-[480px]">
-                  <div className="relative bg-white rounded-3xl overflow-hidden shadow-sm hover:shadow-xl transition-shadow group h-full">
+                <Link key={product.id} href={`/products/${product.slug}`} className="flex-none w-64 md:w-72 lg:w-80 xl:w-[340px] 2xl:w-[360px]">
+                  <div className="relative bg-white rounded-xl overflow-hidden shadow-sm group h-full">
                     {/* Badges */}
                     <div className="absolute top-4 left-4 flex flex-col gap-2 z-10">
                       {product.onSale && product.regularPrice && product.salePrice && (
@@ -294,13 +294,13 @@ export default function HomePage() {
                           <img 
                             src={product.images[0] || '/placeholder.jpg'} 
                             alt={product.name} 
-                            className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 ease-in-out group-hover:translate-x-full" 
+                            className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 ease-in-out group-hover:-translate-x-full" 
                           />
-                          {/* Second Image - slides in from left */}
+                          {/* Second Image - slides in from right */}
                           <img 
                             src={product.images[1] || product.images[0] || '/placeholder.jpg'} 
                             alt={product.name} 
-                            className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 ease-in-out -translate-x-full group-hover:translate-x-0" 
+                            className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 ease-in-out translate-x-full group-hover:translate-x-0" 
                           />
                         </>
                       ) : (
@@ -313,7 +313,7 @@ export default function HomePage() {
                       <div className="flex items-start justify-between">
                         <div className="flex-1">
                           <p className="text-gray-500 text-xs lg:text-xs xl:text-sm 2xl:text-sm mb-1 uppercase tracking-wide">
-                            {product.categories && product.categories.length > 0 ? product.categories[0] : 'PEPT'}
+                            Peptive
                           </p>
                           <h3 className="text-gray-900 text-base lg:text-base xl:text-lg 2xl:text-xl font-medium">{product.name}</h3>
                         </div>
@@ -364,7 +364,7 @@ export default function HomePage() {
             <div className="lg:col-span-3 grid md:grid-cols-3 gap-6">
               {stackProducts.length > 0 ? (
                 stackProducts.map((product) => (
-                  <div key={product.id} className="relative bg-white rounded-3xl overflow-hidden shadow-sm hover:shadow-xl transition-shadow">
+                  <div key={product.id} className="relative bg-white rounded-xl overflow-hidden shadow-sm">
                     {/* Badges */}
                     <div className="absolute top-4 left-4 flex flex-col gap-2 z-10">
                       {product.onSale && product.regularPrice && product.salePrice && (
@@ -397,7 +397,7 @@ export default function HomePage() {
                       <div className="flex items-start justify-between mb-4">
                         <div>
                           <p className="text-gray-500 text-xs lg:text-xs xl:text-sm 2xl:text-sm mb-1 uppercase tracking-wide">
-                            {product.categories && product.categories.length > 0 ? product.categories[0] : 'PEPT'}
+                            Peptive
                           </p>
                           <h3 className="text-gray-900 text-base lg:text-base xl:text-lg 2xl:text-xl">{product.name}</h3>
                         </div>

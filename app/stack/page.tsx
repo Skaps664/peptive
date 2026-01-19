@@ -196,7 +196,7 @@ export default function StackPage() {
               <>
                 <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-6">
                   {stackProducts.map((product) => (
-                    <div key={product.id} className="relative bg-white rounded-3xl overflow-hidden shadow-sm hover:shadow-xl transition-shadow">
+                    <div key={product.id} className="relative bg-white rounded-3xl overflow-hidden shadow-sm">
                       {/* Badges */}
                       <div className="absolute top-4 left-4 flex flex-col gap-2 z-10">
                         {product.onSale && product.regularPrice && product.salePrice && (
@@ -229,7 +229,7 @@ export default function StackPage() {
                         <div className="flex items-start justify-between mb-4">
                           <div>
                             <p className="text-gray-500 text-xs lg:text-xs xl:text-sm 2xl:text-sm mb-1 uppercase tracking-wide">
-                              {product.categories && product.categories.length > 0 ? product.categories[0] : 'PEPT'}
+                              Peptive
                             </p>
                             <h3 className="text-gray-900 text-base lg:text-base xl:text-lg 2xl:text-xl">{product.name}</h3>
                           </div>

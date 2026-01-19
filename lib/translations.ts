@@ -2,7 +2,7 @@ export const translations = {
   en: {
     announcement_bar: "GET 10% OFF Code: \"PEP10\"",
     header: {
-      home: "Peptive",
+      home: "Home",
       all_peptides: "All Peptides",
       dosage_calculator: "Dosage Calculator",
       peptive_ai: "Peptive Ai",
