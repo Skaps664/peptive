@@ -233,13 +233,19 @@ export default function ProductDetailPage() {
 
           {/* Badges */}
           {product.tags && product.tags.length > 0 && (
-            <div className="flex flex-wrap gap-2 lg:gap-2 xl:gap-2 2xl:gap-3">
+            <div className="flex flex-wrap gap-3">
               {product.tags.map((tag, index) => (
                 <div 
                   key={index}
-                  className="bg-gradient-to-r from-yellow-400 to-yellow-500 text-gray-900 px-3 lg:px-3 xl:px-3 2xl:px-4 py-2 rounded-full font-bold text-xs md:text-sm lg:text-sm xl:text-sm 2xl:text-base"
+                  className="inline-flex items-center justify-center rounded-[25px] px-6 py-3 border border-[rgba(120,90,20,0.4)] shadow-[inset_0_0_6px_rgba(255,255,255,0.3),0_3px_10px_rgba(0,0,0,0.25)] transition-all duration-200 hover:translate-y-[-2px] hover:shadow-[inset_0_0_8px_rgba(255,255,255,0.4),0_6px_14px_rgba(0,0,0,0.3)] max-sm:rounded-[18px] max-sm:px-[14px] max-sm:py-2 max-md:rounded-[20px] max-md:px-4 max-md:py-[10px]"
+                  style={{
+                    background: 'linear-gradient(135deg, #b88900 0%, #f0c76e 20%, #fff3b0 40%, #d1a140 55%, #8c6c1a 70%, #f9d976 85%, #b88900 100%)',
+                    backgroundSize: '200% 200%'
+                  }}
                 >
-                  {tag}
+                  <span className="text-[15px] font-semibold text-black leading-[1.4] max-sm:text-[13px] max-sm:font-medium max-md:text-[14px]">
+                    {tag}
+                  </span>
                 </div>
               ))}
             </div>
