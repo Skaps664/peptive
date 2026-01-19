@@ -31,7 +31,7 @@ export default function ProductsPage() {
     <div>
       {/* Banner Section */}
       <section className="pb-0">
-        <div className="relative  text-white overflow-hidden rounded-t-3xl mx-2 min-h-[300px] md:min-h-[400px] flex items-center">
+        <div className="relative  text-white overflow-hidden rounded-t-3xl min-h-[300px] md:min-h-[400px] flex items-center">
           {/* Background Image */}
           <div 
             className="absolute inset-0 bg-cover bg-center opacity-40"
