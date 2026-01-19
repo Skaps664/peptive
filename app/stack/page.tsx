@@ -196,7 +196,7 @@ export default function StackPage() {
               <>
                 <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-6">
                   {stackProducts.map((product) => (
-                    <div key={product.id} className="relative bg-white rounded-3xl overflow-hidden shadow-sm">
+                    <div key={product.id} className="relative bg-white rounded-xl overflow-hidden shadow-sm">
                       {/* Badges */}
                       <div className="absolute top-4 left-4 flex flex-col gap-2 z-10">
                         {product.onSale && product.regularPrice && product.salePrice && (

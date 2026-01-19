@@ -14,7 +14,7 @@ export default function ProductCard({ product }: ProductCardProps) {
     : 0;
 
   return (
-    <Link href={`/products/${product.slug}`} className="relative bg-white rounded-3xl overflow-hidden shadow-sm group block">
+    <Link href={`/products/${product.slug}`} className="relative bg-white rounded-xl overflow-hidden shadow-sm group block">
       {/* Badges */}
       <div className="absolute top-4 left-4 flex flex-col gap-2 z-10">
         {product.onSale && discountPercent > 0 && (

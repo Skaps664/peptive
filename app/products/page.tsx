@@ -41,7 +41,7 @@ export default function ProductsPage() {
           />
           
           {/* Overlay */}
-          <div className="absolute inset-0 bg-gradient-to-br from-gray-900/80 via-gray-800/70 to-black/80" />
+          <div className="absolute inset-0 bg-black/75" />
           
           {/* Content */}
           <div className="relative px-6 sm:px-8 md:px-12 lg:px-12 xl:px-12 2xl:px-48 pt-32 w-full">

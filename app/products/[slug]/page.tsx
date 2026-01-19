@@ -167,7 +167,7 @@ export default function ProductDetailPage() {
         {/* Left Column - Images */}
         <div className="space-y-4 lg:space-y-4 xl:space-y-4 2xl:space-y-6">
           {/* Main Image */}
-          <div className="relative aspect-square bg-white rounded-3xl overflow-hidden shadow-xl border border-gray-100">
+          <div className="relative aspect-square rounded-3xl overflow-hidden">
             <Image
               src={product.images[selectedImage] || product.image}
               alt={product.name}
