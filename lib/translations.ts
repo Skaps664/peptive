@@ -191,6 +191,10 @@ export const translations = {
     moving_text: {
       stimulating_peptides: "Stimulating Peptides",
       research_grade_peptides: "Research Grade Peptides"
+    },
+    instant_authentication: {
+      title: "Instant Authentication",
+      subtitle: "The Mark of True Peptive."
     }
   },
   ar: {
@@ -385,6 +389,10 @@ export const translations = {
     moving_text: {
       stimulating_peptides: "الببتيدات المحفزة",
       research_grade_peptides: "ببتيدات من الدرجة البحثية"
+    },
+    instant_authentication: {
+      title: "المصادقة الفورية",
+      subtitle: "علامة الببتيدية الحقيقية."
     }
   }
 };

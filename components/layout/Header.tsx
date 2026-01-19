@@ -9,6 +9,7 @@ import { wordpress } from '@/lib/wordpress';
 import { useLanguage } from '@/contexts/LanguageContext';
 import LanguageSelector from '@/components/LanguageSelector';
 import CountrySelector from '@/components/CountrySelector';
+import MobileLanguageToggle from '@/components/MobileLanguageToggle';
 
 export default function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -72,6 +73,11 @@ export default function Header() {
 
           {/* Cart & Mobile Menu Button */}
           <div className="flex items-center space-x-1">
+            {/* Mobile Language Toggle - Mobile Only */}
+            <div className="md:hidden mr-2">
+              <MobileLanguageToggle />
+            </div>
+            
             {/* User Icon - Desktop Only */}
             <Link 
               href={isLoggedIn ? '/account' : '/login'}
@@ -190,15 +196,11 @@ export default function Header() {
                 </Link>
               </div>
 
-              {/* Language & Country Selector in Mobile Menu */}
+              {/* Country Selector in Mobile Menu */}
               <div className="mt-8 pt-8 border-t border-gray-200 space-y-6">
                 <div>
                   <h3 className="text-sm font-semibold text-gray-700 mb-4 uppercase tracking-wide">{t('header.country') || 'Country'}</h3>
                   <CountrySelector />
-                </div>
-                <div>
-                  <h3 className="text-sm font-semibold text-gray-700 mb-4 uppercase tracking-wide">{t('header.language') || 'Language'}</h3>
-                  <LanguageSelector />
                 </div>
               </div>
             </div>

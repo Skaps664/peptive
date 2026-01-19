@@ -10,7 +10,7 @@ export default function InstantAuthenticationPage() {
       <div className="text-center max-w-4xl mx-auto">
         {/* Main Heading */}
         <h1 className="text-2xl md:text-3xl font-bold text-black mb-8">
-          Instant Authentication
+          {t('instant_authentication.title')}
         </h1>
 
         {/* Checkmark Icon */}
@@ -34,7 +34,7 @@ export default function InstantAuthenticationPage() {
 
         {/* Subtitle */}
         <p className="text-2xl md:text-3xl font-medium text-black">
-          The Mark of True Peptive.
+          {t('instant_authentication.subtitle')}
         </p>
       </div>
     </div>
