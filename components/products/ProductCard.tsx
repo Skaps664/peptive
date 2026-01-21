@@ -2,12 +2,20 @@
 
 import Link from 'next/link';
 import { Product } from '@/types';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 interface ProductCardProps {
   product: Product;
 }
 
 export default function ProductCard({ product }: ProductCardProps) {
+  const { language } = useLanguage();
+  
+  // Get localized product name
+  const productName = language === 'ar' && (product as any).arabic_name 
+    ? (product as any).arabic_name 
+    : product.name;
+  
   // Calculate discount percentage if on sale
   const discountPercent = product.onSale && product.regularPrice && product.salePrice
     ? Math.round(((parseFloat(product.regularPrice) - parseFloat(product.salePrice)) / parseFloat(product.regularPrice)) * 100)
@@ -36,13 +44,13 @@ export default function ProductCard({ product }: ProductCardProps) {
             {/* First Image */}
             <img 
               src={product.images[0] || '/placeholder.jpg'} 
-              alt={product.name} 
+              alt={productName} 
               className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 ease-in-out group-hover:translate-x-full" 
             />
             {/* Second Image - slides in from left */}
             <img 
               src={product.images[1] || product.images[0] || '/placeholder.jpg'} 
-              alt={product.name} 
+              alt={productName} 
               className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 ease-in-out -translate-x-full group-hover:translate-x-0" 
             />
           </>
@@ -60,7 +68,7 @@ export default function ProductCard({ product }: ProductCardProps) {
             <p className="text-gray-500 text-xs lg:text-sm xl:text-sm mb-1 uppercase tracking-wide">
               Peptive
             </p>
-            <h3 className="text-gray-900 text-base lg:text-lg xl:text-xl font-medium">{product.name}</h3>
+            <h3 className="text-gray-900 text-base lg:text-lg xl:text-xl font-medium">{productName}</h3>
           </div>
           <div className="text-right ml-3">
             <p className="text-red-500 font-semibold text-base lg:text-lg xl:text-xl whitespace-nowrap">

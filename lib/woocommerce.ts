@@ -41,6 +41,14 @@ interface StoreAPIProduct {
     text: string;
     class: string;
   };
+  arabic_name?: string;
+  arabic_description?: string;
+  arabic_short_description?: string;
+  arabic_tags?: string;
+  bundle_pricing?: {
+    three_month: { regular_price: string; sale_price: string };
+    six_month: { regular_price: string; sale_price: string };
+  };
 }
 
 class WooCommerceAPI {
@@ -137,6 +145,9 @@ class WooCommerceAPI {
     const regularPrice = (parseInt(storeProduct.prices.regular_price) / 100).toFixed(2);
     const salePrice = (parseInt(storeProduct.prices.sale_price) / 100).toFixed(2);
 
+    // Extract custom fields from extensions namespace
+    const extensions = (storeProduct as any).extensions?.['peptive-bundles'] || {};
+
     return {
       id: storeProduct.id,
       name: storeProduct.name,
@@ -148,7 +159,7 @@ class WooCommerceAPI {
       salePrice,
       onSale: storeProduct.on_sale,
       image: storeProduct.images[0]?.src || '/placeholder-product.jpg',
-      images: storeProduct.images.map(img => img.src),
+      images: storeProduct.images.map(img => img.src), // Override with string array
       categories: storeProduct.categories.map(cat => cat.name),
       stockStatus: storeProduct.is_in_stock ? 'instock' : 'outofstock',
       stockQuantity: null, // Store API doesn't provide exact quantity
@@ -157,7 +168,15 @@ class WooCommerceAPI {
       relatedIds: [], // Store API doesn't provide related products
       attributes: [], // Store API doesn't provide attributes
       tags: storeProduct.tags?.map(tag => tag.name) || [],
-    };
+      // Add custom fields from plugin extensions
+      arabic_name: extensions.arabic_name || '',
+      arabic_description: extensions.arabic_description || '',
+      arabic_short_description: extensions.arabic_short_description || '',
+      arabic_tags: extensions.arabic_tags || '',
+      bundle_pricing: extensions.bundle_pricing || null,
+      is_bundle: extensions.is_bundle || false,
+      bundle_items: extensions.bundle_items || [],
+    } as any;
   }
 
   // Get all products (using Store API - no auth required)

@@ -7,6 +7,7 @@ import { useCartStore } from '@/store/cartStore';
 import { formatPrice } from '@/lib/utils';
 import Input from '@/components/ui/Input';
 import Button from '@/components/ui/Button';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 // Countries we operate in (from CountrySelector)
 const AVAILABLE_COUNTRIES = [
@@ -36,6 +37,7 @@ function CheckoutForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const { items, getSubtotal, clearCart } = useCartStore();
+  const { t } = useLanguage();
   const [loading, setLoading] = useState(false);
   const [sameAsShipping, setSameAsShipping] = useState(true);
   const [couponCode, setCouponCode] = useState('');
@@ -49,9 +51,9 @@ function CheckoutForm() {
   useEffect(() => {
     const cancelled = searchParams?.get('cancelled');
     if (cancelled === 'true') {
-      setError('Payment was cancelled. Please try again or use a different payment method.');
+      setError(t('checkout.payment_cancelled'));
     }
-  }, [searchParams]);
+  }, [searchParams, t]);
   
   const subtotal = getSubtotal();
   const [tax, setTax] = useState(0);
@@ -226,10 +228,10 @@ function CheckoutForm() {
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-50 px-4 md:px-8 lg:px-12 py-8 md:py-12">
       <div className="mb-6 md:mb-8">
         <h1 className="text-2xl md:text-3xl font-normal text-gray-900 mb-2">
-          Checkout
+          {t('checkout.title')}
         </h1>
         <p className="text-sm md:text-base text-gray-600">
-          Complete your order
+          {t('checkout.subtitle')}
         </p>
       </div>
 
@@ -240,26 +242,26 @@ function CheckoutForm() {
             {/* Billing Information */}
             <div className="bg-white rounded-2xl shadow border border-gray-100 p-4 md:p-6">
               <h2 className="text-base md:text-lg font-normal text-gray-900 mb-4">
-                Billing Information
+                {t('checkout.billing_information')}
               </h2>
               
               <div className="grid md:grid-cols-2 gap-3 md:gap-4">
                 <Input
-                  label="First Name *"
+                  label={`${t('checkout.first_name')} ${t('checkout.required_field')}`}
                   name="firstName"
                   value={billingInfo.firstName}
                   onChange={handleBillingChange}
                   required
                 />
                 <Input
-                  label="Last Name *"
+                  label={`${t('checkout.last_name')} ${t('checkout.required_field')}`}
                   name="lastName"
                   value={billingInfo.lastName}
                   onChange={handleBillingChange}
                   required
                 />
                 <Input
-                  label="Email *"
+                  label={`${t('checkout.email')} ${t('checkout.required_field')}`}
                   name="email"
                   type="email"
                   value={billingInfo.email}
@@ -268,7 +270,7 @@ function CheckoutForm() {
                   className="md:col-span-2"
                 />
                 <Input
-                  label="Phone *"
+                  label={`${t('checkout.phone')} ${t('checkout.required_field')}`}
                   name="phone"
                   type="tel"
                   value={billingInfo.phone}
@@ -277,7 +279,7 @@ function CheckoutForm() {
                   className="md:col-span-2"
                 />
                 <Input
-                  label="Address Line 1 *"
+                  label={`${t('checkout.address_line_1')} ${t('checkout.required_field')}`}
                   name="address1"
                   value={billingInfo.address1}
                   onChange={handleBillingChange}
@@ -285,14 +287,14 @@ function CheckoutForm() {
                   className="md:col-span-2"
                 />
                 <Input
-                  label="Address Line 2"
+                  label={t('checkout.address_line_2')}
                   name="address2"
                   value={billingInfo.address2}
                   onChange={handleBillingChange}
                   className="md:col-span-2"
                 />
                 <Input
-                  label="City *"
+                  label={`${t('checkout.city')} ${t('checkout.required_field')}`}
                   name="city"
                   value={billingInfo.city}
                   onChange={handleBillingChange}
@@ -303,7 +305,7 @@ function CheckoutForm() {
                 {COUNTRY_STATES[billingInfo.country] ? (
                   <div>
                     <label className="block text-xs md:text-sm font-normal text-gray-700 mb-2">
-                      State/Province *
+                      {t('checkout.state')} {t('checkout.required_field')}
                     </label>
                     <select
                       name="state"
@@ -322,7 +324,7 @@ function CheckoutForm() {
                   </div>
                 ) : (
                   <Input
-                    label="State/Province"
+                    label={t('checkout.state')}
                     name="state"
                     value={billingInfo.state}
                     onChange={handleBillingChange}
@@ -340,7 +342,7 @@ function CheckoutForm() {
                 {/* Country Select */}
                 <div>
                   <label className="block text-xs md:text-sm font-normal text-gray-700 mb-2">
-                    Country *
+                    {t('checkout.country')} {t('checkout.required_field')}
                   </label>
                   <select
                     name="country"
@@ -364,7 +366,7 @@ function CheckoutForm() {
             <div className="bg-white rounded-2xl shadow border border-gray-100 p-4 md:p-6">
               <div className="flex items-center justify-between mb-4">
                 <h2 className="text-base md:text-lg font-normal text-gray-900">
-                  Shipping Information
+                  {t('checkout.shipping_information')}
                 </h2>
                 <label className="flex items-center cursor-pointer">
                   <input
@@ -373,28 +375,28 @@ function CheckoutForm() {
                     onChange={(e) => setSameAsShipping(e.target.checked)}
                     className="mr-2 w-4 h-4 text-gray-900 focus:ring-gray-900 rounded"
                   />
-                  <span className="text-xs md:text-sm font-normal text-gray-700">Same as billing</span>
+                  <span className="text-xs md:text-sm font-normal text-gray-700">{t('checkout.same_as_billing')}</span>
                 </label>
               </div>
 
               {!sameAsShipping && (
                 <div className="grid md:grid-cols-2 gap-3 md:gap-4">
                   <Input
-                    label="First Name *"
+                    label={`${t('checkout.first_name')} ${t('checkout.required_field')}`}
                     name="firstName"
                     value={shippingInfo.firstName}
                     onChange={handleShippingChange}
                     required={!sameAsShipping}
                   />
                   <Input
-                    label="Last Name *"
+                    label={`${t('checkout.last_name')} ${t('checkout.required_field')}`}
                     name="lastName"
                     value={shippingInfo.lastName}
                     onChange={handleShippingChange}
                     required={!sameAsShipping}
                   />
                   <Input
-                    label="Address Line 1 *"
+                    label={`${t('checkout.address_line_1')} ${t('checkout.required_field')}`}
                     name="address1"
                     value={shippingInfo.address1}
                     onChange={handleShippingChange}
@@ -402,14 +404,14 @@ function CheckoutForm() {
                     className="md:col-span-2"
                   />
                   <Input
-                    label="Address Line 2"
+                    label={t('checkout.address_line_2')}
                     name="address2"
                     value={shippingInfo.address2}
                     onChange={handleShippingChange}
                     className="md:col-span-2"
                   />
                   <Input
-                    label="City *"
+                    label={`${t('checkout.city')} ${t('checkout.required_field')}`}
                     name="city"
                     value={shippingInfo.city}
                     onChange={handleShippingChange}
@@ -420,7 +422,7 @@ function CheckoutForm() {
                   {COUNTRY_STATES[shippingInfo.country] ? (
                     <div>
                       <label className="block text-xs md:text-sm font-normal text-gray-700 mb-2">
-                        State/Province *
+                        {t('checkout.state')} {t('checkout.required_field')}
                       </label>
                       <select
                         name="state"
@@ -439,7 +441,7 @@ function CheckoutForm() {
                     </div>
                   ) : (
                     <Input
-                      label="State/Province"
+                      label={t('checkout.state')}
                       name="state"
                       value={shippingInfo.state}
                       onChange={handleShippingChange}
@@ -457,7 +459,7 @@ function CheckoutForm() {
                   {/* Country Select */}
                   <div>
                     <label className="block text-xs md:text-sm font-normal text-gray-700 mb-2">
-                      Country *
+                      {t('checkout.country')} {t('checkout.required_field')}
                     </label>
                     <select
                       name="country"
@@ -565,7 +567,7 @@ function CheckoutForm() {
           <div className="lg:col-span-1">
             <div className="bg-white rounded-2xl shadow border border-gray-100 p-4 md:p-6 sticky top-24">
               <h2 className="text-base md:text-lg font-normal text-gray-900 mb-4">
-                Order Summary
+                {t('checkout.order_summary')}
               </h2>
 
               {/* Cart Items */}
@@ -595,25 +597,25 @@ function CheckoutForm() {
               {/* Pricing Summary */}
               <div className="border-t border-gray-100 pt-4 space-y-2 mb-4">
                 <div className="flex justify-between text-xs md:text-sm text-gray-700">
-                  <span className="font-normal">Subtotal</span>
+                  <span className="font-normal">{t('checkout.subtotal')}</span>
                   <span className="font-normal">{formatPrice(subtotal)}</span>
                 </div>
                 <div className="flex justify-between text-xs md:text-sm text-gray-700">
-                  <span className="font-normal">Shipping</span>
+                  <span className="font-normal">{t('checkout.shipping')}</span>
                   <span className="font-normal">
-                    {calculatingShipping ? 'Calculating...' : shipping === 0 ? 'FREE' : formatPrice(shipping)}
+                    {calculatingShipping ? t('checkout.calculating_shipping') : shipping === 0 ? 'FREE' : formatPrice(shipping)}
                   </span>
                 </div>
                 <div className="flex justify-between text-xs md:text-sm text-gray-700">
-                  <span className="font-normal">Tax</span>
+                  <span className="font-normal">{t('checkout.tax')}</span>
                   <span className="font-normal">
-                    {calculatingShipping ? 'Calculating...' : formatPrice(tax)}
+                    {calculatingShipping ? t('checkout.calculating_shipping') : formatPrice(tax)}
                   </span>
                 </div>
                 {appliedCoupon && (
                   <div className="flex justify-between text-xs md:text-sm text-green-600">
                     <span className="font-normal">
-                      Discount ({appliedCoupon.code})
+                      {t('checkout.discount')} ({appliedCoupon.code})
                     </span>
                     <span className="font-normal">-{formatPrice(discount)}</span>
                   </div>
@@ -622,7 +624,7 @@ function CheckoutForm() {
 
               <div className="border-t border-gray-100 pt-4 mb-4">
                 <div className="flex justify-between items-center">
-                  <span className="text-sm md:text-base font-normal text-gray-900">Total</span>
+                  <span className="text-sm md:text-base font-normal text-gray-900">{t('checkout.total')}</span>
                   <span className="text-sm md:text-base font-normal text-gray-900">{formatPrice(total)}</span>
                 </div>
               </div>
@@ -632,7 +634,7 @@ function CheckoutForm() {
                 disabled={loading}
                 className="w-full bg-gray-900 text-white text-sm md:text-base font-normal py-3 px-4 rounded-full hover:bg-gray-800 transition-all duration-200 shadow disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                {loading ? 'Processing...' : 'Continue to Payment'}
+                {loading ? t('checkout.processing') : t('checkout.place_order')}
               </button>
 
               <p className="text-xs text-gray-500 text-center mt-3">

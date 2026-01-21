@@ -10,7 +10,7 @@ import { wordpress } from '@/lib/wordpress';
 import { useLanguage } from '@/contexts/LanguageContext';
 
 export default function HomePage() {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const [scrollY, setScrollY] = useState(0);
   const [featuredProducts, setFeaturedProducts] = useState<Product[]>([]);
   const [trendingProducts, setTrendingProducts] = useState<Product[]>([]);
@@ -315,7 +315,7 @@ export default function HomePage() {
                           <p className="text-gray-500 text-xs lg:text-xs xl:text-sm 2xl:text-sm mb-1 uppercase tracking-wide">
                             Peptive
                           </p>
-                          <h3 className="text-gray-900 text-base lg:text-base xl:text-lg 2xl:text-xl font-medium">{product.name}</h3>
+                          <h3 className="text-gray-900 text-base lg:text-base xl:text-lg 2xl:text-xl font-medium">{language === 'ar' && (product as any).arabic_name ? (product as any).arabic_name : product.name}</h3>
                         </div>
                         <div className="text-right ml-3">
                           <p className="text-red-500 font-semibold text-base lg:text-base xl:text-lg 2xl:text-xl whitespace-nowrap">
@@ -399,7 +399,7 @@ export default function HomePage() {
                           <p className="text-gray-500 text-xs lg:text-xs xl:text-sm 2xl:text-sm mb-1 uppercase tracking-wide">
                             Peptive
                           </p>
-                          <h3 className="text-gray-900 text-base lg:text-base xl:text-lg 2xl:text-xl">{product.name}</h3>
+                          <h3 className="text-gray-900 text-base lg:text-base xl:text-lg 2xl:text-xl font-medium">{language === 'ar' && (product as any).arabic_name ? (product as any).arabic_name : product.name}</h3>
                         </div>
                         <div className="text-right">
                           <p className="text-red-500 font-semibold text-base lg:text-base xl:text-lg 2xl:text-xl">

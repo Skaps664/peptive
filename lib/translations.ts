@@ -195,6 +195,54 @@ export const translations = {
     instant_authentication: {
       title: "Instant Authentication",
       subtitle: "The Mark of True Peptive."
+    },
+    cart: {
+      title: "Cart",
+      empty_title: "Your cart is currently empty.",
+      empty_subtitle_1: "Not sure where to start?",
+      empty_subtitle_2: "Try these collections:",
+      continue_shopping: "Continue shopping",
+      subtotal: "Subtotal",
+      shipping_taxes: "Shipping and taxes calculated at checkout",
+      proceed_to_checkout: "Proceed to Checkout",
+      view_cart: "View Cart"
+    },
+    checkout: {
+      title: "Checkout",
+      subtitle: "Complete your order",
+      billing_information: "Billing Information",
+      first_name: "First Name",
+      last_name: "Last Name",
+      email: "Email",
+      phone: "Phone",
+      address_line_1: "Address Line 1",
+      address_line_2: "Address Line 2",
+      city: "City",
+      state: "State / Province",
+      postcode: "Postal Code",
+      country: "Country",
+      shipping_information: "Shipping Information",
+      same_as_billing: "Same as billing address",
+      order_summary: "Order Summary",
+      subtotal: "Subtotal",
+      shipping: "Shipping",
+      tax: "Tax",
+      discount: "Discount",
+      total: "Total",
+      coupon_code: "Coupon Code",
+      apply: "Apply",
+      remove: "Remove",
+      place_order: "Place Order",
+      processing: "Processing...",
+      calculating_shipping: "Calculating shipping...",
+      required_field: "*",
+      payment_cancelled: "Payment was cancelled. Please try again or use a different payment method."
+    },
+    bundle: {
+      one_month: "1 month",
+      three_months: "3 months",
+      six_months: "6 months",
+      buy_with_google_pay: "Buy with Google Pay"
     }
   },
   ar: {
@@ -393,6 +441,54 @@ export const translations = {
     instant_authentication: {
       title: "المصادقة الفورية",
       subtitle: "علامة الببتيدية الحقيقية."
+    },
+    cart: {
+      title: "السلة",
+      empty_title: "سلة التسوق فارغة حالياً.",
+      empty_subtitle_1: "غير متأكد من أين تبدأ؟",
+      empty_subtitle_2: "جرب هذه المجموعات:",
+      continue_shopping: "متابعة التسوق",
+      subtotal: "المجموع الفرعي",
+      shipping_taxes: "سيتم حساب الشحن والضرائب عند إتمام الطلب",
+      proceed_to_checkout: "المتابعة لإتمام الطلب",
+      view_cart: "عرض السلة"
+    },
+    checkout: {
+      title: "إتمام الطلب",
+      subtitle: "أكمل طلبك",
+      billing_information: "معلومات الفواتير",
+      first_name: "الاسم الأول",
+      last_name: "اسم العائلة",
+      email: "البريد الإلكتروني",
+      phone: "رقم الهاتف",
+      address_line_1: "العنوان - السطر الأول",
+      address_line_2: "العنوان - السطر الثاني",
+      city: "المدينة",
+      state: "الولاية / المحافظة",
+      postcode: "الرمز البريدي",
+      country: "الدولة",
+      shipping_information: "معلومات الشحن",
+      same_as_billing: "نفس عنوان الفواتير",
+      order_summary: "ملخص الطلب",
+      subtotal: "المجموع الفرعي",
+      shipping: "الشحن",
+      tax: "الضريبة",
+      discount: "الخصم",
+      total: "المجموع الكلي",
+      coupon_code: "كود الخصم",
+      apply: "تطبيق",
+      remove: "إزالة",
+      place_order: "تأكيد الطلب",
+      processing: "جاري المعالجة...",
+      calculating_shipping: "جاري حساب الشحن...",
+      required_field: "*",
+      payment_cancelled: "تم إلغاء الدفع. يرجى المحاولة مرة أخرى أو استخدام طريقة دفع مختلفة."
+    },
+    bundle: {
+      one_month: "شهر واحد",
+      three_months: "٣ أشهر",
+      six_months: "٦ أشهر",
+      buy_with_google_pay: "الشراء بواسطة جوجل باي"
     }
   }
 };

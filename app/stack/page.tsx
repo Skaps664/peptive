@@ -7,7 +7,7 @@ import { useLanguage } from '@/contexts/LanguageContext';
 import { useCartStore } from '@/store/cartStore';
 
 export default function StackPage() {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const [stackProducts, setStackProducts] = useState<Product[]>([]);
   const [stackItems, setStackItems] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
@@ -216,7 +216,7 @@ export default function StackPage() {
                         {product.images && product.images.length > 0 ? (
                           <img 
                             src={product.images[0] || '/placeholder.jpg'} 
-                            alt={product.name} 
+                            alt={language === 'ar' && (product as any).arabic_name ? (product as any).arabic_name : product.name} 
                             className="w-full h-full object-cover" 
                           />
                         ) : (
@@ -231,7 +231,7 @@ export default function StackPage() {
                             <p className="text-gray-500 text-xs lg:text-xs xl:text-sm 2xl:text-sm mb-1 uppercase tracking-wide">
                               Peptive
                             </p>
-                            <h3 className="text-gray-900 text-base lg:text-base xl:text-lg 2xl:text-xl">{product.name}</h3>
+                            <h3 className="text-gray-900 text-base lg:text-base xl:text-lg 2xl:text-xl font-medium">{language === 'ar' && (product as any).arabic_name ? (product as any).arabic_name : product.name}</h3>
                           </div>
                           <div className="text-right">
                             <p className="text-red-500 font-semibold text-base lg:text-base xl:text-lg 2xl:text-xl">

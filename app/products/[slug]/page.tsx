@@ -21,7 +21,7 @@ type BundleOption = {
 };
 
 export default function ProductDetailPage() {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const params = useParams();
   const slug = params?.slug as string;
   const [product, setProduct] = useState<Product | null>(null);
@@ -122,7 +122,7 @@ export default function ProductDetailPage() {
     );
   }
 
-  // Calculate bundle options using WooCommerce prices
+  // Calculate bundle options using WooCommerce prices AND custom bundle pricing
   // Use sale_price as the current price, regular_price as the original price
   const currentPrice = parseFloat(product.salePrice || product.price); // Discounted price
   const originalPrice = parseFloat(product.regularPrice || product.price); // Original price before discount
@@ -131,11 +131,14 @@ export default function ProductDetailPage() {
   const savingsPerItem = originalPrice - currentPrice;
   const savingsPercentPerItem = originalPrice > 0 ? ((savingsPerItem / originalPrice) * 100) : 0;
   
+  // Get bundle pricing from product data (from WordPress plugin)
+  const bundlePricing = (product as any).bundle_pricing || {};
+  
   const bundleOptions: BundleOption[] = [
     {
       id: '1-month',
       months: 1,
-      label: '1 month',
+      label: t('bundle.one_month'),
       price: currentPrice,
       savings: savingsPerItem,
       savingsPercent: Math.round(savingsPercentPerItem),
@@ -143,21 +146,50 @@ export default function ProductDetailPage() {
     {
       id: '3-months',
       months: 3,
-      label: '3 months',
-      price: currentPrice * 3,
-      savings: savingsPerItem * 3, // Total savings for 3 items
-      savingsPercent: Math.round(savingsPercentPerItem), // Same percentage as single item
+      label: t('bundle.three_months'),
+      price: bundlePricing.three_month?.sale_price 
+        ? parseFloat(bundlePricing.three_month.sale_price)
+        : (bundlePricing.three_month?.regular_price 
+          ? parseFloat(bundlePricing.three_month.regular_price)
+          : currentPrice * 3),
+      savings: bundlePricing.three_month?.regular_price && bundlePricing.three_month?.sale_price
+        ? parseFloat(bundlePricing.three_month.regular_price) - parseFloat(bundlePricing.three_month.sale_price)
+        : savingsPerItem * 3,
+      savingsPercent: bundlePricing.three_month?.regular_price && bundlePricing.three_month?.sale_price
+        ? Math.round(((parseFloat(bundlePricing.three_month.regular_price) - parseFloat(bundlePricing.three_month.sale_price)) / parseFloat(bundlePricing.three_month.regular_price)) * 100)
+        : Math.round(savingsPercentPerItem),
       isPopular: true,
     },
     {
       id: '6-months',
       months: 6,
-      label: '6 months',
-      price: currentPrice * 6,
-      savings: savingsPerItem * 6, // Total savings for 6 items
-      savingsPercent: Math.round(savingsPercentPerItem), // Same percentage as single item
+      label: t('bundle.six_months'),
+      price: bundlePricing.six_month?.sale_price 
+        ? parseFloat(bundlePricing.six_month.sale_price)
+        : (bundlePricing.six_month?.regular_price 
+          ? parseFloat(bundlePricing.six_month.regular_price)
+          : currentPrice * 6),
+      savings: bundlePricing.six_month?.regular_price && bundlePricing.six_month?.sale_price
+        ? parseFloat(bundlePricing.six_month.regular_price) - parseFloat(bundlePricing.six_month.sale_price)
+        : savingsPerItem * 6,
+      savingsPercent: bundlePricing.six_month?.regular_price && bundlePricing.six_month?.sale_price
+        ? Math.round(((parseFloat(bundlePricing.six_month.regular_price) - parseFloat(bundlePricing.six_month.sale_price)) / parseFloat(bundlePricing.six_month.regular_price)) * 100)
+        : Math.round(savingsPercentPerItem),
     },
   ];
+
+  // Get localized product content
+  const productName = language === 'ar' && (product as any).arabic_name 
+    ? (product as any).arabic_name 
+    : product.name;
+  
+  const productDescription = language === 'ar' && (product as any).arabic_description 
+    ? (product as any).arabic_description 
+    : product.description;
+  
+  const productShortDescription = language === 'ar' && (product as any).arabic_short_description 
+    ? (product as any).arabic_short_description 
+    : product.shortDescription;
 
   const isOutOfStock = product.stockStatus === 'outofstock';
 
@@ -170,7 +202,7 @@ export default function ProductDetailPage() {
           <div className="relative aspect-square rounded-3xl overflow-hidden">
             <Image
               src={product.images[selectedImage] || product.image}
-              alt={product.name}
+              alt={productName}
               fill
               className="object-contain p-4"
               sizes="(max-width: 1024px) 100vw, 50vw"
@@ -193,7 +225,7 @@ export default function ProductDetailPage() {
                 >
                   <Image
                     src={image}
-                    alt={`${product.name} - ${index + 1}`}
+                    alt={`${productName} - ${index + 1}`}
                     fill
                     className="object-contain p-1"
                     sizes="150px"
@@ -209,7 +241,7 @@ export default function ProductDetailPage() {
           {/* Product Name & Price */}
           <div className="flex items-start justify-between gap-4">
             <h1 className="text-3xl md:text-4xl lg:text-4xl xl:text-4xl 2xl:text-5xl  text-gray-900">
-              {product.name}
+              {productName}
             </h1>
             <div className="text-right flex-shrink-0">
               <div className="text-2xl md:text-3xl lg:text-3xl xl:text-3xl 2xl:text-4xl  text-pink-600">
@@ -234,7 +266,7 @@ export default function ProductDetailPage() {
           {/* Badges */}
           {product.tags && product.tags.length > 0 && (
             <div className="flex flex-wrap gap-3">
-              {product.tags.map((tag, index) => (
+              {((language === 'ar' && (product as any).arabic_tags) ? (product as any).arabic_tags.split(',').map((t: string) => t.trim()) : product.tags).map((tag: string, index: number) => (
                 <div 
                   key={index}
                   className="inline-flex items-center justify-center rounded-[25px] px-6 py-3 border border-[rgba(120,90,20,0.4)] shadow-[inset_0_0_6px_rgba(255,255,255,0.3),0_3px_10px_rgba(0,0,0,0.25)] transition-all duration-200 hover:translate-y-[-2px] hover:shadow-[inset_0_0_8px_rgba(255,255,255,0.4),0_6px_14px_rgba(0,0,0,0.3)] max-sm:rounded-[18px] max-sm:px-[14px] max-sm:py-2 max-md:rounded-[20px] max-md:px-4 max-md:py-[10px]"
@@ -254,38 +286,51 @@ export default function ProductDetailPage() {
           {/* Product Description */}
 
           {/* Short Description First */}
-          {product.shortDescription && (
+          {productShortDescription && (
             <div
               className="text-sm md:text-sm  text-gray-900 mb-2"
-              dangerouslySetInnerHTML={{ __html: product.shortDescription }}
+              dangerouslySetInnerHTML={{ __html: productShortDescription }}
             />
           )}
 
-          {/* Parse and Show Contains & Instructions from product.description */}
-          {product.description && (
+          {/* Full Description or Parse Contains & Instructions */}
+          {productDescription && (
             (() => {
-              // Extract sections using regex (without 's' flag for ES compatibility)
-              const containsMatch = product.description.match(/Contains:([\s\S]*?)(Instructions:|$)/i);
-              const instructionsMatch = product.description.match(/Instructions:([\s\S]*?)(<\/p>|$)/i);
-              const contains = containsMatch ? containsMatch[1].replace(/<[^>]+>/g, '').trim() : '';
-              const instructions = instructionsMatch ? instructionsMatch[1].replace(/<[^>]+>/g, '').trim() : '';
-              return (
-                <div className="mt-4 space-y-4">
-                  {contains && (
-                    <div>
-                      <div className="font-bold text-sm md:text-sm text-gray-900 mb-1">{t('product_detail.contains')}</div>
-                      <div className="text-sm md:text-sm text-gray-800 whitespace-pre-line">{contains}</div>
-                    </div>
-                  )}
-                  {instructions && (
-                    <div>
-                      <div className="font-bold text-sm md:text-sm text-gray-900 mb-1">{t('product_detail.instructions')}</div>
-                      <div className="text-sm md:text-sm text-gray-800 whitespace-pre-line mb-6">{instructions}</div>
-                      <div className="text-sm md:text-sm italic text-gray-800 whitespace-pre-line">{t('product_detail.research_use')}</div>
-                    </div>
-                  )}
-                </div>
-              );
+              // Check if description has Contains/Instructions structure
+              const hasStructuredContent = productDescription.includes('Contains:') || productDescription.includes('Instructions:');
+              
+              if (hasStructuredContent) {
+                // Extract sections using regex (without 's' flag for ES compatibility)
+                const containsMatch = productDescription.match(/Contains:([\s\S]*?)(Instructions:|$)/i);
+                const instructionsMatch = productDescription.match(/Instructions:([\s\S]*?)(<\/p>|$)/i);
+                const contains = containsMatch ? containsMatch[1].replace(/<[^>]+>/g, '').trim() : '';
+                const instructions = instructionsMatch ? instructionsMatch[1].replace(/<[^>]+>/g, '').trim() : '';
+                return (
+                  <div className="mt-4 space-y-4">
+                    {contains && (
+                      <div>
+                        <div className="font-bold text-sm md:text-sm text-gray-900 mb-1">{t('product_detail.contains')}</div>
+                        <div className="text-sm md:text-sm text-gray-800 whitespace-pre-line">{contains}</div>
+                      </div>
+                    )}
+                    {instructions && (
+                      <div>
+                        <div className="font-bold text-sm md:text-sm text-gray-900 mb-1">{t('product_detail.instructions')}</div>
+                        <div className="text-sm md:text-sm text-gray-800 whitespace-pre-line mb-6">{instructions}</div>
+                        <div className="text-sm md:text-sm italic text-gray-800 whitespace-pre-line">{t('product_detail.research_use')}</div>
+                      </div>
+                    )}
+                  </div>
+                );
+              } else {
+                // Just show the full description if no structured content
+                return (
+                  <div
+                    className="text-sm md:text-sm text-gray-800 mt-4"
+                    dangerouslySetInnerHTML={{ __html: productDescription }}
+                  />
+                );
+              }
             })()
           )}
 
@@ -407,7 +452,7 @@ export default function ProductDetailPage() {
               className="w-full flex items-center justify-center bg-black text-white text-sm md:text-base py-4 lg:py-4 xl:py-4 2xl:py-5 px-6 rounded-full mt-2 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               <span className="flex items-center">
-                <span>Buy with<span className="text-xl font-bold ml-1">G</span> Pay</span>
+                <span>{t('bundle.buy_with_google_pay')}</span>
               </span>
             </button>
           </div>

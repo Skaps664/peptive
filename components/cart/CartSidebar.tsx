@@ -6,9 +6,11 @@ import { useCartStore } from '@/store/cartStore';
 import { formatPrice } from '@/lib/utils';
 import CartItem from './CartItem';
 import Button from '@/components/ui/Button';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 export default function CartSidebar() {
   const { items, isOpen, closeCart, getSubtotal } = useCartStore();
+  const { t } = useLanguage();
 
   // Prevent body scroll when cart is open
   useEffect(() => {
@@ -34,7 +36,7 @@ export default function CartSidebar() {
       >
         {/* Header */}
         <div className="flex items-center justify-between p-4 sm:p-5 border-b border-gray-100">
-          <h2 className="text-lg sm:text-xl font-normal text-gray-900">Cart</h2>
+          <h2 className="text-lg sm:text-xl font-normal text-gray-900">{t('cart.title')}</h2>
           <button
             onClick={closeCart}
             className="text-gray-900 hover:text-gray-600 transition-colors p-1 -mr-1"
@@ -52,16 +54,16 @@ export default function CartSidebar() {
             <div className="flex flex-col items-center justify-center h-full text-center px-4">
               <div className="mb-8 max-w-sm">
                 <h3 className="text-base font-normal text-gray-900 mb-2">
-                  Your cart is currently empty.
+                  {t('cart.empty_title')}
                 </h3>
-                <p className="text-sm text-gray-600 mb-1">Not sure where to start?</p>
-                <p className="text-sm text-gray-600">Try these collections:</p>
+                <p className="text-sm text-gray-600 mb-1">{t('cart.empty_subtitle_1')}</p>
+                <p className="text-sm text-gray-600">{t('cart.empty_subtitle_2')}</p>
               </div>
               <button
                 onClick={closeCart}
                 className="inline-flex items-center gap-2 text-sm font-normal text-gray-900 hover:gap-3 transition-all group"
               >
-                <span>Continue shopping</span>
+                <span>{t('cart.continue_shopping')}</span>
                 <svg className="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
                 </svg>
@@ -81,24 +83,24 @@ export default function CartSidebar() {
           <div className="border-t border-gray-100 p-4 sm:p-5 space-y-3 bg-gray-50">
             {/* Subtotal */}
             <div className="flex items-center justify-between">
-              <span className="text-sm text-gray-700 font-normal">Subtotal</span>
+              <span className="text-sm text-gray-700 font-normal">{t('cart.subtotal')}</span>
               <span className="text-base font-normal text-gray-900">{formatPrice(subtotal)}</span>
             </div>
 
             <p className="text-xs text-gray-500">
-              Shipping and taxes calculated at checkout
+              {t('cart.shipping_taxes')}
             </p>
 
             {/* Buttons */}
             <div className="space-y-2">
               <Link href="/checkout" onClick={closeCart} className="block">
                 <button className="w-full bg-gray-900 text-white font-normal py-3 text-sm rounded-full hover:bg-gray-800 transition-colors">
-                  Proceed to Checkout
+                  {t('cart.proceed_to_checkout')}
                 </button>
               </Link>
               <Link href="/cart" onClick={closeCart} className="block">
                 <button className="w-full border-2 border-gray-900 text-gray-900 font-normal py-3 text-sm rounded-full hover:bg-gray-50 transition-colors">
-                  View Cart
+                  {t('cart.view_cart')}
                 </button>
               </Link>
             </div>

@@ -64,7 +64,7 @@ export default function LanguageSelector() {
               className={`w-full text-left px-5 py-3 text-sm font-normal focus:outline-none transition-all duration-300 relative ${language === lang.code ? 'font-semibold' : ''}`}
               style={{ background: 'none' }}
             >
-              <span className="relative group inline-block w-full">
+              <span className="relative group inline-block">
                 <span className="transition-colors duration-300">{lang.label}</span>
                 <span className="absolute left-0 bottom-0 w-0 h-[2px] bg-white transition-all duration-300 group-hover:w-full"></span>
               </span>
