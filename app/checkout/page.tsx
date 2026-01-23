@@ -37,7 +37,7 @@ function CheckoutForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const { items, getSubtotal, clearCart } = useCartStore();
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const [loading, setLoading] = useState(false);
   const [sameAsShipping, setSameAsShipping] = useState(true);
   const [couponCode, setCouponCode] = useState('');
@@ -483,13 +483,13 @@ function CheckoutForm() {
             {/* Payment Information */}
             <div className="bg-white rounded-2xl shadow border border-gray-100 p-4 md:p-6">
               <h2 className="text-base md:text-lg font-normal text-gray-900 mb-4">
-                Payment Information
+                {t('checkout.payment_information')}
               </h2>
 
               {/* Coupon Code Input */}
               <div className="mb-4">
                 <label className="block text-xs md:text-sm font-normal text-gray-700 mb-2">
-                  Discount Code (Optional)
+                  {t('checkout.discount_code_optional')}
                 </label>
                 {!appliedCoupon ? (
                   <div className="flex gap-2">
@@ -497,7 +497,7 @@ function CheckoutForm() {
                       type="text"
                       value={couponCode}
                       onChange={(e) => setCouponCode(e.target.value.toUpperCase())}
-                      placeholder="Enter coupon code"
+                      placeholder={t('checkout.enter_coupon_code')}
                       className="flex-1 px-3 py-2 border border-gray-300 rounded-lg text-xs md:text-sm font-normal focus:border-gray-900 focus:outline-none"
                     />
                     <button
@@ -506,14 +506,14 @@ function CheckoutForm() {
                       disabled={!couponCode.trim() || validatingCoupon}
                       className="px-4 py-2 bg-gray-900 text-white text-xs md:text-sm rounded-lg hover:bg-gray-800 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
                     >
-                      {validatingCoupon ? 'Applying...' : 'Apply'}
+                      {validatingCoupon ? t('checkout.applying') : t('checkout.apply')}
                     </button>
                   </div>
                 ) : (
                   <div className="flex items-center justify-between bg-green-50 border border-green-300 rounded-lg p-3">
                     <div>
                       <p className="text-sm text-green-800">
-                        <span className="font-medium">{appliedCoupon.code}</span> applied
+                        <span className="font-medium">{appliedCoupon.code}</span> {t('checkout.applied')}
                       </p>
                       {appliedCoupon.description && (
                         <p className="text-xs text-green-600 mt-1">{appliedCoupon.description}</p>
@@ -524,7 +524,7 @@ function CheckoutForm() {
                       onClick={handleRemoveCoupon}
                       className="text-red-600 hover:text-red-700 text-sm"
                     >
-                      Remove
+                      {t('checkout.remove')}
                     </button>
                   </div>
                 )}
@@ -533,7 +533,7 @@ function CheckoutForm() {
                 )}
                 {!appliedCoupon && !couponError && (
                   <p className="text-xs text-gray-500 mt-1">
-                    If you have a discount code, enter it above
+                    {t('checkout.discount_code_help')}
                   </p>
                 )}
               </div>
@@ -552,10 +552,10 @@ function CheckoutForm() {
                   </svg>
                   <div>
                     <p className="text-sm md:text-base font-normal text-blue-900 mb-1">
-                      Secure Payment via Stripe
+                      {t('checkout.secure_payment_title')}
                     </p>
                     <p className="text-xs md:text-sm text-blue-800">
-                      You will be redirected to Stripe&apos;s secure checkout to complete your payment.
+                      {t('checkout.secure_payment_desc')}
                     </p>
                   </div>
                 </div>
@@ -573,7 +573,7 @@ function CheckoutForm() {
               {/* Cart Items */}
               <div className="space-y-3 mb-4 max-h-64 overflow-y-auto">
                 {items.map((item) => (
-                  <div key={item.id} className="flex gap-3 bg-gray-50 p-3 rounded-xl">
+                  <div key={item.cartItemId || `${item.id}-${Math.random()}`} className="flex gap-3 bg-gray-50 p-3 rounded-xl">
                     <div className="relative w-14 h-14 bg-white rounded-lg flex-shrink-0 overflow-hidden shadow-sm">
                       <Image
                         src={item.image}
@@ -587,7 +587,12 @@ function CheckoutForm() {
                       </span>
                     </div>
                     <div className="flex-1 min-w-0">
-                      <p className="text-xs md:text-sm font-normal text-gray-900 mb-1 truncate">{item.name}</p>
+                      <p className="text-xs md:text-sm font-normal text-gray-900 mb-1 truncate">
+                        {language === 'ar' && item.arabicName ? item.arabicName : item.name}
+                        {item.bundleLabel && (
+                          <span className="ml-1 text-[10px] text-pink-600 font-medium">({item.bundleLabel})</span>
+                        )}
+                      </p>
                       <p className="text-xs md:text-sm font-normal text-gray-900">{formatPrice(item.price)}</p>
                     </div>
                   </div>

@@ -22,11 +22,14 @@ export async function POST(request: NextRequest) {
       price_data: {
         currency: 'aed', // UAE Dirham
         product_data: {
-          name: item.name,
+          name: item.bundleLabel ? `${item.name} (${item.bundleLabel})` : item.name,
           images: item.image ? [item.image] : [],
           description: item.shortDescription || '',
           metadata: {
             product_id: item.id.toString(), // Store WooCommerce product ID
+            bundle_type: item.bundleType || 'one-month',
+            bundle_label: item.bundleLabel || '',
+            cart_item_id: item.cartItemId || '',
           },
         },
         unit_amount: Math.round(parseFloat(item.price) * 100), // Convert to fils (cents)

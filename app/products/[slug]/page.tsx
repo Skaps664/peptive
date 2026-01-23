@@ -27,7 +27,7 @@ export default function ProductDetailPage() {
   const [product, setProduct] = useState<Product | null>(null);
   const [loading, setLoading] = useState(true);
   const [selectedImage, setSelectedImage] = useState(0);
-  const [selectedBundle, setSelectedBundle] = useState('1-month');
+  const [selectedBundle, setSelectedBundle] = useState('one-month');
   const [email, setEmail] = useState('');
   const [reviews, setReviews] = useState<ProductReview[]>([]);
   const [currentReviewIndex, setCurrentReviewIndex] = useState(0);
@@ -66,17 +66,19 @@ export default function ProductDetailPage() {
     if (!product) return;
 
     const bundle = bundleOptions.find(b => b.id === selectedBundle);
-    const quantity = bundle?.months || 1;
+    if (!bundle) return;
 
-    for (let i = 0; i < quantity; i++) {
-      addItem({
-        id: product.id,
-        name: product.name,
-        slug: product.slug,
-        price: product.price,
-        image: product.image,
-      });
-    }
+    // Add the item with bundle information and correct price
+    addItem({
+      id: product.id,
+      name: product.name,
+      slug: product.slug,
+      price: bundle.price.toString(),
+      image: product.image,
+      bundleType: selectedBundle as 'one-month' | 'three-months' | 'six-months',
+      bundleLabel: bundle.label,
+      arabicName: (product as any).arabic_name || '',
+    });
   };
 
   const handleNotifyMe = () => {
@@ -136,7 +138,7 @@ export default function ProductDetailPage() {
   
   const bundleOptions: BundleOption[] = [
     {
-      id: '1-month',
+      id: 'one-month',
       months: 1,
       label: t('bundle.one_month'),
       price: currentPrice,
@@ -144,7 +146,7 @@ export default function ProductDetailPage() {
       savingsPercent: Math.round(savingsPercentPerItem),
     },
     {
-      id: '3-months',
+      id: 'three-months',
       months: 3,
       label: t('bundle.three_months'),
       price: bundlePricing.three_month?.sale_price 
@@ -161,7 +163,7 @@ export default function ProductDetailPage() {
       isPopular: true,
     },
     {
-      id: '6-months',
+      id: 'six-months',
       months: 6,
       label: t('bundle.six_months'),
       price: bundlePricing.six_month?.sale_price 

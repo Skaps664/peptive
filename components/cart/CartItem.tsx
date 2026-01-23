@@ -4,6 +4,7 @@ import Image from 'next/image';
 import { useCartStore } from '@/store/cartStore';
 import { formatPrice } from '@/lib/utils';
 import { CartItem as CartItemType } from '@/types';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 interface CartItemProps {
   item: CartItemType;
@@ -11,6 +12,28 @@ interface CartItemProps {
 
 export default function CartItem({ item }: CartItemProps) {
   const { updateQuantity, removeItem } = useCartStore();
+  const { language, t } = useLanguage();
+  const cartItemId = item.cartItemId || `${item.id}`;
+  
+  // Use Arabic name if available and in Arabic mode
+  const displayName = language === 'ar' && item.arabicName ? item.arabicName : item.name;
+  
+  // Get localized bundle label
+  const getLocalizedBundleLabel = (bundleType?: string) => {
+    if (!bundleType) return null;
+    switch (bundleType) {
+      case 'one-month':
+        return t('bundle.one_month');
+      case 'three-months':
+        return t('bundle.three_months');
+      case 'six-months':
+        return t('bundle.six_months');
+      default:
+        return item.bundleLabel;
+    }
+  };
+  
+  const displayBundleLabel = getLocalizedBundleLabel(item.bundleType);
 
   return (
     <div className="flex gap-3 p-3 bg-gray-50 rounded-xl hover:bg-gray-100 transition-all">
@@ -27,13 +50,18 @@ export default function CartItem({ item }: CartItemProps) {
 
       {/* Product Details */}
       <div className="flex-1 min-w-0">
-        <h3 className="text-xs font-normal text-gray-900 mb-1">{item.name}</h3>
+        <h3 className="text-xs font-normal text-gray-900 mb-1">
+          {displayName}
+          {displayBundleLabel && (
+            <span className="ml-1 text-[10px] text-pink-600 font-medium">({displayBundleLabel})</span>
+          )}
+        </h3>
         <p className="text-sm font-normal text-gray-900 mb-2">{formatPrice(item.price)}</p>
 
         {/* Quantity Controls */}
         <div className="flex items-center gap-2">
           <button
-            onClick={() => updateQuantity(item.id, item.quantity - 1)}
+            onClick={() => updateQuantity(cartItemId, item.quantity - 1)}
             className="w-6 h-6 flex items-center justify-center border border-gray-300 rounded-lg hover:bg-gray-900 hover:text-white hover:border-gray-900 transition-all font-normal text-sm"
             aria-label="Decrease quantity"
           >
@@ -41,7 +69,7 @@ export default function CartItem({ item }: CartItemProps) {
           </button>
           <span className="text-xs font-normal w-6 text-center">{item.quantity}</span>
           <button
-            onClick={() => updateQuantity(item.id, item.quantity + 1)}
+            onClick={() => updateQuantity(cartItemId, item.quantity + 1)}
             className="w-6 h-6 flex items-center justify-center border border-gray-300 rounded-lg hover:bg-gray-900 hover:text-white hover:border-gray-900 transition-all font-normal text-sm"
             aria-label="Increase quantity"
           >
@@ -53,11 +81,11 @@ export default function CartItem({ item }: CartItemProps) {
       {/* Remove & Subtotal */}
       <div className="flex flex-col items-end justify-between">
         <button
-          onClick={() => removeItem(item.id)}
+          onClick={() => removeItem(cartItemId)}
           className="text-xs font-normal text-red-600 hover:text-red-700 hover:underline transition-all"
           aria-label="Remove item"
         >
-          Remove
+          {t('cart.remove')}
         </button>
         <p className="text-sm font-normal text-gray-900">
           {formatPrice(parseFloat(item.price) * item.quantity)}

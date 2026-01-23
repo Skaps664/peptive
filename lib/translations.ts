@@ -205,7 +205,8 @@ export const translations = {
       subtotal: "Subtotal",
       shipping_taxes: "Shipping and taxes calculated at checkout",
       proceed_to_checkout: "Proceed to Checkout",
-      view_cart: "View Cart"
+      view_cart: "View Cart",
+      remove: "Remove"
     },
     checkout: {
       title: "Checkout",
@@ -236,7 +237,15 @@ export const translations = {
       processing: "Processing...",
       calculating_shipping: "Calculating shipping...",
       required_field: "*",
-      payment_cancelled: "Payment was cancelled. Please try again or use a different payment method."
+      payment_cancelled: "Payment was cancelled. Please try again or use a different payment method.",
+      payment_information: "Payment Information",
+      discount_code_optional: "Discount Code (Optional)",
+      enter_coupon_code: "Enter coupon code",
+      applying: "Applying...",
+      applied: "applied",
+      discount_code_help: "If you have a discount code, enter it above",
+      secure_payment_title: "Secure Payment via Stripe",
+      secure_payment_desc: "You will be redirected to Stripe's secure checkout to complete your payment."
     },
     bundle: {
       one_month: "1 month",
@@ -451,7 +460,8 @@ export const translations = {
       subtotal: "المجموع الفرعي",
       shipping_taxes: "سيتم حساب الشحن والضرائب عند إتمام الطلب",
       proceed_to_checkout: "المتابعة لإتمام الطلب",
-      view_cart: "عرض السلة"
+      view_cart: "عرض السلة",
+      remove: "إزالة"
     },
     checkout: {
       title: "إتمام الطلب",
@@ -482,7 +492,15 @@ export const translations = {
       processing: "جاري المعالجة...",
       calculating_shipping: "جاري حساب الشحن...",
       required_field: "*",
-      payment_cancelled: "تم إلغاء الدفع. يرجى المحاولة مرة أخرى أو استخدام طريقة دفع مختلفة."
+      payment_cancelled: "تم إلغاء الدفع. يرجى المحاولة مرة أخرى أو استخدام طريقة دفع مختلفة.",
+      payment_information: "معلومات الدفع",
+      discount_code_optional: "كود الخصم (اختياري)",
+      enter_coupon_code: "أدخل كود الخصم",
+      applying: "جاري التطبيق...",
+      applied: "تم التطبيق",
+      discount_code_help: "إذا كان لديك كود خصم، أدخله أعلاه",
+      secure_payment_title: "الدفع الآمن عبر Stripe",
+      secure_payment_desc: "سيتم تحويلك إلى صفحة الدفع الآمنة من Stripe لإتمام عملية الدفع."
     },
     bundle: {
       one_month: "شهر واحد",

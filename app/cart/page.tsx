@@ -74,7 +74,7 @@ export default function CartPage() {
 
             <div className="space-y-6 lg:space-y-6 xl:space-y-6 2xl:space-y-7">
               {items.map((item) => (
-                <CartItem key={item.id} item={item} />
+                <CartItem key={item.cartItemId || `${item.id}-${Math.random()}`} item={item} />
               ))}
             </div>
 

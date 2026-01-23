@@ -10,8 +10,8 @@ interface CartStore {
   
   // Actions
   addItem: (item: Omit<CartItem, 'quantity'>) => void;
-  removeItem: (id: number) => void;
-  updateQuantity: (id: number, quantity: number) => void;
+  removeItem: (cartItemId: string) => void;
+  updateQuantity: (cartItemId: string, quantity: number) => void;
   clearCart: () => void;
   toggleCart: () => void;
   openCart: () => void;
@@ -20,7 +20,7 @@ interface CartStore {
   // Getters
   getItemCount: () => number;
   getSubtotal: () => number;
-  getItem: (id: number) => CartItem | undefined;
+  getItem: (cartItemId: string) => CartItem | undefined;
 }
 
 export const useCartStore = create<CartStore>()(
@@ -31,35 +31,34 @@ export const useCartStore = create<CartStore>()(
 
       addItem: (item) => {
         const items = get().items;
-        const existingItem = items.find((i) => i.id === item.id);
-
-        if (existingItem) {
-          set({
-            items: items.map((i) =>
-              i.id === item.id ? { ...i, quantity: i.quantity + 1 } : i
-            ),
-          });
-        } else {
-          set({ items: [...items, { ...item, quantity: 1 }] });
-        }
+        // Always add as a new unique item with a unique cartItemId
+        const cartItemId = `${item.id}-${item.bundleType || 'one-month'}-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+        
+        set({ 
+          items: [...items, { 
+            ...item, 
+            quantity: 1,
+            cartItemId 
+          }] 
+        });
         
         // Optionally open cart when item is added
         get().openCart();
       },
 
-      removeItem: (id) => {
-        set({ items: get().items.filter((item) => item.id !== id) });
+      removeItem: (cartItemId) => {
+        set({ items: get().items.filter((item) => item.cartItemId !== cartItemId) });
       },
 
-      updateQuantity: (id, quantity) => {
+      updateQuantity: (cartItemId, quantity) => {
         if (quantity <= 0) {
-          get().removeItem(id);
+          get().removeItem(cartItemId);
           return;
         }
 
         set({
           items: get().items.map((item) =>
-            item.id === id ? { ...item, quantity } : item
+            item.cartItemId === cartItemId ? { ...item, quantity } : item
           ),
         });
       },
@@ -90,8 +89,8 @@ export const useCartStore = create<CartStore>()(
         }, 0);
       },
 
-      getItem: (id) => {
-        return get().items.find((item) => item.id === id);
+      getItem: (cartItemId) => {
+        return get().items.find((item) => item.cartItemId === cartItemId);
       },
     }),
     {
