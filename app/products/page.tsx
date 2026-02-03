@@ -16,7 +16,7 @@ export default function ProductsPage() {
     async function loadProducts() {
       try {
         const { woocommerce } = await import('@/lib/woocommerce');
-        const data = await woocommerce.getProducts({ perPage: 24 });
+        const data = await woocommerce.getProducts({ category: 'all', perPage: 24 });
         setProducts(data);
       } catch (error) {
         console.error('Error fetching products:', error);
