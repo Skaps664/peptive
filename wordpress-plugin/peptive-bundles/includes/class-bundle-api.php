@@ -326,11 +326,11 @@ class Peptive_Bundle_API {
         $sale_price = $product->get_sale_price();
         $current_price = $product->get_price();
         
-        // Get custom bundle prices
-        $three_month_price = get_post_meta($object['id'], '_three_month_price', true);
-        $three_month_sale_price = get_post_meta($object['id'], '_three_month_sale_price', true);
-        $six_month_price = get_post_meta($object['id'], '_six_month_price', true);
-        $six_month_sale_price = get_post_meta($object['id'], '_six_month_sale_price', true);
+        // Get custom bundle prices (monthly pricing)
+        $three_month_price = get_post_meta($object['id'], '_bundle_3_month_regular_price', true);
+        $three_month_sale_price = get_post_meta($object['id'], '_bundle_3_month_sale_price', true);
+        $six_month_price = get_post_meta($object['id'], '_bundle_6_month_regular_price', true);
+        $six_month_sale_price = get_post_meta($object['id'], '_bundle_6_month_sale_price', true);
         
         // Auto-calculate if not set
         $three_regular = !empty($three_month_price) ? $three_month_price : ($regular_price * 3);

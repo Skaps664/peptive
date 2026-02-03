@@ -66,12 +66,13 @@ class Peptive_Bundle_Product_Type {
         $tabs['peptive_arabic'] = array(
             'label'    => __('Arabic Translation', 'peptive-bundles'),
             'target'   => 'peptive_arabic_data',
+            'class'    => array('show_if_simple', 'show_if_bundle'),
             'priority' => 12,
         );
         
-        // Add Bundle Pricing tab (for simple and bundle products)
+        // Add Monthly Pricing tab (for simple and bundle products)
         $tabs['peptive_bundle_pricing'] = array(
-            'label'    => __('Bundle Pricing', 'peptive-bundles'),
+            'label'    => __('Monthly Pricing', 'peptive-bundles'),
             'target'   => 'peptive_bundle_pricing_data',
             'class'    => array('show_if_simple', 'show_if_bundle'),
             'priority' => 13,
@@ -120,34 +121,34 @@ class Peptive_Bundle_Product_Type {
     }
     
     /**
-     * Bundle Pricing tab content
+     * Monthly Pricing tab content
      */
     public function bundle_pricing_tab_content() {
         global $post;
         
         // Get existing bundle pricing
-        $three_month_price = get_post_meta($post->ID, '_three_month_price', true);
-        $three_month_sale_price = get_post_meta($post->ID, '_three_month_sale_price', true);
-        $six_month_price = get_post_meta($post->ID, '_six_month_price', true);
-        $six_month_sale_price = get_post_meta($post->ID, '_six_month_sale_price', true);
+        $three_month_price = get_post_meta($post->ID, '_bundle_3_month_regular_price', true);
+        $three_month_sale_price = get_post_meta($post->ID, '_bundle_3_month_sale_price', true);
+        $six_month_price = get_post_meta($post->ID, '_bundle_6_month_regular_price', true);
+        $six_month_sale_price = get_post_meta($post->ID, '_bundle_6_month_sale_price', true);
         
         ?>
         <div id="peptive_bundle_pricing_data" class="panel woocommerce_options_panel">
             <div class="options_group">
                 <p class="form-field">
-                    <strong><?php _e('3-Month Bundle Pricing', 'peptive-bundles'); ?></strong>
+                    <strong><?php _e('3-Month Pricing', 'peptive-bundles'); ?></strong>
                     <span class="description" style="display: block; margin-top: 5px;">
-                        <?php _e('Set pricing for 3-month bundle (3 units). Leave empty to auto-calculate from single unit price.', 'peptive-bundles'); ?>
+                        <?php _e('Set pricing for 3-month supply (3 units). Leave empty to auto-calculate from single unit price.', 'peptive-bundles'); ?>
                     </span>
                 </p>
                 
                 <?php
                 woocommerce_wp_text_input(array(
-                    'id'                => '_three_month_price',
+                    'id'                => '_bundle_3_month_regular_price',
                     'label'             => __('Regular Price (3 months)', 'peptive-bundles'),
                     'placeholder'       => __('Auto-calculated if empty', 'peptive-bundles'),
                     'desc_tip'          => true,
-                    'description'       => __('Regular price for 3-month bundle', 'peptive-bundles'),
+                    'description'       => __('Regular price for 3-month supply', 'peptive-bundles'),
                     'type'              => 'number',
                     'custom_attributes' => array(
                         'step' => '0.01',
@@ -156,11 +157,11 @@ class Peptive_Bundle_Product_Type {
                 ));
                 
                 woocommerce_wp_text_input(array(
-                    'id'                => '_three_month_sale_price',
+                    'id'                => '_bundle_3_month_sale_price',
                     'label'             => __('Sale Price (3 months)', 'peptive-bundles'),
                     'placeholder'       => __('Optional', 'peptive-bundles'),
                     'desc_tip'          => true,
-                    'description'       => __('Sale price for 3-month bundle', 'peptive-bundles'),
+                    'description'       => __('Sale price for 3-month supply', 'peptive-bundles'),
                     'type'              => 'number',
                     'custom_attributes' => array(
                         'step' => '0.01',
@@ -172,19 +173,19 @@ class Peptive_Bundle_Product_Type {
             
             <div class="options_group">
                 <p class="form-field">
-                    <strong><?php _e('6-Month Bundle Pricing', 'peptive-bundles'); ?></strong>
+                    <strong><?php _e('6-Month Pricing', 'peptive-bundles'); ?></strong>
                     <span class="description" style="display: block; margin-top: 5px;">
-                        <?php _e('Set pricing for 6-month bundle (6 units). Leave empty to auto-calculate from single unit price.', 'peptive-bundles'); ?>
+                        <?php _e('Set pricing for 6-month supply (6 units). Leave empty to auto-calculate from single unit price.', 'peptive-bundles'); ?>
                     </span>
                 </p>
                 
                 <?php
                 woocommerce_wp_text_input(array(
-                    'id'                => '_six_month_price',
+                    'id'                => '_bundle_6_month_regular_price',
                     'label'             => __('Regular Price (6 months)', 'peptive-bundles'),
                     'placeholder'       => __('Auto-calculated if empty', 'peptive-bundles'),
                     'desc_tip'          => true,
-                    'description'       => __('Regular price for 6-month bundle', 'peptive-bundles'),
+                    'description'       => __('Regular price for 6-month supply', 'peptive-bundles'),
                     'type'              => 'number',
                     'custom_attributes' => array(
                         'step' => '0.01',
@@ -193,11 +194,11 @@ class Peptive_Bundle_Product_Type {
                 ));
                 
                 woocommerce_wp_text_input(array(
-                    'id'                => '_six_month_sale_price',
+                    'id'                => '_bundle_6_month_sale_price',
                     'label'             => __('Sale Price (6 months)', 'peptive-bundles'),
                     'placeholder'       => __('Optional', 'peptive-bundles'),
                     'desc_tip'          => true,
-                    'description'       => __('Sale price for 6-month bundle', 'peptive-bundles'),
+                    'description'       => __('Sale price for 6-month supply', 'peptive-bundles'),
                     'type'              => 'number',
                     'custom_attributes' => array(
                         'step' => '0.01',
@@ -211,8 +212,8 @@ class Peptive_Bundle_Product_Type {
                 <p class="form-field" style="padding: 10px 12px; background: #f0f0f1; border-left: 4px solid #2271b1;">
                     <strong><?php _e('How it works:', 'peptive-bundles'); ?></strong><br>
                     <span class="description">
-                        • <?php _e('If bundle prices are empty, they will be auto-calculated (unit price × quantity)', 'peptive-bundles'); ?><br>
-                        • <?php _e('Set custom prices to offer bundle discounts', 'peptive-bundles'); ?><br>
+                        • <?php _e('If monthly prices are empty, they will be auto-calculated (unit price × quantity)', 'peptive-bundles'); ?><br>
+                        • <?php _e('Set custom prices to offer monthly supply discounts', 'peptive-bundles'); ?><br>
                         • <?php _e('Sale prices override regular prices when set', 'peptive-bundles'); ?>
                     </span>
                 </p>
@@ -240,17 +241,17 @@ class Peptive_Bundle_Product_Type {
         }
         
         // Save bundle pricing fields
-        if (isset($_POST['_three_month_price'])) {
-            update_post_meta($post_id, '_bundle_3_month_regular_price', sanitize_text_field($_POST['_three_month_price']));
+        if (isset($_POST['_bundle_3_month_regular_price'])) {
+            update_post_meta($post_id, '_bundle_3_month_regular_price', sanitize_text_field($_POST['_bundle_3_month_regular_price']));
         }
-        if (isset($_POST['_three_month_sale_price'])) {
-            update_post_meta($post_id, '_bundle_3_month_sale_price', sanitize_text_field($_POST['_three_month_sale_price']));
+        if (isset($_POST['_bundle_3_month_sale_price'])) {
+            update_post_meta($post_id, '_bundle_3_month_sale_price', sanitize_text_field($_POST['_bundle_3_month_sale_price']));
         }
-        if (isset($_POST['_six_month_price'])) {
-            update_post_meta($post_id, '_bundle_6_month_regular_price', sanitize_text_field($_POST['_six_month_price']));
+        if (isset($_POST['_bundle_6_month_regular_price'])) {
+            update_post_meta($post_id, '_bundle_6_month_regular_price', sanitize_text_field($_POST['_bundle_6_month_regular_price']));
         }
-        if (isset($_POST['_six_month_sale_price'])) {
-            update_post_meta($post_id, '_bundle_6_month_sale_price', sanitize_text_field($_POST['_six_month_sale_price']));
+        if (isset($_POST['_bundle_6_month_sale_price'])) {
+            update_post_meta($post_id, '_bundle_6_month_sale_price', sanitize_text_field($_POST['_bundle_6_month_sale_price']));
         }
     }
     
@@ -354,21 +355,13 @@ class Peptive_Bundle_Product_Type {
         $product_id = isset($item['product_id']) ? $item['product_id'] : '';
         $quantity = isset($item['quantity']) ? $item['quantity'] : 1;
         
-        // Get all simple products
+        // Get all products (simple, variable, and other bundle products)
         $args = array(
             'post_type'      => 'product',
             'posts_per_page' => -1,
             'post_status'    => 'publish',
             'orderby'        => 'title',
             'order'          => 'ASC',
-            'tax_query'      => array(
-                array(
-                    'taxonomy' => 'product_type',
-                    'field'    => 'slug',
-                    'terms'    => array('simple', 'variable'),
-                    'operator' => 'IN',
-                ),
-            ),
         );
         $products = get_posts($args);
         ?>

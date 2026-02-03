@@ -12,7 +12,6 @@ class Peptive_Bundle_Admin {
     
     public function __construct() {
         add_action('admin_enqueue_scripts', array($this, 'admin_scripts'));
-        add_filter('woocommerce_product_data_tabs', array($this, 'hide_unused_tabs'));
     }
     
     /**
@@ -27,16 +26,5 @@ class Peptive_Bundle_Admin {
                 wp_enqueue_style('woocommerce_admin_styles');
             }
         }
-    }
-    
-    /**
-     * Hide unused tabs for bundle products
-     */
-    public function hide_unused_tabs($tabs) {
-        // Add hide_if_bundle class to tabs that don't make sense for bundles
-        $tabs['inventory']['class'][] = 'hide_if_bundle';
-        $tabs['shipping']['class'][] = 'hide_if_bundle';
-        
-        return $tabs;
     }
 }

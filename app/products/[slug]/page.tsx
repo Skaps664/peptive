@@ -124,7 +124,7 @@ export default function ProductDetailPage() {
     );
   }
 
-  // Calculate bundle options using WooCommerce prices AND custom bundle pricing
+  // Calculate bundle options using WooCommerce prices AND custom monthly pricing
   // Use sale_price as the current price, regular_price as the original price
   const currentPrice = parseFloat(product.salePrice || product.price); // Discounted price
   const originalPrice = parseFloat(product.regularPrice || product.price); // Original price before discount
@@ -133,8 +133,31 @@ export default function ProductDetailPage() {
   const savingsPerItem = originalPrice - currentPrice;
   const savingsPercentPerItem = originalPrice > 0 ? ((savingsPerItem / originalPrice) * 100) : 0;
   
-  // Get bundle pricing from product data (from WordPress plugin)
+  // Get bundle pricing from product data (from WordPress plugin monthly pricing)
   const bundlePricing = (product as any).bundle_pricing || {};
+  
+  // Helper function to check if a value is set and not empty
+  const hasValue = (val: any) => val !== null && val !== undefined && val !== '' && parseFloat(val) > 0;
+  
+  // 3-Month pricing: Use custom prices if set, otherwise calculate
+  const threeMonthRegular = hasValue(bundlePricing.three_month?.regular_price) 
+    ? parseFloat(bundlePricing.three_month.regular_price) 
+    : originalPrice * 3;
+  const threeMonthSale = hasValue(bundlePricing.three_month?.sale_price)
+    ? parseFloat(bundlePricing.three_month.sale_price)
+    : (hasValue(bundlePricing.three_month?.regular_price) ? threeMonthRegular : currentPrice * 3);
+  const threeMonthSavings = threeMonthRegular - threeMonthSale;
+  const threeMonthSavingsPercent = threeMonthRegular > 0 ? ((threeMonthSavings / threeMonthRegular) * 100) : 0;
+  
+  // 6-Month pricing: Use custom prices if set, otherwise calculate
+  const sixMonthRegular = hasValue(bundlePricing.six_month?.regular_price)
+    ? parseFloat(bundlePricing.six_month.regular_price)
+    : originalPrice * 6;
+  const sixMonthSale = hasValue(bundlePricing.six_month?.sale_price)
+    ? parseFloat(bundlePricing.six_month.sale_price)
+    : (hasValue(bundlePricing.six_month?.regular_price) ? sixMonthRegular : currentPrice * 6);
+  const sixMonthSavings = sixMonthRegular - sixMonthSale;
+  const sixMonthSavingsPercent = sixMonthRegular > 0 ? ((sixMonthSavings / sixMonthRegular) * 100) : 0;
   
   const bundleOptions: BundleOption[] = [
     {
@@ -149,34 +172,18 @@ export default function ProductDetailPage() {
       id: 'three-months',
       months: 3,
       label: t('bundle.three_months'),
-      price: bundlePricing.three_month?.sale_price 
-        ? parseFloat(bundlePricing.three_month.sale_price)
-        : (bundlePricing.three_month?.regular_price 
-          ? parseFloat(bundlePricing.three_month.regular_price)
-          : currentPrice * 3),
-      savings: bundlePricing.three_month?.regular_price && bundlePricing.three_month?.sale_price
-        ? parseFloat(bundlePricing.three_month.regular_price) - parseFloat(bundlePricing.three_month.sale_price)
-        : savingsPerItem * 3,
-      savingsPercent: bundlePricing.three_month?.regular_price && bundlePricing.three_month?.sale_price
-        ? Math.round(((parseFloat(bundlePricing.three_month.regular_price) - parseFloat(bundlePricing.three_month.sale_price)) / parseFloat(bundlePricing.three_month.regular_price)) * 100)
-        : Math.round(savingsPercentPerItem),
+      price: threeMonthSale,
+      savings: threeMonthSavings,
+      savingsPercent: Math.round(threeMonthSavingsPercent),
       isPopular: true,
     },
     {
       id: 'six-months',
       months: 6,
       label: t('bundle.six_months'),
-      price: bundlePricing.six_month?.sale_price 
-        ? parseFloat(bundlePricing.six_month.sale_price)
-        : (bundlePricing.six_month?.regular_price 
-          ? parseFloat(bundlePricing.six_month.regular_price)
-          : currentPrice * 6),
-      savings: bundlePricing.six_month?.regular_price && bundlePricing.six_month?.sale_price
-        ? parseFloat(bundlePricing.six_month.regular_price) - parseFloat(bundlePricing.six_month.sale_price)
-        : savingsPerItem * 6,
-      savingsPercent: bundlePricing.six_month?.regular_price && bundlePricing.six_month?.sale_price
-        ? Math.round(((parseFloat(bundlePricing.six_month.regular_price) - parseFloat(bundlePricing.six_month.sale_price)) / parseFloat(bundlePricing.six_month.regular_price)) * 100)
-        : Math.round(savingsPercentPerItem),
+      price: sixMonthSale,
+      savings: sixMonthSavings,
+      savingsPercent: Math.round(sixMonthSavingsPercent),
     },
   ];
 
