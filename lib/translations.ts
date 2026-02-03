@@ -4,6 +4,7 @@ export const translations = {
     header: {
       home: "Home",
       all_peptides: "All Peptides",
+      oral_peptides: "Oral Peptides Supplements",
       dosage_calculator: "Dosage Calculator",
       peptive_ai: "Peptive Ai",
       login: "Login",
@@ -101,6 +102,15 @@ export const translations = {
       products: "products",
       no_products_title: "No Products Found",
       no_products_message: "Check back soon for new products."
+    },
+    oral_peptides: {
+      title: "Oral Peptides Supplements",
+      loading: "Loading oral peptides...",
+      showing: "Showing",
+      product: "product",
+      products: "products",
+      no_products_title: "No Oral Peptides Found",
+      no_products_message: "Check back soon for new oral peptide products."
     },
     calculator: {
       title: "Dosage Calculator",
@@ -259,6 +269,7 @@ export const translations = {
     header: {
       home: "بيتبيت",
       all_peptides: "جميع الببتيدات",
+      oral_peptides: "مكملات الببتيدات الفموية",
       dosage_calculator: "حاسبة الجرعات",
       peptive_ai: "بيبتف أي",
       login: "تسجيل الدخول",
@@ -356,6 +367,15 @@ export const translations = {
       products: "منتجات",
       no_products_title: "لم يتم العثور على منتجات",
       no_products_message: "تحقق مرة أخرى قريبًا للمنتجات الجديدة."
+    },
+    oral_peptides: {
+      title: "مكملات الببتيدات الفموية",
+      loading: "جاري تحميل الببتيدات الفموية...",
+      showing: "عرض",
+      product: "منتج",
+      products: "منتجات",
+      no_products_title: "لم يتم العثور على ببتيدات فموية",
+      no_products_message: "تحقق مرة أخرى قريبًا للمنتجات الفموية الجديدة."
     },
     calculator: {
       title: "حاسبة الجرعات",
