@@ -8,7 +8,7 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || 'sk_test_placeholder'
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { items, couponCode, customerEmail, billingDetails, shippingDetails } = body;
+    const { items, couponCode, customerEmail, billingDetails, shippingDetails, tax, shipping } = body;
 
     if (!items || items.length === 0) {
       return NextResponse.json(
@@ -23,10 +23,11 @@ export async function POST(request: NextRequest) {
         currency: 'aed', // UAE Dirham
         product_data: {
           name: item.bundleLabel ? `${item.name} (${item.bundleLabel})` : item.name,
-          images: item.image ? [item.image] : [],
-          description: item.shortDescription || '',
+          // Don't include images to avoid showing WordPress domain in Stripe checkout
+          ...(item.shortDescription && { description: item.shortDescription }),
           metadata: {
-            product_id: item.id.toString(), // Store WooCommerce product ID
+            product_id: item.id.toString(), // ✅ Store WooCommerce product ID in metadata
+            woocommerce_product_id: item.id.toString(), // Fallback field name
             bundle_type: item.bundleType || 'one-month',
             bundle_label: item.bundleLabel || '',
             cart_item_id: item.cartItemId || '',
@@ -36,6 +37,36 @@ export async function POST(request: NextRequest) {
       },
       quantity: item.quantity,
     }));
+
+    // Add tax as a line item if tax amount is provided
+    if (tax && tax > 0) {
+      lineItems.push({
+        price_data: {
+          currency: 'aed',
+          product_data: {
+            name: 'Tax (5%)',
+            description: 'Value Added Tax',
+          },
+          unit_amount: Math.round(tax * 100), // Convert to fils
+        },
+        quantity: 1,
+      });
+    }
+
+    // Add shipping as a line item if shipping cost is provided
+    if (shipping && shipping > 0) {
+      lineItems.push({
+        price_data: {
+          currency: 'aed',
+          product_data: {
+            name: 'Shipping',
+            description: 'Delivery charges',
+          },
+          unit_amount: Math.round(shipping * 100), // Convert to fils
+        },
+        quantity: 1,
+      });
+    }
 
     // Prepare session parameters
     const sessionParams: Stripe.Checkout.SessionCreateParams = {
@@ -49,9 +80,14 @@ export async function POST(request: NextRequest) {
       shipping_address_collection: {
         allowed_countries: ['AE', 'SA', 'KW', 'QA', 'BH', 'OM', 'US', 'GB', 'CA'], // Customize based on your shipping regions
       },
+      // Add business branding
+      payment_intent_data: {
+        description: `Order from ${process.env.NEXT_PUBLIC_SITE_NAME || 'Peptive Peptides'}`,
+      },
       metadata: {
         billingDetails: JSON.stringify(billingDetails),
         shippingDetails: JSON.stringify(shippingDetails),
+        site_name: process.env.NEXT_PUBLIC_SITE_NAME || 'Peptive Peptides',
       },
     };
 

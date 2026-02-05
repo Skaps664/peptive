@@ -1,5 +1,4 @@
 import { NextResponse } from 'next/server';
-import axios from 'axios';
 
 export async function POST(request: Request) {
   try {
@@ -19,77 +18,29 @@ export async function POST(request: Request) {
       );
     }
 
-    // Create WooCommerce API client
-    const wooClient = axios.create({
-      baseURL: process.env.WOOCOMMERCE_API_URL,
-      auth: {
-        username: process.env.WOOCOMMERCE_CONSUMER_KEY || '',
-        password: process.env.WOOCOMMERCE_CONSUMER_SECRET || '',
-      },
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
+    // Simple shipping calculation logic
+    // You can customize this based on your shipping rules
+    let shippingCost = 0;
 
-    // Prepare line items for WooCommerce
-    const lineItems = items.map((item: any) => ({
-      product_id: item.id,
-      quantity: item.quantity,
-    }));
-
-    // Create a temporary order to calculate shipping and tax
-    // We'll use WooCommerce's calculate endpoint or create a draft order
-    const orderData = {
-      status: 'pending', // Draft status
-      set_paid: false,
-      billing: {
-        country: country,
-        state: state || '',
-        postcode: postcode || '',
-        city: city || '',
-      },
-      shipping: {
-        country: country,
-        state: state || '',
-        postcode: postcode || '',
-        city: city || '',
-      },
-      line_items: lineItems,
-    };
-
-    // Create order to get calculated shipping and tax
-    const response = await wooClient.post('/orders', orderData);
-    const order = response.data;
-
-    // Extract shipping and tax information
-    const shippingTotal = parseFloat(order.shipping_total || '0');
-    const shippingTax = parseFloat(order.shipping_tax || '0');
-    const totalTax = parseFloat(order.total_tax || '0');
-    const subtotal = parseFloat(order.total || '0') - shippingTotal - totalTax;
-
-    // Delete the temporary order
-    try {
-      await wooClient.delete(`/orders/${order.id}`, { params: { force: true } });
-    } catch (deleteError) {
-      console.error('Error deleting temporary order:', deleteError);
-      // Continue even if deletion fails
+    // Example: Free shipping for UAE, flat rate for other countries
+    if (country === 'AE') {
+      shippingCost = 0; // Free shipping in UAE
+    } else if (['SA', 'KW', 'QA', 'BH', 'OM'].includes(country)) {
+      shippingCost = 25; // AED 25 for GCC countries
+    } else {
+      shippingCost = 50; // AED 50 for other countries
     }
 
     return NextResponse.json({
-      shipping: shippingTotal + shippingTax,
-      tax: totalTax,
-      subtotal: subtotal,
-      shippingMethods: order.shipping_lines || [],
+      shipping: shippingCost,
+      // Tax is now calculated on frontend (5% of subtotal)
     });
   } catch (error: any) {
-    console.error('Error calculating shipping and tax:', error.response?.data || error.message);
+    console.error('Error calculating shipping:', error.message);
     
-    // Return default values if WooCommerce is not available
+    // Return default values if calculation fails
     return NextResponse.json({
       shipping: 0,
-      tax: 0,
-      subtotal: 0,
-      error: 'Unable to calculate shipping and tax. Please try again.',
-    }, { status: 200 }); // Return 200 with default values
+    }, { status: 200 });
   }
 }

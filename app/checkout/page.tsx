@@ -56,7 +56,8 @@ function CheckoutForm() {
   }, [searchParams, t]);
   
   const subtotal = getSubtotal();
-  const [tax, setTax] = useState(0);
+  const TAX_RATE = 0.05; // 5% tax rate
+  const tax = subtotal * TAX_RATE; // Calculate 5% tax on subtotal
   const [shipping, setShipping] = useState(0);
   const discount = appliedCoupon?.discount || 0;
   const total = subtotal + tax + shipping - discount;
@@ -85,7 +86,7 @@ function CheckoutForm() {
     country: 'AE', // Default to UAE
   });
 
-  // Calculate shipping and tax when location changes
+  // Calculate shipping when location changes (tax is calculated directly from subtotal)
   useEffect(() => {
     const calculateShippingAndTax = async () => {
       if (!billingInfo.country || items.length === 0) return;
@@ -111,9 +112,7 @@ function CheckoutForm() {
         if (data.shipping !== undefined) {
           setShipping(data.shipping);
         }
-        if (data.tax !== undefined) {
-          setTax(data.tax);
-        }
+        // Tax is now calculated directly from subtotal (5%)
       } catch (err) {
         console.error('Error calculating shipping:', err);
         // Keep default values
@@ -197,6 +196,9 @@ function CheckoutForm() {
           customerEmail: billingInfo.email,
           billingDetails: billingInfo,
           shippingDetails: sameAsShipping ? billingInfo : shippingInfo,
+          tax: tax, // Include 5% tax
+          shipping: shipping, // Include shipping cost
+          subtotal: subtotal, // Include subtotal for reference
         }),
       });
 
@@ -612,7 +614,7 @@ function CheckoutForm() {
                   </span>
                 </div>
                 <div className="flex justify-between text-xs md:text-sm text-gray-700">
-                  <span className="font-normal">{t('checkout.tax')}</span>
+                  <span className="font-normal">VAT {t('checkout.tax')} 5%</span>
                   <span className="font-normal">
                     {calculatingShipping ? t('checkout.calculating_shipping') : formatPrice(tax)}
                   </span>

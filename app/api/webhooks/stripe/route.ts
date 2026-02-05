@@ -77,6 +77,27 @@ export async function POST(request: NextRequest) {
         break;
       }
 
+      case 'payment_intent.created': {
+        const paymentIntent = event.data.object as Stripe.PaymentIntent;
+        console.log('PaymentIntent created:', paymentIntent.id);
+        // Payment intent created - no action needed
+        break;
+      }
+
+      case 'charge.succeeded': {
+        const charge = event.data.object as Stripe.Charge;
+        console.log('Charge succeeded:', charge.id);
+        // Charge successful - already handled by checkout.session.completed
+        break;
+      }
+
+      case 'charge.updated': {
+        const charge = event.data.object as Stripe.Charge;
+        console.log('Charge updated:', charge.id);
+        // Charge updated - informational only
+        break;
+      }
+
       default:
         console.log(`Unhandled event type: ${event.type}`);
     }
@@ -98,16 +119,57 @@ async function createWooCommerceOrder(session: Stripe.Checkout.Session) {
   const billingDetails = JSON.parse(metadata.billingDetails || '{}');
   const shippingDetails = JSON.parse(metadata.shippingDetails || '{}');
 
-  // Get line items from Stripe session
+  // Get line items from Stripe session with product metadata
   const lineItems = await stripe.checkout.sessions.listLineItems(session.id, {
     expand: ['data.price.product'],
   });
 
-  // Transform line items for WooCommerce
-  const wooLineItems = lineItems.data.map((item) => ({
-    product_id: parseInt(item.description || '0'), // You'll need to store product ID in description
-    quantity: item.quantity || 1,
-  }));
+  // Separate products from tax and shipping
+  let taxAmount = 0;
+  let shippingAmount = 0;
+  const productLineItems: any[] = [];
+
+  lineItems.data.forEach((item: any) => {
+    const product = item.price.product as Stripe.Product;
+    const productName = product.name.toLowerCase();
+    
+    // Check if this is tax or shipping line item
+    if (productName.includes('tax')) {
+      taxAmount = (item.amount_total || 0) / 100; // Convert from fils to AED
+    } else if (productName.includes('shipping')) {
+      shippingAmount = (item.amount_total || 0) / 100; // Convert from fils to AED
+    } else {
+      // Regular product
+      productLineItems.push(item);
+    }
+  });
+
+  // Transform product line items for WooCommerce
+  const wooLineItems = productLineItems.map((item: any) => {
+    // Get product metadata (contains WooCommerce product ID)
+    const product = item.price.product as Stripe.Product;
+    const productId = product.metadata?.product_id || 
+                     product.metadata?.woocommerce_product_id || '0';
+    
+    return {
+      product_id: parseInt(productId), // ✅ Get product ID from metadata
+      quantity: item.quantity || 1,
+      meta_data: [
+        {
+          key: '_bundle_type',
+          value: product.metadata?.bundle_type || '',
+        },
+        {
+          key: '_bundle_label',
+          value: product.metadata?.bundle_label || '',
+        },
+        {
+          key: '_stripe_line_item_id',
+          value: item.id || '',
+        },
+      ],
+    };
+  });
 
   // Create order in WooCommerce
   const orderData = {
@@ -137,17 +199,38 @@ async function createWooCommerceOrder(session: Stripe.Checkout.Session) {
       country: shippingDetails.country || billingDetails.country || '',
     },
     line_items: wooLineItems,
+    shipping_lines: shippingAmount > 0 ? [{
+      method_id: 'flat_rate',
+      method_title: 'Shipping',
+      total: shippingAmount.toFixed(2),
+    }] : [],
     payment_method: 'stripe',
     payment_method_title: 'Credit Card (Stripe)',
     transaction_id: session.payment_intent as string,
     meta_data: [
       {
-        key: 'stripe_session_id',
+        key: '_stripe_session_id',
         value: session.id,
       },
       {
-        key: 'stripe_payment_intent',
-        value: session.payment_intent,
+        key: '_stripe_payment_intent',
+        value: session.payment_intent as string,
+      },
+      {
+        key: '_stripe_customer_email',
+        value: session.customer_email || '',
+      },
+      {
+        key: '_payment_method',
+        value: 'stripe_checkout',
+      },
+      {
+        key: '_tax_amount',
+        value: taxAmount.toFixed(2),
+      },
+      {
+        key: '_shipping_amount',
+        value: shippingAmount.toFixed(2),
       },
     ],
   };
