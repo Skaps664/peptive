@@ -10,6 +10,10 @@ export async function POST(request: NextRequest) {
     const body = await request.json();
     const { items, couponCode, customerEmail, billingDetails, shippingDetails, tax, shipping } = body;
 
+    // Log incoming items for debugging
+    console.log('Creating checkout session with items:', JSON.stringify(items, null, 2));
+    console.log('Tax:', tax, 'Shipping:', shipping);
+
     if (!items || items.length === 0) {
       return NextResponse.json(
         { error: 'No items in cart' },
@@ -18,25 +22,41 @@ export async function POST(request: NextRequest) {
     }
 
     // Transform cart items to Stripe line items
-    const lineItems: Stripe.Checkout.SessionCreateParams.LineItem[] = items.map((item: any) => ({
-      price_data: {
-        currency: 'aed', // UAE Dirham
-        product_data: {
-          name: item.bundleLabel ? `${item.name} (${item.bundleLabel})` : item.name,
-          // Don't include images to avoid showing WordPress domain in Stripe checkout
-          ...(item.shortDescription && { description: item.shortDescription }),
-          metadata: {
-            product_id: item.id.toString(), // ✅ Store WooCommerce product ID in metadata
-            woocommerce_product_id: item.id.toString(), // Fallback field name
-            bundle_type: item.bundleType || 'one-month',
-            bundle_label: item.bundleLabel || '',
-            cart_item_id: item.cartItemId || '',
+    const lineItems: Stripe.Checkout.SessionCreateParams.LineItem[] = items.map((item: any) => {
+      // Create a clear product name with bundle info
+      const productName = item.bundleLabel 
+        ? `${item.name} - ${item.bundleLabel}`
+        : item.name;
+      
+      // Log for debugging
+      console.log('Creating Stripe line item:', {
+        name: productName,
+        price: item.price,
+        quantity: item.quantity,
+        bundleType: item.bundleType,
+        total: parseFloat(item.price) * item.quantity
+      });
+      
+      return {
+        price_data: {
+          currency: 'aed', // UAE Dirham
+          product_data: {
+            name: productName,
+            // Don't include images to avoid showing WordPress domain in Stripe checkout
+            ...(item.shortDescription && { description: item.shortDescription }),
+            metadata: {
+              product_id: item.id.toString(), // ✅ Store WooCommerce product ID in metadata
+              woocommerce_product_id: item.id.toString(), // Fallback field name
+              bundle_type: item.bundleType || 'one-month',
+              bundle_label: item.bundleLabel || '',
+              cart_item_id: item.cartItemId || '',
+            },
           },
+          unit_amount: Math.round(parseFloat(item.price) * 100), // Convert to fils (cents)
         },
-        unit_amount: Math.round(parseFloat(item.price) * 100), // Convert to fils (cents)
-      },
-      quantity: item.quantity,
-    }));
+        quantity: item.quantity,
+      };
+    });
 
     // Add tax as a line item if tax amount is provided
     if (tax && tax > 0) {
@@ -119,6 +139,12 @@ export async function POST(request: NextRequest) {
         // Continue without coupon if invalid
       }
     }
+
+    // Calculate and log total amount for debugging
+    const totalAmount = lineItems.reduce((sum, item) => {
+      return sum + (item.price_data!.unit_amount! * item.quantity);
+    }, 0);
+    console.log('Total amount to be charged (in fils):', totalAmount, '(AED', (totalAmount / 100).toFixed(2), ')');
 
     // Create Stripe checkout session
     const session = await stripe.checkout.sessions.create(sessionParams);

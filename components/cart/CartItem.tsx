@@ -11,7 +11,7 @@ interface CartItemProps {
 }
 
 export default function CartItem({ item }: CartItemProps) {
-  const { updateQuantity, removeItem } = useCartStore();
+  const { removeItem } = useCartStore();
   const { language, t } = useLanguage();
   const cartItemId = item.cartItemId || `${item.id}`;
   
@@ -56,29 +56,10 @@ export default function CartItem({ item }: CartItemProps) {
             <span className="ml-1 text-[10px] text-pink-600 font-medium">({displayBundleLabel})</span>
           )}
         </h3>
-        <p className="text-sm font-normal text-gray-900 mb-2">{formatPrice(item.price)}</p>
-
-        {/* Quantity Controls */}
-        <div className="flex items-center gap-2">
-          <button
-            onClick={() => updateQuantity(cartItemId, item.quantity - 1)}
-            className="w-6 h-6 flex items-center justify-center border border-gray-300 rounded-lg hover:bg-gray-900 hover:text-white hover:border-gray-900 transition-all font-normal text-sm"
-            aria-label="Decrease quantity"
-          >
-            −
-          </button>
-          <span className="text-xs font-normal w-6 text-center">{item.quantity}</span>
-          <button
-            onClick={() => updateQuantity(cartItemId, item.quantity + 1)}
-            className="w-6 h-6 flex items-center justify-center border border-gray-300 rounded-lg hover:bg-gray-900 hover:text-white hover:border-gray-900 transition-all font-normal text-sm"
-            aria-label="Increase quantity"
-          >
-            +
-          </button>
-        </div>
+        <p className="text-sm font-normal text-gray-900">{formatPrice(item.price)}</p>
       </div>
 
-      {/* Remove & Subtotal */}
+      {/* Remove & Price */}
       <div className="flex flex-col items-end justify-between">
         <button
           onClick={() => removeItem(cartItemId)}
@@ -88,7 +69,7 @@ export default function CartItem({ item }: CartItemProps) {
           {t('cart.remove')}
         </button>
         <p className="text-sm font-normal text-gray-900">
-          {formatPrice(parseFloat(item.price) * item.quantity)}
+          {formatPrice(parseFloat(item.price))}
         </p>
       </div>
     </div>

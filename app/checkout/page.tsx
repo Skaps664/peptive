@@ -584,9 +584,6 @@ function CheckoutForm() {
                         className="object-cover"
                         sizes="56px"
                       />
-                      <span className="absolute -top-1 -right-1 bg-gray-900 text-white text-xs font-normal rounded-full w-5 h-5 flex items-center justify-center">
-                        {item.quantity}
-                      </span>
                     </div>
                     <div className="flex-1 min-w-0">
                       <p className="text-xs md:text-sm font-normal text-gray-900 mb-1 truncate">

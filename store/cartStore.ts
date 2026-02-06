@@ -31,7 +31,7 @@ export const useCartStore = create<CartStore>()(
 
       addItem: (item) => {
         const items = get().items;
-        // Always add as a new unique item with a unique cartItemId
+        // Always add as a new separate item with a unique cartItemId
         const cartItemId = `${item.id}-${item.bundleType || 'one-month'}-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
         
         set({ 

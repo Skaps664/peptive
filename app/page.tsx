@@ -271,7 +271,7 @@ export default function HomePage() {
             {trendingProducts.length > 0 ? (
               trendingProducts.map((product) => (
                 <Link key={product.id} href={`/products/${product.slug}`} className="flex-none w-64 md:w-72 lg:w-80 xl:w-[340px] 2xl:w-[360px]">
-                  <div className="relative bg-white rounded-xl overflow-hidden shadow-sm group h-full">
+                  <div className="relative bg-gray-50 rounded-xl overflow-hidden shadow-sm group h-full">
                     {/* Badges */}
                     <div className="absolute top-4 left-4 flex flex-col gap-2 z-10">
                       {product.onSale && product.regularPrice && product.salePrice && (
@@ -364,7 +364,7 @@ export default function HomePage() {
             <div className="lg:col-span-3 grid md:grid-cols-3 gap-6">
               {stackProducts.length > 0 ? (
                 stackProducts.map((product) => (
-                  <div key={product.id} className="relative bg-white rounded-xl overflow-hidden shadow-sm">
+                  <div key={product.id} className="relative bg-gray-50 rounded-xl overflow-hidden shadow-sm">
                     {/* Badges */}
                     <div className="absolute top-4 left-4 flex flex-col gap-2 z-10">
                       {product.onSale && product.regularPrice && product.salePrice && (
