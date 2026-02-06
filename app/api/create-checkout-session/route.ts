@@ -142,7 +142,7 @@ export async function POST(request: NextRequest) {
 
     // Calculate and log total amount for debugging
     const totalAmount = lineItems.reduce((sum, item) => {
-      return sum + (item.price_data!.unit_amount! * item.quantity);
+      return sum + (item.price_data!.unit_amount! * (item.quantity ?? 1));
     }, 0);
     console.log('Total amount to be charged (in fils):', totalAmount, '(AED', (totalAmount / 100).toFixed(2), ')');
 
